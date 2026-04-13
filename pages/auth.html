@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In / Register — EduVerse</title>
+  <meta name="description" content="Create your free EduVerse account or sign in to continue your learning journey." />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <style>
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+
+    .auth-page {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    /* Left Panel */
+    .auth-panel-left {
+      background: radial-gradient(ellipse at 30% 50%, rgba(124,58,237,0.35) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 20%, rgba(0,212,255,0.2) 0%, transparent 50%),
+                  var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-panel-left::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%237C3AED' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .auth-panel-left .brand { margin-bottom: 3rem; }
+
+    .auth-feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .auth-feature-icon {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .auth-panel-left h2 { margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--text-primary); }
+    .auth-panel-left .auth-feature-item p { font-size: 0.875rem; }
+
+    .auth-testimonial {
+      margin-top: 3rem;
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-testimonial p { font-size: 0.9rem; font-style: italic; margin-bottom: 1rem; color: var(--text-secondary); }
+    .auth-testimonial .reviewer { display: flex; align-items: center; gap: 0.75rem; }
+    .reviewer-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: var(--grad-primary); }
+    .reviewer-name { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.875rem; color: var(--text-primary); }
+    .reviewer-title { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Right Panel */
+    .auth-panel-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+      overflow-y: auto;
+    }
+
+    .auth-form-container {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 0;
+      background: var(--bg-input);
+      border-radius: var(--radius-full);
+      padding: 4px;
+      margin-bottom: 2rem;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all var(--transition-base);
+    }
+
+    .auth-tab.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 12px rgba(124,58,237,0.4);
+    }
+
+    .auth-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .auth-divider span { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; }
+
+    .social-btns { display: flex; gap: 0.75rem; }
+    .social-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      font-family: 'Inter', sans-serif;
+    }
+    .social-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: var(--border-accent); }
+
+    .checkbox-group { display: flex; align-items: flex-start; gap: 0.75rem; }
+    .checkbox-group input[type="checkbox"] { margin-top: 3px; accent-color: var(--primary); cursor: pointer; }
+    .checkbox-group label { font-size: 0.85rem; color: var(--text-secondary); cursor: pointer; line-height: 1.5; }
+    .checkbox-group a { color: var(--primary-light); }
+
+    .form-error {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      color: var(--danger);
+      display: none;
+    }
+    .form-error.show { display: block; }
+
+    .back-home {
+      position: fixed;
+      top: 1.5rem;
+      left: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      transition: color var(--transition-fast);
+      z-index: 10;
+    }
+    .back-home:hover { color: var(--text-primary); }
+
+    .password-strength {
+      height: 4px;
+      background: var(--bg-input);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 0.25rem;
+    }
+
+    .strength-bar { height: 100%; border-radius: 2px; transition: width 0.4s ease, background 0.4s ease; width: 0%; }
+
+    @media (max-width: 900px) {
+      .auth-page { grid-template-columns: 1fr; }
+      .auth-panel-left { display: none; }
+      .auth-panel-right { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div style="display:flex; justify-content:space-between; position:fixed; top:1.5rem; left:1.5rem; right:1.5rem; z-index:10; pointer-events:none;">
+  <a href="../index.html" class="back-home" style="position:static; pointer-events:auto;">← Back to Home</a>
+  <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem; pointer-events:auto;"><span class="theme-toggle-icon">☀️</span></button>
+</div>
+
+<div class="auth-page">
+  <!-- Left Panel -->
+  <div class="auth-panel-left">
+    <div class="brand animate-fadeInDown">
+      <div class="nav-logo">
+        <div class="nav-logo-icon">🎓</div>
+        EduVerse
+      </div>
+    </div>
+
+    <div class="auth-feature-list animate-fadeInUp">
+      <div class="auth-feature-item">
+        <div class="auth-feature-icon" style="background: rgba(124,58,237,0.2);">🎥</div>
+        <div>
+          <h2>148+ Expert Video Lessons</h2>
+          <p>HD lessons across history, science, language and culture — watchable at your own pace.</p>
+        </div>
+      </div>
+      <div class="auth-feature-item">
+        <div class="auth-feature-icon" style="background: rgba(0,212,255,0.15);">🥽</div>
+        <div>
+          <h2>Immersive VR Simulations</h2>
+          <p>Step into virtual environments that bring complex topics to life.</p>
+        </div>
+      </div>
+      <div class="auth-feature-item">
+        <div class="auth-feature-icon" style="background: rgba(16,185,129,0.15);">🏆</div>
+        <div>
+          <h2>Earn Badges & Certificates</h2>
+          <p>Get recognized for your achievements with shareable digital credentials.</p>
+        </div>
+      </div>
+      <div class="auth-feature-item">
+        <div class="auth-feature-icon" style="background: rgba(245,158,11,0.15);">💬</div>
+        <div>
+          <h2>Thriving Community</h2>
+          <p>45,000+ active learners in subject-specific groups and chat rooms.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-testimonial animate-fadeInUp delay-400">
+      <p>"EduVerse completely transformed how I learn. The VR simulations made history come alive — I felt like I was actually there!"</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">👩🏾</div>
+        <div>
+          <div class="reviewer-name">Aminata Koné</div>
+          <div class="reviewer-title">Student, Abidjan · ⭐⭐⭐⭐⭐</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="auth-panel-right">
+    <div class="auth-form-container animate-fadeInUp">
+      <div style="text-align:center; margin-bottom:2rem;">
+        <h2 style="margin-bottom:0.5rem;">Welcome to EduVerse</h2>
+        <p>Your journey to smarter learning starts here.</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="loginTab" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" id="registerTab" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- Error Message -->
+      <div class="form-error" id="formError"></div>
+
+      <!-- LOGIN FORM -->
+      <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+        <div class="input-group">
+          <label for="loginEmail">Email Address</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">📧</span>
+            <input id="loginEmail" type="email" class="input" placeholder="you@example.com" required />
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="loginPassword">Password</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">🔒</span>
+            <input id="loginPassword" type="password" class="input" placeholder="••••••••" required />
+          </div>
+        </div>
+        <div style="text-align:right; margin-top:-0.5rem;">
+          <a href="#" style="font-size:0.8rem; color:var(--text-muted);">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn btn-primary w-full btn-lg" id="loginBtn">
+          Sign In →
+        </button>
+
+        <div class="auth-divider"><span>OR CONTINUE WITH</span></div>
+        <div class="social-btns">
+          <button type="button" class="social-btn">🌐 Google</button>
+          <button type="button" class="social-btn">📘 Facebook</button>
+        </div>
+        <p style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-top:1rem;">
+          Don't have an account? <a href="#" onclick="switchTab('register')" style="color:var(--primary-light);">Register free</a>
+        </p>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form class="auth-form" id="registerForm" style="display:none;" onsubmit="handleRegister(event)">
+        <div class="form-row">
+          <div class="input-group">
+            <label for="regFirstName">First Name</label>
+            <input id="regFirstName" type="text" class="input" placeholder="Aminata" required />
+          </div>
+          <div class="input-group">
+            <label for="regLastName">Last Name</label>
+            <input id="regLastName" type="text" class="input" placeholder="Koné" required />
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="regEmail">Email Address</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">📧</span>
+            <input id="regEmail" type="email" class="input" placeholder="you@example.com" required />
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="regPhone">Phone Number (optional)</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">📱</span>
+            <input id="regPhone" type="tel" class="input" placeholder="+225 XX XX XX XX" />
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="regPassword">Password</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">🔒</span>
+            <input id="regPassword" type="password" class="input" placeholder="Min. 8 characters" required oninput="checkStrength(this.value)" />
+          </div>
+          <div class="password-strength">
+            <div class="strength-bar" id="strengthBar"></div>
+          </div>
+          <small id="strengthLabel" style="font-size:0.75rem; color:var(--text-muted);"></small>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="agreeTerms" required />
+          <label for="agreeTerms">
+            I agree to the <a href="privacy.html">Privacy Policy</a> and <a href="#">Terms of Service</a>. I understand my data is secure.
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary w-full btn-lg" id="registerBtn">
+          Create Free Account 🚀
+        </button>
+
+        <div class="auth-divider"><span>OR CONTINUE WITH</span></div>
+        <div class="social-btns">
+          <button type="button" class="social-btn">🌐 Google</button>
+          <button type="button" class="social-btn">📘 Facebook</button>
+        </div>
+        <p style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-top:1rem;">
+          Already have an account? <a href="#" onclick="switchTab('login')" style="color:var(--primary-light);">Sign in</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Check URL hash for tab
+  if (window.location.hash === '#register') switchTab('register');
+
+  function switchTab(tab) {
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const error = document.getElementById('formError');
+
+    error.classList.remove('show');
+
+    if (tab === 'login') {
+      loginTab.classList.add('active');
+      registerTab.classList.remove('active');
+      loginForm.style.display = 'flex';
+      registerForm.style.display = 'none';
+    } else {
+      registerTab.classList.add('active');
+      loginTab.classList.remove('active');
+      registerForm.style.display = 'flex';
+      loginForm.style.display = 'none';
+    }
+    history.pushState(null, '', tab === 'register' ? '#register' : '#');
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('formError');
+    el.textContent = msg;
+    el.classList.add('show');
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const btn = document.getElementById('loginBtn');
+
+    btn.textContent = 'Signing in...';
+    btn.disabled = true;
+
+    try {
+      if (window.auth) {
+        // Firebase Login
+        const cred = await window.auth.signInWithEmailAndPassword(email, password);
+        const userDoc = await window.db.collection('users').doc(email).get();
+        if (userDoc.exists) {
+          localStorage.setItem('eduverse_current_user', JSON.stringify(userDoc.data()));
+        } else {
+          // Fallback if doc doesn't exist but auth exists
+          const mockUser = { firstName: cred.user.displayName || 'User', lastName: '', email, role: 'student', points: 0, level: 1 };
+          localStorage.setItem('eduverse_current_user', JSON.stringify(mockUser));
+        }
+        window.location.href = 'dashboard.html';
+      } else {
+        // Local fallback
+        const users = JSON.parse(localStorage.getItem('eduverse_users') || '[]');
+        const user = users.find(u => u.email === email && u.password === password);
+        if (user) {
+          localStorage.setItem('eduverse_current_user', JSON.stringify(user));
+          window.location.href = 'dashboard.html';
+        } else if (email === 'admin@eduverse.com' && password === 'admin123') {
+          const admin = { firstName: 'Admin', lastName: 'User', email, role: 'admin', points: 9999, level: 50 };
+          localStorage.setItem('eduverse_current_user', JSON.stringify(admin));
+          window.location.href = 'admin.html';
+        } else {
+          showError('Invalid email or password. Try registering a new account.');
+          btn.textContent = 'Sign In →';
+          btn.disabled = false;
+        }
+      }
+    } catch (err) {
+      showError(err.message || 'Invalid email or password.');
+      btn.textContent = 'Sign In →';
+      btn.disabled = false;
+    }
+  }
+
+  async function handleRegister(e) {
+    e.preventDefault();
+    const firstName = document.getElementById('regFirstName').value.trim();
+    const lastName = document.getElementById('regLastName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const phone = document.getElementById('regPhone').value.trim();
+    const btn = document.getElementById('registerBtn');
+
+    if (password.length < 8) { showError('Password must be at least 8 characters.'); return; }
+
+    btn.textContent = 'Creating account...';
+    btn.disabled = true;
+
+    const newUser = {
+      id: Date.now(),
+      firstName, lastName, email, phone,
+      role: 'student',
+      points: 0,
+      level: 1,
+      joinDate: new Date().toISOString()
+    };
+
+    try {
+      if (window.auth) {
+        // Firebase Auth Create
+        const cred = await window.auth.createUserWithEmailAndPassword(email, password);
+        await cred.user.updateProfile({ displayName: `${firstName} ${lastName}` });
+        
+        // Save to Firestore
+        await window.db.collection('users').doc(email).set(newUser);
+        
+        localStorage.setItem('eduverse_current_user', JSON.stringify(newUser));
+        window.location.href = 'dashboard.html';
+      } else {
+        // Local Fallback
+        const users = JSON.parse(localStorage.getItem('eduverse_users') || '[]');
+        if (users.find(u => u.email === email)) {
+          showError('An account with this email already exists.');
+          btn.textContent = 'Create Free Account 🚀';
+          btn.disabled = false;
+          return;
+        }
+        users.push({ ...newUser, password }); // Save pass for local mock
+        localStorage.setItem('eduverse_users', JSON.stringify(users));
+        localStorage.setItem('eduverse_current_user', JSON.stringify(newUser));
+        window.location.href = 'dashboard.html';
+      }
+    } catch (err) {
+      showError(err.message || 'Registration failed.');
+      btn.textContent = 'Create Free Account 🚀';
+      btn.disabled = false;
+    }
+  }
+
+  function checkStrength(value) {
+    const bar = document.getElementById('strengthBar');
+    const label = document.getElementById('strengthLabel');
+    let strength = 0;
+    if (value.length >= 8) strength++;
+    if (/[A-Z]/.test(value)) strength++;
+    if (/[0-9]/.test(value)) strength++;
+    if (/[^A-Za-z0-9]/.test(value)) strength++;
+
+    const configs = [
+      { width: '0%', color: '', text: '' },
+      { width: '25%', color: '#EF4444', text: '⚠️ Weak' },
+      { width: '50%', color: '#F59E0B', text: '⚡ Fair' },
+      { width: '75%', color: '#3B82F6', text: '✅ Good' },
+      { width: '100%', color: '#10B981', text: '🔐 Strong' }
+    ];
+
+    bar.style.width = configs[strength].width;
+    bar.style.background = configs[strength].color;
+    label.textContent = configs[strength].text;
+    label.style.color = configs[strength].color;
+  }
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>

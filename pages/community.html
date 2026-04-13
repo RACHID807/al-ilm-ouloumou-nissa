@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community — EduVerse</title>
+  <meta name="description" content="Connect with fellow learners in EduVerse's community chat rooms, study groups, and resource sharing spaces." />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <style>
+    .community-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr 260px;
+      gap: var(--space-xl);
+      height: calc(100vh - 70px - 4rem);
+    }
+
+    /* Channels Panel */
+    .channels-panel {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .channels-panel .glass-card { flex: 1; overflow-y: auto; }
+
+    .panel-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      padding: var(--space-md) var(--space-md) var(--space-sm);
+    }
+
+    .channel-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem var(--space-md);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      margin: 0.1rem var(--space-sm);
+    }
+
+    .channel-item:hover { background: var(--bg-card); }
+    .channel-item.active { background: rgba(124,58,237,0.15); }
+
+    .channel-icon { font-size: 1rem; width: 20px; text-align: center; }
+    .channel-name { font-size: 0.875rem; font-weight: 500; flex: 1; color: var(--text-secondary); }
+    .channel-unread { background: var(--danger); color: white; font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.4rem; border-radius: var(--radius-full); }
+
+    /* Chat Area */
+    .chat-area {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: var(--space-md) var(--space-lg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      flex-shrink: 0;
+    }
+
+    .chat-channel-name { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem; }
+    .chat-channel-desc { font-size: 0.8rem; color: var(--text-muted); }
+    .online-count { font-size: 0.75rem; color: var(--success); margin-left: auto; }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .message {
+      display: flex;
+      gap: 0.75rem;
+      animation: fadeInUp 0.3s ease;
+    }
+
+    .message.own { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--grad-primary);
+      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.75rem;
+      color: white;
+    }
+
+    .msg-content { max-width: 70%; }
+    .msg-author { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.25rem; }
+    .message.own .msg-author { text-align: right; }
+
+    .msg-bubble {
+      padding: 0.65rem 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .message:not(.own) .msg-bubble {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
+      color: var(--text-primary);
+    }
+
+    .message.own .msg-bubble {
+      background: rgba(124,58,237,0.25);
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: var(--radius-md) 0 var(--radius-md) var(--radius-md);
+      color: var(--text-primary);
+    }
+
+    .msg-time { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; }
+    .message.own .msg-time { text-align: right; }
+    .msg-badge { display: inline-block; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: rgba(124,58,237,0.2); color: var(--primary-light); margin-right: 0.4rem; }
+
+    /* Input */
+    .chat-input-area {
+      padding: var(--space-md) var(--space-lg);
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: var(--space-sm);
+      align-items: center;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 0.65rem 1rem;
+      border-radius: var(--radius-full);
+    }
+
+    /* System message */
+    .sys-msg {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding: var(--space-sm) 0;
+    }
+
+    /* Right panel */
+    .members-panel { display: flex; flex-direction: column; gap: var(--space-lg); overflow-y: auto; }
+
+    .member-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+    }
+
+    .member-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; background: var(--bg-input); }
+    .member-name { font-size: 0.85rem; font-weight: 500; color: var(--text-primary); }
+    .member-status { font-size: 0.7rem; color: var(--text-muted); }
+    .online-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; margin-left: auto; }
+
+    /* Lock Screen Splash */
+    .lock-splash {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      min-height: 500px;
+    }
+    .lock-splash-icon { font-size: 5rem; margin-bottom: 2rem; filter: drop-shadow(0 0 20px var(--primary)); }
+    .lock-splash h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+    .lock-splash p { max-width: 500px; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }
+
+    @media (max-width: 1200px) {
+      .community-layout { grid-template-columns: 240px 1fr; }
+      .members-panel { display: none; }
+    }
+
+    @media (max-width: 900px) {
+      .community-layout { grid-template-columns: 1fr; }
+      .channels-panel { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar scrolled">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>EduVerse</a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="lessons.html">Lessons</a></li>
+        <li><a href="community.html" class="active">Community</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="app-layout" style="padding-top:70px;">
+  <main style="padding: 0; flex:1; overflow:hidden;">
+    <div id="communityContainer" class="community-layout container" style="padding-top:var(--space-xl);">
+
+      <!-- Channels -->
+      <div class="channels-panel" style="overflow-y:auto; max-height:calc(100vh - 110px);">
+        <div class="glass-card" style="padding: var(--space-sm);">
+          <div class="panel-title">📢 General</div>
+          <div class="channel-item active" onclick="switchChannel('general', this)">
+            <span class="channel-icon">#</span>
+            <span class="channel-name">general</span>
+            <span class="channel-unread">3</span>
+          </div>
+          <div class="channel-item" onclick="switchChannel('introductions', this)">
+            <span class="channel-icon">👋</span>
+            <span class="channel-name">introductions</span>
+          </div>
+          <div class="channel-item" onclick="switchChannel('announcements', this)">
+            <span class="channel-icon">📣</span>
+            <span class="channel-name">announcements</span>
+          </div>
+
+          <div class="panel-title">📚 Study Groups</div>
+          <div class="channel-item" onclick="switchChannel('history', this)">
+            <span class="channel-icon">🌍</span>
+            <span class="channel-name">history-group</span>
+            <span class="channel-unread">7</span>
+          </div>
+          <div class="channel-item" onclick="switchChannel('science', this)">
+            <span class="channel-icon">🔬</span>
+            <span class="channel-name">science-lab</span>
+          </div>
+          <div class="channel-item" onclick="switchChannel('language', this)">
+            <span class="channel-icon">🗣️</span>
+            <span class="channel-name">language-practice</span>
+            <span class="channel-unread">2</span>
+          </div>
+          <div class="channel-item" onclick="switchChannel('culture', this)">
+            <span class="channel-icon">🎭</span>
+            <span class="channel-name">culture-corner</span>
+          </div>
+
+          <div class="panel-title">🎮 Gaming</div>
+          <div class="channel-item" onclick="switchChannel('quiz-battles', this)">
+            <span class="channel-icon">🧠</span>
+            <span class="channel-name">quiz-battles</span>
+          </div>
+          <div class="channel-item" onclick="switchChannel('vr-arena', this)">
+            <span class="channel-icon">🥽</span>
+            <span class="channel-name">vr-arena</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Area -->
+      <div class="chat-area glass-card" style="overflow:hidden;">
+        <div class="chat-header">
+          <div>
+            <div class="chat-channel-name"># <span id="chatChannelName">general</span></div>
+            <div class="chat-channel-desc" id="chatChannelDesc">General discussion for all EduVerse learners</div>
+          </div>
+          <div class="online-count">🟢 <span id="onlineCount">127</span> online</div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <!-- Messages populated by JS -->
+        </div>
+
+        <div class="chat-input-area">
+          <div style="display:flex; gap:0.5rem; margin-bottom:0.5rem; flex-wrap:wrap;">
+            <button class="btn btn-ghost btn-sm" onclick="sendEmoji('👋')">👋</button>
+            <button class="btn btn-ghost btn-sm" onclick="sendEmoji('🎉')">🎉</button>
+            <button class="btn btn-ghost btn-sm" onclick="sendEmoji('🔥')">🔥</button>
+            <button class="btn btn-ghost btn-sm" onclick="sendEmoji('❤️')">❤️</button>
+            <button class="btn btn-ghost btn-sm" onclick="sendEmoji('💪')">💪</button>
+            <button class="btn btn-ghost btn-sm" onclick="sendEmoji('✅')">✅</button>
+          </div>
+          <div class="chat-input-row">
+            <input type="text" class="input chat-input" id="messageInput" placeholder="Message #general..." maxlength="500" onkeydown="if(event.key==='Enter') sendMessage()" />
+            <button class="btn btn-ghost btn-icon" id="recordBtn" onclick="toggleRecording()" title="Record Voice Note" style="padding:0.75rem; color:var(--text-secondary); background:var(--bg-input);">🎙️</button>
+            <button class="btn btn-primary" onclick="sendMessage()">Send ↗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Members Panel -->
+      <div class="members-panel">
+        <div class="glass-card" style="padding:var(--space-lg);">
+          <div class="panel-title" style="padding:0 0 var(--space-md);">Online Members</div>
+          <div id="membersList"></div>
+        </div>
+
+        <div class="glass-card" style="padding:var(--space-lg);">
+          <div class="panel-title" style="padding:0 0 var(--space-md);">📌 Pinned Resources</div>
+          <div style="display:flex;flex-direction:column;gap:0.5rem;">
+            <a href="lessons.html" class="btn btn-ghost btn-sm" style="justify-content:flex-start;">📚 Browse All Lessons</a>
+            <a href="quiz.html" class="btn btn-ghost btn-sm" style="justify-content:flex-start;">🧠 Take a Quiz</a>
+              <a href="vr-game.html" class="btn btn-ghost btn-sm" style="justify-content:flex-start;">🥽 VR Simulation</a>
+            <a href="pronunciation.html" class="btn btn-ghost btn-sm" style="justify-content:flex-start;">🗣️ Pronunciation Lab</a>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- End communityContainer -->
+
+    <!-- Level Lock Splash -->
+    <div id="communityLockedSplash" class="glass-card lock-splash animate-fadeInUp" style="display:none;">
+      <div class="lock-splash-icon">🔒</div>
+      <h2>Advanced Community Access</h2>
+      <p>The EduVerse community is dedicated to advanced discussions. Reach <strong>Level 5</strong> (Scholar) to unlock access to our chat rooms and forums!</p>
+      <div style="width:100%; max-width:400px; margin-bottom:2rem;">
+        <div class="progress-bar">
+          <div id="lockProgressFill" class="progress-fill" style="width:0%;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-top:0.5rem; font-size:0.8rem;">
+          <span id="lockCurrentLevel">Level 1</span>
+          <span>Level 5 (Target)</span>
+        </div>
+      </div>
+      <a href="lessons.html" class="btn btn-primary btn-lg">Complete Lessons to Gain XP →</a>
+    </div>
+  </main>
+</div>
+
+<script>
+  const currentUser = JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
+  if (!currentUser) window.location.href = 'auth.html';
+  function logout() { localStorage.removeItem('eduverse_current_user'); window.location.href = '../index.html'; }
+
+  // Access Guard
+  function checkAccess() {
+    const user = currentUser;
+    if (user.level < 5 && user.role !== 'admin') {
+      document.getElementById('communityContainer').style.display = 'none';
+      document.getElementById('communityLockedSplash').style.display = 'flex';
+      document.getElementById('lockProgressFill').style.width = ((user.level / 5) * 100) + '%';
+      document.getElementById('lockCurrentLevel').textContent = `Level ${user.level}`;
+      return false;
+    }
+    return true;
+  }
+
+  if (checkAccess()) {
+    const BANNED = ['spam', 'hate', 'scam'];
+
+    const CHANNEL_DATA = {
+      general: {
+        desc: 'General discussion for all EduVerse learners',
+        online: 127,
+        messages: [
+          { author:'Aminata K.', avatar:'👩🏾', role:'Moderator', text:'Welcome everyone! Feel free to ask questions and share your learning progress. 🎓', time:'10:02 AM' },
+          { author:'Kofi B.', avatar:'👨🏿', role:'', text:'Just finished the African Cultural Heritage lesson — absolutely amazing content! 🌍', time:'10:15 AM' },
+          { author:'Sara M.', avatar:'👩🏽', role:'', text:'Anyone else working on the Cellular Biology module? The VR lab simulation is mind-blowing!', time:'10:23 AM' },
+          { author:'Ibrahim D.', avatar:'👨🏾', role:'', text:'I scored 95% on the history quiz 🎉 The Mansa Musa question was tricky!', time:'10:31 AM' },
+          { author:'Nadia T.', avatar:'👩🏼', role:'', text:'@Ibrahim That\'s incredible! I need to review my notes before my next quiz attempt 😅', time:'10:35 AM' },
+          { author:'EduVerse Bot', avatar:'🤖', role:'Bot', text:'📣 New lesson available: "Traditional Medicinal Plants of West Africa" — check the catalog!', time:'10:40 AM' },
+        ]
+      },
+      history: {
+        desc: 'Deep dives into African and world history',
+        online: 43,
+        messages: [
+          { author:'Prof. Diallo', avatar:'🧑🏿', role:'Instructor', text:'Great discussion today! Remember — the Mali Empire controlled over 50% of the world\'s gold supply at its peak. 🏺', time:'9:30 AM' },
+          { author:'Fatou C.', avatar:'👩🏾', role:'', text:'I just read that Timbuktu had 25,000 university students in the 14th century — incredible!', time:'9:45 AM' },
+          { author:'Kwame A.', avatar:'👨🏿', role:'', text:'The Songhai Empire chapter is my favourite. Askia the Great\'s administration system was revolutionary.', time:'10:00 AM' },
+          { author:'Léa B.', avatar:'👩🏽', role:'', text:'Does anyone have extra resources on the Kongo Kingdom? The lesson mentioned it briefly.', time:'10:12 AM' },
+          { author:'Prof. Diallo', avatar:'🧑🏿', role:'Instructor', text:'@Léa I\'ll share a reading list in the pinned resources. The Kingdom of Kongo is a fascinating topic!', time:'10:20 AM' },
+        ]
+      },
+      science: {
+        desc: 'Science discussions and study help',
+        online: 38,
+        messages: [
+          { author:'Yaw O.', avatar:'👨🏿', role:'', text:'Can anyone explain the difference between mitosis and meiosis? I keep getting confused 😅', time:'11:00 AM' },
+          { author:'Dr. Essi', avatar:'👩🏽', role:'Instructor', text:'Mitosis = 1 cell → 2 identical daughter cells (for growth). Meiosis = 1 cell → 4 genetically unique sex cells (for reproduction).', time:'11:05 AM' },
+          { author:'Yaw O.', avatar:'👨🏿', role:'', text:'That makes SO much more sense now, thank you Dr. Essi! 🙏', time:'11:07 AM' },
+          { author:'Aiko N.', avatar:'👩🏻', role:'', text:'The 3D cell model in the VR simulation is amazing — actually seeing the organelles in 3D is a game changer!', time:'11:15 AM' },
+        ]
+      },
+      language: {
+        desc: 'Practice Dioula, Baoulé, French and more',
+        online: 22,
+        messages: [
+          { author:'Mariama S.', avatar:'👩🏾', role:'', text:'Daily phrase: "I ni tile" — it means "Good afternoon" in Dioula! Try using it! 😊', time:'2:00 PM' },
+          { author:'Chidi E.', avatar:'👨🏿', role:'', text:'I ni tile! Did I say that right? 😂', time:'2:05 PM' },
+          { author:'Mariama S.', avatar:'👩🏾', role:'', text:'Yes! Perfect! You\'re getting it! 🎉', time:'2:06 PM' },
+          { author:'Pierre L.', avatar:'👨🏼', role:'', text:'Is there a resource for Baoulé? I\'m trying to learn it to communicate with my partner\'s family.', time:'2:10 PM' },
+          { author:'EduBot', avatar:'🤖', role:'Bot', text:'📚 The "Baoulé Language & Stories" lesson is available in the catalog — it\'s beginner-friendly!', time:'2:11 PM' },
+        ]
+      },
+      culture: { desc: 'Exploring African arts, music and traditions', online: 31, messages: [] },
+      introductions: { desc: 'Introduce yourself to the community!', online: 89, messages: [] },
+      announcements: { desc: 'Official EduVerse updates and news', online: 45, messages: [] },
+      'quiz-battles': { desc: 'Challenge other learners to quiz duels', online: 56, messages: [] },
+      'vr-arena': { desc: 'Share your VR simulation scores and strategies', online: 19, messages: [] },
+    };
+
+    let activeChannel = 'general';
+
+    const MEMBERS = [
+      { name: 'Aminata K.', emoji: '👩🏾', role: 'Moderator' },
+      { name: 'Prof. Diallo', emoji: '🧑🏿', role: 'Instructor' },
+      { name: 'Dr. Essi', emoji: '👩🏽', role: 'Instructor' },
+      { name: 'Kofi B.', emoji: '👨🏿', role: 'Learner' },
+      { name: 'Sara M.', emoji: '👩🏽', role: 'Learner' },
+      { name: 'Ibrahim D.', emoji: '👨🏾', role: 'Learner' },
+      { name: 'Fatou C.', emoji: '👩🏾', role: 'Learner' },
+      { name: 'Yaw O.', emoji: '👨🏿', role: 'Learner' },
+      { name: 'Léa B.', emoji: '👩🏽', role: 'Learner' },
+      { name: 'Aiko N.', emoji: '👩🏻', role: 'Learner' },
+    ];
+
+    function renderMembers() {
+      const ml = document.getElementById('membersList');
+      if(ml) {
+        ml.innerHTML = MEMBERS.map(m => `
+          <div class="member-item">
+            <div class="member-avatar">${m.emoji}</div>
+            <div>
+              <div class="member-name">${m.name}</div>
+              <div class="member-status">${m.role}</div>
+            </div>
+            <div class="online-dot"></div>
+          </div>
+        `).join('');
+      }
+    }
+
+    let unsubscribe = null;
+
+    function loadChannelData(channel) {
+      if (window.db) {
+        if (unsubscribe) unsubscribe();
+        unsubscribe = window.db.collection('messages')
+          .where('channel', '==', channel)
+          .orderBy('timestamp')
+          .onSnapshot(snapshot => {
+            const msgs = [];
+            snapshot.forEach(doc => msgs.push(doc.data()));
+            renderMessages(msgs);
+          });
+      } else {
+        const data = CHANNEL_DATA[channel] || CHANNEL_DATA.general;
+        renderMessages(data.messages || []);
+      }
+    }
+
+    function switchChannel(channel, el) {
+      document.querySelectorAll('.channel-item').forEach(c => c.classList.remove('active'));
+      if (el) el.classList.add('active');
+      el?.querySelector('.channel-unread')?.remove();
+      activeChannel = channel;
+      const data = CHANNEL_DATA[channel] || CHANNEL_DATA.general;
+      document.getElementById('chatChannelName').textContent = channel;
+      document.getElementById('chatChannelDesc').textContent = data.desc;
+      document.getElementById('onlineCount').textContent = data.online;
+      document.getElementById('messageInput').placeholder = `Message #${channel}...`;
+      loadChannelData(channel);
+    }
+
+    function renderMessages(msgs) {
+      const container = document.getElementById('chatMessages');
+      const userName = `${currentUser?.firstName || 'You'} ${currentUser?.lastName || ''}`.trim();
+
+      if (msgs.length === 0) {
+        container.innerHTML = `
+          <div class="sys-msg">— This channel is quiet. Be the first to say something! —</div>
+        `;
+      } else {
+        container.innerHTML = `<div class="sys-msg">— Beginning of #${activeChannel} —</div>` +
+          msgs.map(m => {
+            const isOwn = m.author === userName;
+            const initials = m.author.split(' ').map(n => n[0]).join('').slice(0, 2);
+            return `
+              <div class="message ${isOwn ? 'own' : ''}">
+                <div class="msg-avatar">${m.avatar || initials}</div>
+                <div class="msg-content">
+                  <div class="msg-author">
+                    ${m.role ? `<span class="msg-badge">${m.role}</span>` : ''}
+                    ${m.author}
+                  </div>
+                  <div class="msg-bubble">
+                    ${m.text}
+                    ${m.audioUrl ? `<audio controls src="${m.audioUrl}" style="height:35px; min-width:200px; outline:none; border-radius:100px; margin-top:2px;"></audio>` : ''}
+                  </div>
+                  <div class="msg-time">${m.time}</div>
+                </div>
+              </div>
+            `;
+          }).join('');
+      }
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      // Moderation
+      const lower = text.toLowerCase();
+      if (BANNED.some(w => lower.includes(w))) {
+        alert('⚠️ Your message was blocked by the moderation filter.');
+        return;
+      }
+
+      const msg = {
+        author: `${currentUser.firstName} ${currentUser.lastName}`,
+        avatar: '👤',
+        role: currentUser.role === 'admin' ? 'Admin' : '',
+        text: escapeHtml(text),
+        time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }),
+        channel: activeChannel,
+        timestamp: window.firebase ? window.firebase.firestore.FieldValue.serverTimestamp() : Date.now()
+      };
+
+      if (window.db) {
+        window.db.collection('messages').add(msg);
+      } else {
+        const channelData = CHANNEL_DATA[activeChannel];
+        if (!channelData.messages) channelData.messages = [];
+        channelData.messages.push(msg);
+        renderMessages(channelData.messages);
+      }
+      input.value = '';
+    }
+
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+
+    async function toggleRecording() {
+      const btn = document.getElementById('recordBtn');
+      if (isRecording) {
+        mediaRecorder.stop();
+        btn.style.color = 'var(--text-secondary)';
+        btn.style.background = 'var(--bg-input)';
+        isRecording = false;
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        
+        mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+        
+        mediaRecorder.onstop = async () => {
+          const blob = new Blob(audioChunks, { type: 'audio/webm' });
+          if (window.storage && window.db) {
+            try {
+              const filename = `voice_notes/${Date.now()}.webm`;
+              const ref = window.storage.ref(filename);
+              EduVerse.Toast.show('Uploading voice note...', 'info');
+              await ref.put(blob);
+              const url = await ref.getDownloadURL();
+              sendAudioMessage(url);
+            } catch(e) {
+              EduVerse.Toast.show('Upload failed', 'error');
+            }
+          } else {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = () => {
+              sendAudioMessage(reader.result);
+            };
+          }
+          stream.getTracks().forEach(t => t.stop());
+        };
+
+        mediaRecorder.start();
+        isRecording = true;
+        btn.style.color = 'white';
+        btn.style.background = 'var(--danger)';
+      } catch (err) {
+        EduVerse.Toast.show('Microphone access is required.', 'error');
+      }
+    }
+
+    function sendAudioMessage(base64Audio) {
+      const msg = {
+        author: `${currentUser.firstName} ${currentUser.lastName}`,
+        avatar: '👤',
+        role: currentUser.role === 'admin' ? 'Admin' : '',
+        text: '',
+        audioUrl: base64Audio,
+        time: new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }),
+        channel: activeChannel,
+        timestamp: window.firebase ? window.firebase.firestore.FieldValue.serverTimestamp() : Date.now()
+      };
+      if (window.db) {
+        window.db.collection('messages').add(msg);
+      } else {
+        const channelData = CHANNEL_DATA[activeChannel];
+        if (!channelData.messages) channelData.messages = [];
+        channelData.messages.push(msg);
+        renderMessages(channelData.messages);
+      }
+    }
+
+    function sendEmoji(emoji) {
+      const input = document.getElementById('messageInput');
+      if(input) {
+        input.value += emoji;
+        input.focus();
+      }
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // Init
+    renderMembers();
+    switchChannel('general', document.querySelector('.channel-item.active'));
+
+    document.addEventListener('FirebaseReady', () => {
+       loadChannelData(activeChannel);
+    });
+
+    // Auto-scroll to bottom on new messages
+    const chatMessages = document.getElementById('chatMessages');
+    const observer = new MutationObserver(() => { chatMessages.scrollTop = chatMessages.scrollHeight; });
+    observer.observe(chatMessages, { childList: true });
+  } // End if(checkAccess)
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>

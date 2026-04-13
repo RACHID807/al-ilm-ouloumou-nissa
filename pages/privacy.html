@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — EduVerse</title>
+  <meta name="description" content="EduVerse Privacy Policy — how we collect, use, and protect your personal data." />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <style>
+    .privacy-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: var(--space-2xl);
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem var(--space-xl) var(--space-3xl);
+    }
+
+    .privacy-nav {
+      position: sticky;
+      top: 90px;
+      height: fit-content;
+    }
+
+    .privacy-nav-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: var(--space-md); }
+
+    .privacy-nav-item {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      transition: all var(--transition-fast);
+      text-decoration: none;
+      margin-bottom: 0.2rem;
+    }
+    .privacy-nav-item:hover { background: var(--bg-card); color: var(--text-primary); }
+    .privacy-nav-item.active { background: rgba(124,58,237,0.15); color: var(--primary-light); border-left: 2px solid var(--primary); }
+
+    .privacy-content { max-width: 720px; }
+    .privacy-content h1 { margin-bottom: var(--space-sm); }
+    .privacy-content .last-updated { font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-2xl); display: block; }
+
+    .privacy-section { margin-bottom: var(--space-2xl); scroll-margin-top: 90px; }
+    .privacy-section h2 { font-size: 1.25rem; margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border); }
+    .privacy-section p { font-size: 0.9rem; line-height: 1.8; margin-bottom: var(--space-md); }
+    .privacy-section ul { padding-left: 1.5rem; margin-bottom: var(--space-md); }
+    .privacy-section ul li { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 0.3rem; }
+
+    .info-box {
+      background: rgba(124,58,237,0.08);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-md);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .info-box strong { color: var(--primary-light); }
+
+    @media (max-width: 768px) {
+      .privacy-layout { grid-template-columns: 1fr; padding: 5rem var(--space-lg) var(--space-2xl); }
+      .privacy-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>EduVerse</a>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="auth.html">Sign In</a></li>
+        <li><a href="auth.html#register">Register</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <a href="auth.html#register" class="btn btn-primary btn-sm">Get Started Free</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="privacy-layout">
+  <!-- Table of Contents -->
+  <nav class="privacy-nav animate-fadeInUp">
+    <div class="privacy-nav-title">Table of Contents</div>
+    <a href="#overview" class="privacy-nav-item active">1. Overview</a>
+    <a href="#data-collected" class="privacy-nav-item">2. Data We Collect</a>
+    <a href="#how-used" class="privacy-nav-item">3. How We Use It</a>
+    <a href="#data-sharing" class="privacy-nav-item">4. Data Sharing</a>
+    <a href="#security" class="privacy-nav-item">5. Security</a>
+    <a href="#cookies" class="privacy-nav-item">6. Cookies</a>
+    <a href="#rights" class="privacy-nav-item">7. Your Rights</a>
+    <a href="#children" class="privacy-nav-item">8. Children</a>
+    <a href="#changes" class="privacy-nav-item">9. Policy Changes</a>
+    <a href="#contact" class="privacy-nav-item">10. Contact Us</a>
+  </nav>
+
+  <!-- Privacy Content -->
+  <div class="privacy-content animate-fadeInUp">
+    <h1>Privacy Policy</h1>
+    <span class="last-updated">Last updated: April 9, 2026 · Effective immediately.</span>
+
+    <div class="info-box">
+      <strong>Summary:</strong> EduVerse is committed to protecting your privacy. We collect only the data necessary to provide our educational services, we never sell your data to third parties, and you have full rights to access, modify, and delete your information at any time.
+    </div>
+
+    <div class="privacy-section" id="overview">
+      <h2>1. Overview</h2>
+      <p>EduVerse ("we," "our," "us") is an interactive educational platform designed to provide accessible, engaging, and multimodal learning experiences. This Privacy Policy explains how we collect, process, store, and protect information about you ("you," "user," "learner") when you use our platform.</p>
+      <p>By creating an account and using EduVerse, you agree to the practices described in this policy. If you do not agree, please refrain from using our platform.</p>
+      <p>This policy applies to all EduVerse services, including our web application, future mobile apps, and any associated APIs or services.</p>
+    </div>
+
+    <div class="privacy-section" id="data-collected">
+      <h2>2. Data We Collect</h2>
+      <p>We collect information in two primary ways: information you provide directly, and information collected automatically during your use of the platform.</p>
+      <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Information You Provide</h4>
+      <ul>
+        <li><strong>Account information:</strong> First name, last name, email address, phone number (optional), and password.</li>
+        <li><strong>Profile customisation:</strong> Avatar preferences, display name, and learning goals.</li>
+        <li><strong>Learning content:</strong> Personal notes written during lessons, quiz responses, and game scores.</li>
+        <li><strong>Community interactions:</strong> Messages sent in community chat rooms and forums.</li>
+        <li><strong>Support communications:</strong> Messages sent to our support team.</li>
+      </ul>
+      <h4 style="margin-bottom:0.5rem; color:var(--text-primary); margin-top:var(--space-md);">Automatically Collected Data</h4>
+      <ul>
+        <li><strong>Usage data:</strong> Pages visited, lessons watched, quiz results, time spent learning, and feature interactions.</li>
+        <li><strong>Device information:</strong> Browser type, operating system, and screen resolution for optimisation purposes.</li>
+        <li><strong>Learning analytics:</strong> Progress through lessons, completion rates, quiz scores, and help requests.</li>
+      </ul>
+    </div>
+
+    <div class="privacy-section" id="how-used">
+      <h2>3. How We Use Your Data</h2>
+      <p>We use your data exclusively for purposes related to delivering and improving our educational services:</p>
+      <ul>
+        <li>To create and manage your learner account.</li>
+        <li>To track your learning progress and personalise your experience.</li>
+        <li>To adapt quiz difficulty and lesson recommendations based on your performance.</li>
+        <li>To award badges, XP points, and certificates as you achieve milestones.</li>
+        <li>To facilitate community interactions in chat rooms and study groups.</li>
+        <li>To send important platform notifications, updates, and (optional) learning reminders.</li>
+        <li>To improve our platform through aggregated, anonymised analytics.</li>
+        <li>To investigate and prevent fraud, abuse, or policy violations.</li>
+      </ul>
+      <div class="info-box">
+        <strong>We will NEVER:</strong> sell your personal data to third parties, use your data for targeted advertising outside the platform, or share identifiable data with partners without your explicit consent.
+      </div>
+    </div>
+
+    <div class="privacy-section" id="data-sharing">
+      <h2>4. Data Sharing & Third Parties</h2>
+      <p>EduVerse does not sell, rent, or trade your personal information. We may share limited data only in the following circumstances:</p>
+      <ul>
+        <li><strong>Service providers:</strong> Trusted third-party providers who help us operate the platform (e.g., cloud hosting, email delivery) under strict data processing agreements.</li>
+        <li><strong>Legal requirements:</strong> If required by law, court order, or government authority, we may disclose data to comply with legal obligations.</li>
+        <li><strong>Safety:</strong> To protect the safety of users or the public in cases of imminent threat or harm.</li>
+        <li><strong>Business transfers:</strong> In the event of a merger, acquisition, or sale of assets, your data may be transferred with prior notice.</li>
+      </ul>
+      <p>All third-party partners are contractually obligated to protect your data and may only use it for the specific purposes we define.</p>
+    </div>
+
+    <div class="privacy-section" id="security">
+      <h2>5. Data Security</h2>
+      <p>We take data security seriously and implement multiple layers of protection to safeguard your information:</p>
+      <ul>
+        <li>All data transmitted between your browser and our servers is encrypted using TLS (HTTPS).</li>
+        <li>Passwords are hashed using industry-standard algorithms — we never store plain-text passwords.</li>
+        <li>Regular security audits and penetration testing are conducted.</li>
+        <li>Access to data is restricted to authorised personnel only, on a need-to-know basis.</li>
+        <li>Suspicious activity triggers automatic alerts and account protection measures.</li>
+      </ul>
+      <p>While we implement best-practice security measures, no system is 100% immune to breaches. In the event of a data breach, we commit to notifying affected users within 72 hours in accordance with applicable data protection laws.</p>
+    </div>
+
+    <div class="privacy-section" id="cookies">
+      <h2>6. Cookies & Local Storage</h2>
+      <p>EduVerse uses browser storage technologies to enhance your experience:</p>
+      <ul>
+        <li><strong>Session data:</strong> We use localStorage to remember your login status and preferences between sessions.</li>
+        <li><strong>Learning progress:</strong> Your lesson notes, quiz history, and progress are saved locally to preserve your experience.</li>
+        <li><strong>Analytics cookies:</strong> Optional, anonymised analytics to understand how learners use the platform.</li>
+      </ul>
+      <p>You can manage or clear browser storage through your browser settings at any time. Clearing it will log you out and reset your locally-stored preferences.</p>
+    </div>
+
+    <div class="privacy-section" id="rights">
+      <h2>7. Your Rights</h2>
+      <p>Depending on your jurisdiction, you have the following rights regarding your personal data:</p>
+      <ul>
+        <li><strong>Right of Access:</strong> Request a copy of all personal data we hold about you.</li>
+        <li><strong>Right to Rectification:</strong> Correct inaccurate or incomplete information via your Profile settings.</li>
+        <li><strong>Right to Erasure:</strong> Request permanent deletion of your account and all associated data.</li>
+        <li><strong>Right to Portability:</strong> Download your personal data in a machine-readable format (JSON export available in Profile).</li>
+        <li><strong>Right to Restriction:</strong> Request we limit certain processing of your data.</li>
+        <li><strong>Right to Object:</strong> Object to data processing based on legitimate interests.</li>
+        <li><strong>Right to Withdraw Consent:</strong> Withdraw consent for optional processing at any time.</li>
+      </ul>
+      <p>To exercise any of these rights, visit your <a href="profile.html">Profile Settings</a> or contact us at <a href="mailto:privacy@eduverse.app">privacy@eduverse.app</a>.</p>
+    </div>
+
+    <div class="privacy-section" id="children">
+      <h2>8. Children's Privacy</h2>
+      <p>EduVerse is designed for learners aged 13 and above. We do not knowingly collect personal data from children under 13. If we discover that a child under 13 has registered, we will promptly delete their account and all associated data.</p>
+      <p>Users aged 13–17 are encouraged to review this policy with a parent or guardian. Parents who believe their child has registered without authorisation should contact us immediately.</p>
+    </div>
+
+    <div class="privacy-section" id="changes">
+      <h2>9. Policy Changes</h2>
+      <p>We may update this Privacy Policy periodically to reflect changes in our practices, legal requirements, or service offerings. When we make significant changes:</p>
+      <ul>
+        <li>We will update the "Last updated" date at the top of this page.</li>
+        <li>We will notify registered users via platform notification or email.</li>
+        <li>Continued use of the platform after changes go into effect constitutes acceptance of the updated policy.</li>
+      </ul>
+      <p>We recommend reviewing this policy periodically. Previous versions are available upon request.</p>
+    </div>
+
+    <div class="privacy-section" id="contact">
+      <h2>10. Contact Us</h2>
+      <p>If you have questions, concerns, or requests related to this Privacy Policy or your personal data, please contact our Privacy Team:</p>
+      <div class="info-box">
+        <strong>📧 Email:</strong> privacy@eduverse.app<br />
+        <strong>📬 Address:</strong> EduVerse Learning Platform, Abidjan, Côte d'Ivoire<br />
+        <strong>⏱ Response Time:</strong> We aim to respond to all privacy requests within 7 business days.
+      </div>
+      <p>For urgent security concerns, please email <a href="mailto:security@eduverse.app">security@eduverse.app</a> with "URGENT" in the subject line.</p>
+
+      <div style="margin-top:var(--space-2xl); padding-top:var(--space-xl); border-top:1px solid var(--border); display:flex; gap:var(--space-md); flex-wrap:wrap;">
+        <a href="auth.html#register" class="btn btn-primary">🚀 Create Account</a>
+        <a href="../index.html" class="btn btn-ghost">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Active nav highlight on scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 50); });
+
+  const sections = document.querySelectorAll('.privacy-section');
+  const navItems = document.querySelectorAll('.privacy-nav-item');
+
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const active = document.querySelector(`.privacy-nav-item[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-80px 0px -60% 0px' });
+
+  sections.forEach(s => sectionObserver.observe(s));
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>

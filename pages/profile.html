@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — EduVerse</title>
+  <meta name="description" content="View and manage your EduVerse learner profile, achievements, statistics, and account settings." />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <style>
+    .profile-layout { display: grid; grid-template-columns: 320px 1fr; gap: var(--space-xl); }
+
+    /* Left: Profile Card */
+    .profile-card-main {
+      padding: var(--space-2xl);
+      text-align: center;
+      position: relative;
+    }
+
+    .profile-avatar-wrap { position: relative; display: inline-block; margin-bottom: var(--space-lg); }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--grad-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin: 0 auto;
+      box-shadow: 0 0 40px rgba(124,58,237,0.4);
+      animation: glow 3s ease-in-out infinite;
+    }
+
+    .profile-level-badge {
+      position: absolute;
+      bottom: 0;
+      right: -8px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--grad-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: white;
+      border: 2px solid var(--bg-surface);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .profile-name { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 0.25rem; }
+    .profile-email { font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-md); }
+    .profile-join { font-size: 0.8rem; color: var(--text-muted); }
+
+    .profile-stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-top: var(--space-xl); }
+    .mini-stat-card { text-align: center; padding: var(--space-md); background: var(--bg-input); border-radius: var(--radius-md); }
+    .mini-v { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--text-primary); }
+    .mini-l { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.1rem; }
+
+    /* Edit form */
+    .edit-toggle { margin-top: var(--space-lg); }
+
+    /* Right: Content */
+    .profile-right { display: flex; flex-direction: column; gap: var(--space-xl); }
+
+    /* Achievements */
+    .achievements-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md); }
+    .achievement-card {
+      padding: var(--space-lg);
+      text-align: center;
+      border-radius: var(--radius-lg);
+      position: relative;
+    }
+    .achievement-card.locked { opacity: 0.35; filter: grayscale(1); }
+    .ach-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .ach-name { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; }
+    .ach-desc { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+    /* Learning Stats Chart */
+    .stats-chart { padding: var(--space-xl); }
+    .chart-bar-row { display: flex; align-items: center; gap: var(--space-md); margin-bottom: 0.75rem; }
+    .chart-label { font-size: 0.8rem; color: var(--text-secondary); width: 120px; text-align: right; }
+    .chart-bar { flex: 1; height: 12px; background: var(--bg-input); border-radius: var(--radius-full); overflow: hidden; }
+    .chart-bar-fill { height: 100%; border-radius: var(--radius-full); transition: width 1s cubic-bezier(0.22,1,0.36,1); }
+    .chart-value { font-size: 0.8rem; color: var(--text-muted); width: 40px; }
+
+    /* Settings */
+    .settings-section { padding: var(--space-xl); }
+    .settings-row { display: flex; align-items: center; justify-content: space-between; padding: var(--space-md) 0; border-bottom: 1px solid var(--border); }
+    .settings-row:last-child { border-bottom: none; }
+    .toggle { position: relative; width: 44px; height: 24px; }
+    .toggle input { display: none; }
+    .toggle-slider { position: absolute; inset: 0; background: var(--bg-input); border-radius: 24px; cursor: pointer; transition: all var(--transition-base); }
+    .toggle input:checked + .toggle-slider { background: var(--primary); }
+    .toggle-slider::before { content: ''; position: absolute; width: 18px; height: 18px; background: white; border-radius: 50%; top: 3px; left: 3px; transition: transform var(--transition-base); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+    @media (max-width: 1024px) {
+      .profile-layout { grid-template-columns: 1fr; }
+      .achievements-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .achievements-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar scrolled">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>EduVerse</a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="lessons.html">Lessons</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="profile.html" class="active">Profile</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="sidebar-menu">
+      <div class="sidebar-section-label">Main</div>
+      <li class="list-none"><a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a></li>
+      <li class="list-none"><a href="lessons.html" class="sidebar-link"><span class="icon">📚</span> My Lessons</a></li>
+      <li class="list-none"><a href="history.html" class="sidebar-link"><span class="icon">📜</span> History</a></li>
+      <div class="sidebar-section-label">Learn</div>
+      <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quizzes</a></li>
+      <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🥽</span> VR Simulation</a></li>
+      <li class="list-none"><a href="pronunciation.html" class="sidebar-link"><span class="icon">🗣️</span> Pronunciation Lab</a></li>
+      <div class="sidebar-section-label">Social</div>
+      <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Community</a></li>
+      <li class="list-none"><a href="profile.html" class="sidebar-link active"><span class="icon">👤</span> My Profile</a></li>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="profile-layout animate-fadeInUp">
+
+      <!-- Left Column: Profile Card -->
+      <div>
+        <div class="profile-card-main glass-card">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar" id="profileEmoji">👤</div>
+            <div class="profile-level-badge" id="levelBadge">1</div>
+          </div>
+          <div class="profile-name" id="profileName">Loading...</div>
+          <div class="profile-email" id="profileEmail">—</div>
+          <span class="badge badge-primary" id="profileRole">Student</span>
+          <div class="profile-join mt-md" id="profileJoin">Joined recently</div>
+
+          <div class="profile-stats-mini">
+            <div class="mini-stat-card">
+              <div class="mini-v" id="statPts">0</div>
+              <div class="mini-l">Total XP</div>
+            </div>
+            <div class="mini-stat-card">
+              <div class="mini-v" id="statLvl">1</div>
+              <div class="mini-l">Level</div>
+            </div>
+            <div class="mini-stat-card">
+              <div class="mini-v" id="statLess">0</div>
+              <div class="mini-l">Lessons</div>
+            </div>
+            <div class="mini-stat-card">
+              <div class="mini-v" id="statQz">0</div>
+              <div class="mini-l">Quizzes</div>
+            </div>
+          </div>
+
+          <!-- Edit Profile Toggle -->
+          <div class="edit-toggle">
+            <button class="btn btn-ghost w-full" onclick="toggleEdit()">✏️ Edit Profile</button>
+          </div>
+
+          <!-- Edit Form (hidden by default) -->
+          <div id="editForm" style="display:none; margin-top:var(--space-lg); text-align:left;">
+            <div class="input-group mb-md">
+              <label>First Name</label>
+              <input type="text" class="input" id="editFirst" />
+            </div>
+            <div class="input-group mb-md">
+              <label>Last Name</label>
+              <input type="text" class="input" id="editLast" />
+            </div>
+            <div class="input-group mb-md">
+              <label>Phone Number</label>
+              <input type="tel" class="input" id="editPhone" />
+            </div>
+            <button class="btn btn-primary w-full" onclick="saveProfile()">Save Changes</button>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="glass-card" style="padding:var(--space-lg); margin-top:var(--space-lg);">
+          <div style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--danger); margin-bottom:var(--space-md);">⚠️ Danger Zone</div>
+          <button class="btn btn-danger w-full btn-sm" onclick="exportData()" style="margin-bottom:0.5rem;">📥 Export My Data</button>
+          <button class="btn btn-danger w-full btn-sm" onclick="deleteAccount()">🗑️ Delete Account</button>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="profile-right">
+        <!-- Achievements -->
+        <div class="glass-card" style="padding:var(--space-xl);">
+          <h4 style="margin-bottom:var(--space-lg);">🏆 Achievements & Badges</h4>
+          <div class="achievements-grid" id="achievementsGrid"></div>
+        </div>
+
+        <!-- Learning Activity -->
+        <div class="stats-chart glass-card">
+          <h4 style="margin-bottom:var(--space-lg);">📊 Learning Activity</h4>
+          <div id="activityBars"></div>
+        </div>
+
+        <!-- Settings -->
+        <div class="settings-section glass-card">
+          <h4 style="margin-bottom:var(--space-lg);">⚙️ Settings</h4>
+
+          <div class="settings-row">
+            <div>
+              <div style="font-weight:600; font-size:0.9rem; color:var(--text-primary);">Email Notifications</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Receive learning reminders and news</div>
+            </div>
+            <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+          </div>
+
+          <div class="settings-row">
+            <div>
+              <div style="font-weight:600; font-size:0.9rem; color:var(--text-primary);">Sound Effects</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Play sounds during quizzes and games</div>
+            </div>
+            <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+          </div>
+
+          <div class="settings-row">
+            <div>
+              <div style="font-weight:600; font-size:0.9rem; color:var(--text-primary);">Public Profile</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Allow other learners to view your profile</div>
+            </div>
+            <label class="toggle"><input type="checkbox" /><span class="toggle-slider"></span></label>
+          </div>
+
+          <div class="settings-row">
+            <div>
+              <div style="font-weight:600; font-size:0.9rem; color:var(--text-primary);">Leaderboard Visibility</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Show your score on global leaderboards</div>
+            </div>
+            <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+          </div>
+
+          <div class="settings-row">
+            <div>
+              <div style="font-weight:600; font-size:0.9rem; color:var(--text-primary);">Daily Reminders</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Receive daily learning streak reminders</div>
+            </div>
+            <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const currentUser = JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
+  if (!currentUser) window.location.href = 'auth.html';
+  function logout() { localStorage.removeItem('eduverse_current_user'); window.location.href = '../index.html'; }
+
+  // Populate profile
+  const fullName = `${currentUser.firstName} ${currentUser.lastName}`;
+  document.getElementById('profileName').textContent = fullName;
+  document.getElementById('profileEmail').textContent = currentUser.email;
+  document.getElementById('profileRole').textContent = currentUser.role === 'admin' ? '⚡ Admin' : '🎓 Student';
+  document.getElementById('levelBadge').textContent = currentUser.level || 1;
+  document.getElementById('statPts').textContent = (currentUser.points || 0).toLocaleString();
+  document.getElementById('statLvl').textContent = currentUser.level || 1;
+  document.getElementById('statLess').textContent = (currentUser.lessonsCompleted || []).length;
+  document.getElementById('statQz').textContent = (currentUser.quizzesCompleted || []).length;
+
+  if (currentUser.joinDate) {
+    document.getElementById('profileJoin').textContent = 'Joined ' + new Date(currentUser.joinDate).toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  // Get initials for avatar
+  const initials = (currentUser.firstName?.[0] || '') + (currentUser.lastName?.[0] || '');
+  document.getElementById('profileEmoji').textContent = initials || '👤';
+  document.getElementById('profileEmoji').style.fontSize = '2rem';
+
+  // Edit Profile
+  function toggleEdit() {
+    const form = document.getElementById('editForm');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    document.getElementById('editFirst').value = currentUser.firstName || '';
+    document.getElementById('editLast').value = currentUser.lastName || '';
+    document.getElementById('editPhone').value = currentUser.phone || '';
+  }
+
+  function saveProfile() {
+    currentUser.firstName = document.getElementById('editFirst').value.trim() || currentUser.firstName;
+    currentUser.lastName = document.getElementById('editLast').value.trim() || currentUser.lastName;
+    currentUser.phone = document.getElementById('editPhone').value.trim();
+
+    localStorage.setItem('eduverse_current_user', JSON.stringify(currentUser));
+
+    // Update user in users list
+    const users = JSON.parse(localStorage.getItem('eduverse_users') || '[]');
+    const idx = users.findIndex(u => u.email === currentUser.email);
+    if (idx !== -1) { users[idx] = currentUser; localStorage.setItem('eduverse_users', JSON.stringify(users)); }
+
+    alert('✅ Profile updated successfully!');
+    location.reload();
+  }
+
+  function exportData() {
+    const data = JSON.stringify(currentUser, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'eduverse_data.json'; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function deleteAccount() {
+    if (confirm('Are you sure you want to permanently delete your account? This cannot be undone.')) {
+      const users = JSON.parse(localStorage.getItem('eduverse_users') || '[]');
+      const updated = users.filter(u => u.email !== currentUser.email);
+      localStorage.setItem('eduverse_users', JSON.stringify(updated));
+      localStorage.removeItem('eduverse_current_user');
+      window.location.href = '../index.html';
+    }
+  }
+
+  // Achievements
+  const ACHIEVEMENTS = [
+    { icon:'🌟', name:'First Login', desc:'Joined EduVerse', earned: true },
+    { icon:'📖', name:'First Lesson', desc:'Started learning', earned: (currentUser.lessonsCompleted||[]).length >= 1 },
+    { icon:'🧠', name:'Quiz Master', desc:'Complete 3 quizzes', earned: (currentUser.quizzesCompleted||[]).length >= 3 },
+    { icon:'🔥', name:'7-Day Streak', desc:'7 days in a row', earned: false },
+    { icon:'🏆', name:'Top Scholar', desc:'Reach 1000 XP', earned: (currentUser.points||0) >= 1000 },
+    { icon:'🌍', name:'World Explorer', desc:'Complete 5 lessons', earned: (currentUser.lessonsCompleted||[]).length >= 5 },
+    { icon:'⚡', name:'Speed Learner', desc:'Score 90%+ on quiz', earned: false },
+    { icon:'💬', name:'Community Star', desc:'Send 10 messages', earned: false },
+  ];
+
+  document.getElementById('achievementsGrid').innerHTML = ACHIEVEMENTS.map(a => `
+    <div class="achievement-card glass-card ${a.earned ? '' : 'locked'}" title="${a.desc}">
+      <div class="ach-icon">${a.icon}</div>
+      <div class="ach-name">${a.name}</div>
+      <div class="ach-desc">${a.earned ? a.desc : '🔒 Locked'}</div>
+    </div>
+  `).join('');
+
+  // Activity Bars
+  const activities = [
+    { label: 'History', value: 65, color: 'var(--primary)' },
+    { label: 'Science', value: 30, color: 'var(--accent)' },
+    { label: 'Language', value: 10, color: 'var(--accent-secondary)' },
+    { label: 'Quizzes', value: 50, color: 'var(--success)' },
+    { label: 'VR Games', value: 0, color: 'var(--warning)' },
+  ];
+
+  const barsEl = document.getElementById('activityBars');
+  barsEl.innerHTML = activities.map(a => `
+    <div class="chart-bar-row">
+      <div class="chart-label">${a.label}</div>
+      <div class="chart-bar">
+        <div class="chart-bar-fill" style="width: 0%; background: ${a.color};" data-target="${a.value}"></div>
+      </div>
+      <div class="chart-value">${a.value}%</div>
+    </div>
+  `).join('');
+
+  setTimeout(() => {
+    document.querySelectorAll('.chart-bar-fill').forEach(el => {
+      el.style.width = el.dataset.target + '%';
+    });
+  }, 300);
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>

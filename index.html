@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduVerse — Next-Gen Interactive Learning Platform</title>
+  <meta name="description" content="EduVerse is a cutting-edge, multimodal educational platform featuring VR simulations, AI-powered quizzes, community learning, and rich video lessons tailored for every learner." />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <style>
+    /* === HERO === */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      background: var(--grad-hero);
+      padding-top: 80px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(124,58,237,0.15);
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: var(--radius-full);
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary-light);
+      margin-bottom: var(--space-xl);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    .hero h1 {
+      margin-bottom: var(--space-lg);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: var(--space-2xl);
+      max-width: 520px;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    /* Floating 3D illustration */
+    .hero-visual {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 45%;
+      max-width: 560px;
+      z-index: 1;
+    }
+
+    .hero-card-stack {
+      position: relative;
+      width: 100%;
+      padding-bottom: 70%;
+    }
+
+    .float-card {
+      position: absolute;
+      background: var(--bg-card);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .float-card.main {
+      inset: 5% 0 5% 10%;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      border-color: rgba(124,58,237,0.3);
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .float-card.mini-1 {
+      top: 0;
+      left: 0;
+      width: 45%;
+      animation: float 4s ease-in-out infinite;
+      animation-delay: 1s;
+    }
+
+    .float-card.mini-2 {
+      bottom: 0;
+      right: 5%;
+      width: 48%;
+      animation: float 6s ease-in-out infinite;
+      animation-delay: 0.5s;
+    }
+
+    .lesson-preview-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+
+    .lesson-preview-thumb {
+      width: 100%;
+      height: 110px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin-bottom: var(--space-sm);
+    }
+
+    .mini-stat {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .mini-stat-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .mini-stat-label { font-size: 0.75rem; color: var(--text-muted); }
+    .mini-stat-value { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.1rem; }
+
+    /* === STATS SECTION === */
+    .stats-band {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: var(--space-2xl) 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-xl);
+      text-align: center;
+    }
+
+    .stat-item-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: var(--grad-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-item-label { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem; }
+
+    /* === FEATURES === */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-xl);
+    }
+
+    .feature-card {
+      padding: var(--space-2xl) var(--space-xl);
+      text-align: center;
+      border-radius: var(--radius-xl);
+    }
+
+    .feature-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto var(--space-lg);
+    }
+
+    .feature-card h3 { margin-bottom: var(--space-sm); }
+
+    /* === HOW IT WORKS === */
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-lg);
+    }
+
+    .step-number {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 50%;
+      background: var(--grad-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: white;
+      box-shadow: 0 0 20px rgba(124,58,237,0.4);
+    }
+
+    /* === COURSES PREVIEW === */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-xl);
+    }
+
+    /* === CTA SECTION === */
+    .cta-section {
+      background: radial-gradient(ellipse at center, rgba(124,58,237,0.2) 0%, transparent 70%),
+                  var(--bg-surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      padding: var(--space-3xl) 0;
+    }
+
+    /* === FOOTER === */
+    footer {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      padding: var(--space-2xl) 0 var(--space-xl);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: var(--space-2xl);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .footer-col h5 {
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: var(--space-sm); }
+    .footer-col ul li a { color: var(--text-secondary); font-size: 0.875rem; transition: color var(--transition-fast); }
+    .footer-col ul li a:hover { color: var(--accent); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: var(--space-lg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--primary-light);
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-title { margin-bottom: var(--space-md); }
+    .section-subtitle { max-width: 540px; margin: 0 auto; }
+
+    .text-center { text-align: center; }
+    .mb-3xl { margin-bottom: var(--space-3xl); }
+
+    @media (max-width: 1024px) {
+      .hero-visual { display: none; }
+      .hero-content { max-width: 100%; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .courses-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .features-grid, .courses-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">🎓</div>
+        EduVerse
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#courses">Courses</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="pages/community.html">Community</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <a href="pages/auth.html" class="btn btn-ghost btn-sm">Sign In</a>
+        <a href="pages/auth.html#register" class="btn btn-primary btn-sm">Get Started Free</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="particles-container" id="heroParticles"></div>
+  <div class="container">
+    <div class="hero-content animate-fadeInUp">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Now with AI-Powered Learning & VR Simulations
+      </div>
+      <h1>
+        Learn Smarter,<br />
+        <span class="text-gradient">Experience Deeper.</span>
+      </h1>
+      <p>
+        EduVerse combines video lessons, interactive VR environments, adaptive quizzes,
+        and a vibrant community — all in one beautifully designed platform built for
+        the modern learner.
+      </p>
+      <div class="hero-actions">
+        <a href="pages/auth.html#register" class="btn btn-primary btn-lg">
+          🚀 Start Learning Free
+        </a>
+        <a href="#courses" class="btn btn-ghost btn-lg">
+          📚 Browse Courses
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating visual -->
+  <div class="hero-visual">
+    <div class="hero-card-stack">
+      <div class="float-card main glass-card animate-fadeInUp delay-300">
+        <div class="lesson-preview-thumb" style="background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(0,212,255,0.2));">🌍</div>
+        <div class="lesson-preview-title">African Cultural Heritage</div>
+        <div class="progress-bar" style="margin-top: 0.5rem;">
+          <div class="progress-fill" style="width: 65%;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted);">
+          <span>65% Complete</span>
+          <span>🏆 32 pts</span>
+        </div>
+      </div>
+
+      <div class="float-card mini-1 glass-card animate-scaleIn delay-500">
+        <div class="mini-stat">
+          <div class="mini-stat-icon" style="background: rgba(124,58,237,0.2);">📖</div>
+          <div>
+            <div class="mini-stat-label">Lessons</div>
+            <div class="mini-stat-value">148</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="float-card mini-2 glass-card animate-scaleIn delay-600">
+        <div class="mini-stat">
+          <div class="mini-stat-icon" style="background: rgba(0,212,255,0.15);">🎮</div>
+          <div>
+            <div class="mini-stat-label">VR Simulations</div>
+            <div class="mini-stat-value">24</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<section class="stats-band">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item animate-fadeInUp">
+        <div class="stat-item-value" data-count="45000">0</div>
+        <div class="stat-item-label">Active Learners</div>
+      </div>
+      <div class="stat-item animate-fadeInUp delay-200">
+        <div class="stat-item-value" data-count="148">0</div>
+        <div class="stat-item-label">Expert-Crafted Lessons</div>
+      </div>
+      <div class="stat-item animate-fadeInUp delay-300">
+        <div class="stat-item-value" data-count="24">0</div>
+        <div class="stat-item-label">VR Environments</div>
+      </div>
+      <div class="stat-item animate-fadeInUp delay-400">
+        <div class="stat-item-value" data-count="12">0</div>
+        <div class="stat-item-label">Languages Supported</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="text-center mb-3xl">
+      <div class="section-label">Why EduVerse</div>
+      <h2 class="section-title">Everything you need to <span class="text-gradient">master anything.</span></h2>
+      <p class="section-subtitle text-secondary">
+        Built for modern learners who demand flexibility, engagement, and measurable results.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card glass-card card-tilt animate-fadeInUp">
+        <div class="feature-icon" style="background: rgba(124,58,237,0.2);">🎥</div>
+        <h3>HD Video Lessons</h3>
+        <p>Crisp, expertly produced video content with multi-speed playback, auto-subtitles, and personal note-taking tools baked right in.</p>
+      </div>
+      <div class="feature-card glass-card card-tilt animate-fadeInUp delay-100">
+        <div class="feature-icon" style="background: rgba(0,212,255,0.15);">🥽</div>
+        <h3>VR Learning Simulations</h3>
+        <p>Step inside immersive 3D learning environments that make abstract concepts tangible — from historical voyages to science labs.</p>
+      </div>
+      <div class="feature-card glass-card card-tilt animate-fadeInUp delay-200">
+        <div class="feature-icon" style="background: rgba(255,107,157,0.15);">🧠</div>
+        <h3>Adaptive AI Quizzes</h3>
+        <p>Intelligent quizzes that adapt to your learning pace and knowledge gaps, giving you targeted practice where it matters most.</p>
+      </div>
+      <div class="feature-card glass-card card-tilt animate-fadeInUp delay-300">
+        <div class="feature-icon" style="background: rgba(16,185,129,0.15);">💬</div>
+        <h3>Community & Mentoring</h3>
+        <p>Connect with fellow learners and expert tutors in topic-specific chat rooms, study groups, and collaborative spaces.</p>
+      </div>
+      <div class="feature-card glass-card card-tilt animate-fadeInUp delay-400">
+        <div class="feature-icon" style="background: rgba(245,158,11,0.15);">🏆</div>
+        <h3>Gamification & Badges</h3>
+        <p>Earn XP, unlock achievement badges, climb leaderboards, and celebrate every milestone on your learning journey.</p>
+      </div>
+      <div class="feature-card glass-card card-tilt animate-fadeInUp delay-500">
+        <div class="feature-icon" style="background: rgba(59,130,246,0.15);">📊</div>
+        <h3>Progress Analytics</h3>
+        <p>Deep-dive dashboards showing your learning velocity, strengths, weaknesses, and personalized path to mastery.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES PREVIEW -->
+<section class="section" id="courses" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="text-center mb-3xl">
+      <div class="section-label">Course Catalog</div>
+      <h2 class="section-title">Explore our <span class="text-gradient">featured courses</span></h2>
+      <p class="section-subtitle text-secondary">
+        From cultural heritage to cutting-edge science — something for every curious mind.
+      </p>
+    </div>
+
+    <div class="courses-grid">
+      <div class="lesson-card glass-card animate-fadeInUp">
+        <div class="lesson-card-thumb" style="background: linear-gradient(135deg, rgba(124,58,237,0.4), rgba(0,212,255,0.3));">🌍</div>
+        <div class="lesson-card-body">
+          <div class="lesson-card-meta">
+            <span class="badge badge-primary">History</span>
+            <span class="text-muted" style="font-size:0.8rem;">⏱ 42 min</span>
+          </div>
+          <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">African Cultural Heritage</h4>
+          <p style="font-size:0.85rem;">Dive deep into the rich traditions, art, and history of West African civilisations.</p>
+          <div class="progress-bar mt-md">
+            <div class="progress-fill" style="width: 0%;"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:0.75rem;">
+            <a href="pages/auth.html" class="btn btn-primary btn-sm">Start Course</a>
+            <span style="font-size:0.8rem; color:var(--text-muted); align-self:center;">⭐ 4.9</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lesson-card glass-card animate-fadeInUp delay-200">
+        <div class="lesson-card-thumb" style="background: linear-gradient(135deg, rgba(0,212,255,0.3), rgba(16,185,129,0.3));">🔬</div>
+        <div class="lesson-card-body">
+          <div class="lesson-card-meta">
+            <span class="badge badge-accent">Science</span>
+            <span class="text-muted" style="font-size:0.8rem;">⏱ 35 min</span>
+          </div>
+          <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">Cellular Biology Fundamentals</h4>
+          <p style="font-size:0.85rem;">Explore the microscopic world of cells with interactive 3D models and VR labs.</p>
+          <div class="progress-bar mt-md">
+            <div class="progress-fill" style="width: 0%;"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:0.75rem;">
+            <a href="pages/auth.html" class="btn btn-primary btn-sm">Start Course</a>
+            <span style="font-size:0.8rem; color:var(--text-muted); align-self:center;">⭐ 4.8</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lesson-card glass-card animate-fadeInUp delay-400">
+        <div class="lesson-card-thumb" style="background: linear-gradient(135deg, rgba(255,107,157,0.3), rgba(124,58,237,0.4));">🗣️</div>
+        <div class="lesson-card-body">
+          <div class="lesson-card-meta">
+            <span class="badge badge-warning">Language</span>
+            <span class="text-muted" style="font-size:0.8rem;">⏱ 28 min</span>
+          </div>
+          <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">Dioula Language Essentials</h4>
+          <p style="font-size:0.85rem;">Master conversational Dioula with native audio recordings and immersive exercises.</p>
+          <div class="progress-bar mt-md">
+            <div class="progress-fill" style="width: 0%;"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:0.75rem;">
+            <a href="pages/auth.html" class="btn btn-primary btn-sm">Start Course</a>
+            <span style="font-size:0.8rem; color:var(--text-muted); align-self:center;">⭐ 4.7</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-xl">
+      <a href="pages/auth.html" class="btn btn-ghost btn-lg">View All 148 Courses →</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+  <div class="container">
+    <div class="text-center mb-3xl">
+      <div class="section-label">Getting Started</div>
+      <h2 class="section-title">Learn your way, <span class="text-gradient">in 4 simple steps.</span></h2>
+    </div>
+
+    <div class="steps-list">
+      <div class="step-item animate-slideInLeft">
+        <div class="step-number">1</div>
+        <div>
+          <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Create Your Free Account</h4>
+          <p style="font-size:0.9rem;">Sign up in seconds — name, email, and you're in. No credit card needed.</p>
+        </div>
+      </div>
+      <div class="step-item animate-slideInLeft delay-200">
+        <div class="step-number">2</div>
+        <div>
+          <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Choose Your Learning Path</h4>
+          <p style="font-size:0.9rem;">Browse 148+ expert lessons across history, science, language, and culture.</p>
+        </div>
+      </div>
+      <div class="step-item animate-slideInLeft delay-300">
+        <div class="step-number">3</div>
+        <div>
+          <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Watch, Play & Quiz</h4>
+          <p style="font-size:0.9rem;">Engage with video content, VR simulations, and adaptive quizzes that reinforce your knowledge.</p>
+        </div>
+      </div>
+      <div class="step-item animate-slideInLeft delay-400">
+        <div class="step-number">4</div>
+        <div>
+          <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Level Up & Get Certified</h4>
+          <p style="font-size:0.9rem;">Earn badges, XP points, and shareable certificates as proof of your mastery.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-section">
+  <div class="container">
+    <div class="animate-scaleIn">
+      <div class="section-label">Join 45,000+ Learners</div>
+      <h2 style="margin-bottom: var(--space-lg);">Ready to unlock your <span class="text-gradient">full potential?</span></h2>
+      <p class="text-secondary" style="max-width:480px; margin: 0 auto var(--space-2xl);">
+        Join a global community of curious minds and start your journey today — completely free.
+      </p>
+      <div style="display:flex; gap:var(--space-md); justify-content:center; flex-wrap:wrap;">
+        <a href="pages/auth.html#register" class="btn btn-primary btn-lg animate-glow">
+          🎓 Start For Free Today
+        </a>
+        <a href="pages/admin.html" class="btn btn-ghost btn-lg">
+          🔧 Admin Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="nav-logo" style="margin-bottom:var(--space-md);">
+          <div class="nav-logo-icon">🎓</div>
+          EduVerse
+        </div>
+        <p style="font-size:0.875rem; max-width:280px; line-height:1.8;">
+          Next-generation multimodal educational platform designed to make learning immersive, engaging, and effective for every learner.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h5>Platform</h5>
+        <ul>
+          <li><a href="pages/lessons.html">Lesson Catalog</a></li>
+          <li><a href="pages/vr-game.html">VR Simulations</a></li>
+          <li><a href="pages/quiz.html">Quiz Engine</a></li>
+          <li><a href="pages/community.html">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Account</h5>
+        <ul>
+          <li><a href="pages/auth.html">Sign In</a></li>
+          <li><a href="pages/auth.html#register">Register</a></li>
+          <li><a href="pages/profile.html">My Profile</a></li>
+          <li><a href="pages/history.html">Learning History</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="pages/privacy.html">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="pages/admin.html">Admin</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p style="font-size:0.8rem; color:var(--text-muted);">© 2026 EduVerse. All rights reserved.</p>
+      <div style="display:flex; gap:var(--space-md);">
+        <span style="font-size:1.2rem; cursor:pointer; opacity:0.6; hover:opacity:1;">🐦</span>
+        <span style="font-size:1.2rem; cursor:pointer; opacity:0.6;">💼</span>
+        <span style="font-size:1.2rem; cursor:pointer; opacity:0.6;">📘</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Particle generation
+  function createParticles() {
+    const container = document.getElementById('heroParticles');
+    const colors = ['#7C3AED', '#00D4FF', '#FF6B9D'];
+    for (let i = 0; i < 20; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 6 + 2;
+      p.style.cssText = `
+        width: ${size}px; height: ${size}px;
+        left: ${Math.random() * 100}%;
+        top: ${Math.random() * 100}%;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        animation-duration: ${Math.random() * 8 + 6}s;
+        animation-delay: ${Math.random() * 4}s;
+      `;
+      container.appendChild(p);
+    }
+  }
+  createParticles();
+
+  // Count-up animation
+  function animateCount(el, target) {
+    let current = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      el.textContent = Math.floor(current).toLocaleString();
+    }, 30);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const target = +entry.target.dataset.count;
+        animateCount(entry.target, target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-count]').forEach(el => observer.observe(el));
+</script>
+<script src="js/app.js"></script>
+</body>
+</html>

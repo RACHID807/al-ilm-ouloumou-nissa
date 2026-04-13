@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — EduVerse</title>
+  <meta name="description" content="Your personal EduVerse learning dashboard — track progress, pick up where you left off, and discover new courses." />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <style>
+    .page-header { margin-bottom: var(--space-2xl); }
+    .greeting { font-size: 1.75rem; font-family: 'Outfit', sans-serif; font-weight: 800; margin-bottom: 0.25rem; }
+    .greeting span { color: var(--accent); }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .stat-card { padding: var(--space-xl); }
+    .stat-icon { font-size: 1.5rem; margin-bottom: var(--space-sm); }
+    .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+    .stat-num { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: var(--text-primary); }
+    .stat-change { font-size: 0.75rem; margin-top: 0.25rem; }
+
+    .two-col { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-xl); margin-bottom: var(--space-2xl); }
+
+    .section-title-sm { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-lg); display: flex; align-items: center; justify-content: space-between; }
+    .section-title-sm a { font-size: 0.8rem; color: var(--primary-light); font-weight: 500; }
+
+    .lesson-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background var(--transition-fast);
+      margin-bottom: 0.5rem;
+    }
+    .lesson-item:hover { background: var(--bg-card); }
+
+    .lesson-thumb {
+      width: 56px;
+      height: 56px;
+      min-width: 56px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .lesson-info { flex: 1; }
+    .lesson-name { font-weight: 600; font-size: 0.9rem; color: var(--text-primary); margin-bottom: 0.25rem; }
+    .lesson-meta-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-muted); }
+
+    .lesson-progress-mini { flex: 1; }
+    .lesson-percent { font-size: 0.75rem; color: var(--primary-light); font-weight: 600; white-space: nowrap; }
+
+    /* Activity feed */
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-md);
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-icon { font-size: 1.2rem; margin-top: 2px; }
+    .activity-text { font-size: 0.85rem; color: var(--text-secondary); }
+    .activity-text strong { color: var(--text-primary); }
+    .activity-time { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+    /* Level progress */
+    .level-card { padding: var(--space-xl); margin-bottom: var(--space-xl); }
+    .level-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-md); }
+    .level-badge { display: flex; align-items: center; gap: 0.75rem; }
+    .level-circle { width: 52px; height: 52px; border-radius: 50%; background: var(--grad-primary); display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: white; box-shadow: 0 0 20px rgba(124,58,237,0.4); }
+    .level-info-text { font-size: 0.8rem; color: var(--text-muted); }
+    .level-name { font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--text-primary); }
+
+    /* Achievements */
+    .badges-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-sm); }
+    .badge-item { text-align: center; padding: var(--space-sm); border-radius: var(--radius-md); background: var(--bg-card); }
+    .badge-emoji { font-size: 1.8rem; display: block; margin-bottom: 0.25rem; }
+    .badge-label { font-size: 0.7rem; color: var(--text-muted); }
+
+    .badge-item.locked { opacity: 0.3; filter: grayscale(1); }
+
+    /* Recommended */
+    .recommended-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); margin-bottom: var(--space-2xl); }
+
+    .notification-dot { width: 8px; height: 8px; background: var(--danger); border-radius: 50%; display: inline-block; margin-left: 0.4rem; animation: pulse 2s ease infinite; }
+
+    /* Quick actions */
+    .quick-actions { display: flex; gap: var(--space-md); margin-bottom: var(--space-2xl); flex-wrap: wrap; }
+    .quick-action {
+      flex: 1;
+      min-width: 160px;
+      padding: var(--space-lg);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-sm);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      text-decoration: none;
+    }
+    .quick-action:hover { transform: translateY(-3px); }
+    .quick-action-icon { font-size: 2rem; }
+    .quick-action-label { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.9rem; color: var(--text-primary); }
+    .quick-action-sub { font-size: 0.75rem; color: var(--text-muted); }
+
+    @media (max-width: 1024px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .two-col { grid-template-columns: 1fr; }
+      .recommended-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .recommended-grid { grid-template-columns: 1fr; }
+      .quick-actions { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar scrolled" id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <div class="nav-logo-icon">🎓</div>
+        EduVerse
+      </a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="lessons.html">Lessons</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <button class="btn btn-ghost btn-sm btn-icon" title="Notifications" id="notifBtn">🔔<span class="notification-dot"></span></button>
+        <a href="profile.html" class="btn btn-ghost btn-sm" id="userMenuBtn">👤 <span id="navUserName">Loading...</span></a>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- SIDEBAR -->
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-menu">
+      <div class="sidebar-section-label">Main</div>
+      <li class="list-none"><a href="dashboard.html" class="sidebar-link active"><span class="icon">🏠</span> Dashboard</a></li>
+      <li class="list-none"><a href="lessons.html" class="sidebar-link"><span class="icon">📚</span> My Lessons</a></li>
+      <li class="list-none"><a href="history.html" class="sidebar-link"><span class="icon">📜</span> History</a></li>
+      <div class="sidebar-section-label">Learn</div>
+      <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quizzes</a></li>
+      <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🥽</span> VR Simulation</a></li>
+      <li class="list-none"><a href="pronunciation.html" class="sidebar-link"><span class="icon">🗣️</span> Pronunciation Lab</a></li>
+      <div class="sidebar-section-label">Social</div>
+      <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Community</a></li>
+      <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a></li>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <!-- Page Header -->
+    <div class="page-header animate-fadeInDown">
+      <div class="greeting">Good morning, <span id="dashUserName">learner</span>! 👋</div>
+      <p class="text-secondary">Ready to continue your learning journey today?</p>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card glass-card animate-fadeInUp">
+        <div class="stat-icon">📚</div>
+        <div class="stat-label">Lessons Completed</div>
+        <div class="stat-num" id="statLessons">0</div>
+        <div class="stat-change text-success">↑ 3 this week</div>
+      </div>
+      <div class="stat-card glass-card animate-fadeInUp delay-100">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-label">Total XP Points</div>
+        <div class="stat-num" id="statPoints">0</div>
+        <div class="stat-change text-accent">↑ 120 this week</div>
+      </div>
+      <div class="stat-card glass-card animate-fadeInUp delay-200">
+        <div class="stat-icon">🧠</div>
+        <div class="stat-label">Quizzes Passed</div>
+        <div class="stat-num" id="statQuizzes">0</div>
+        <div class="stat-change text-warning">→ 1 pending</div>
+      </div>
+      <div class="stat-card glass-card animate-fadeInUp delay-300">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-label">Day Streak</div>
+        <div class="stat-num" id="statStreak">1</div>
+        <div class="stat-change text-danger">Keep it up!</div>
+      </div>
+    </div>
+
+    <!-- Level Progress -->
+    <div class="level-card glass-card animate-fadeInUp delay-200">
+      <div class="level-header">
+        <div class="level-badge">
+          <div class="level-circle" id="levelCircle">1</div>
+          <div>
+            <div class="level-name" id="levelName">Curious Explorer</div>
+            <div class="level-info-text">Level <span id="currentLevel">1</span> · <span id="currentXP">0</span> / 500 XP to next level</div>
+          </div>
+        </div>
+        <span class="badge badge-primary">🎯 Active</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="xpProgressBar" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions animate-fadeInUp">
+      <a href="lessons.html" class="quick-action glass-card" style="border-color: rgba(124,58,237,0.3);">
+        <span class="quick-action-icon">📚</span>
+        <span class="quick-action-label">Browse Lessons</span>
+        <span class="quick-action-sub">148 available</span>
+      </a>
+      <a href="quiz.html" class="quick-action glass-card" style="border-color: rgba(0,212,255,0.3);">
+        <span class="quick-action-icon">🧠</span>
+        <span class="quick-action-label">Take a Quiz</span>
+        <span class="quick-action-sub">Test your knowledge</span>
+      </a>
+      <a href="vr-game.html" class="quick-action glass-card" style="border-color: rgba(255,107,157,0.3);">
+        <span class="quick-action-icon">🥽</span>
+        <span class="quick-action-label">VR Simulation</span>
+        <span class="quick-action-sub">Immersive experience</span>
+      </a>
+      <a href="community.html" class="quick-action glass-card" style="border-color: rgba(16,185,129,0.3);">
+        <span class="quick-action-icon">💬</span>
+        <span class="quick-action-label">Join Community</span>
+        <span class="quick-action-sub">12 new messages</span>
+      </a>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="two-col">
+      <!-- Left: Continue Learning -->
+      <div>
+        <div class="glass-card" style="padding: var(--space-xl);">
+          <div class="section-title-sm">Continue Learning <a href="lessons.html">View All →</a></div>
+          <div id="continueLessons">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Recommended -->
+        <div class="glass-card" style="padding: var(--space-xl); margin-top: var(--space-xl);">
+          <div class="section-title-sm">Recommended for You <a href="lessons.html">Explore →</a></div>
+          <div id="recommendedList">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Achievements + Activity -->
+      <div>
+        <div class="glass-card" style="padding: var(--space-xl); margin-bottom: var(--space-xl);">
+          <div class="section-title-sm" style="margin-bottom:var(--space-md);">My Badges</div>
+          <div class="badges-grid" id="badgesGrid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <div class="glass-card" style="padding: var(--space-xl);">
+          <div class="section-title-sm" style="margin-bottom:var(--space-md);">Recent Activity</div>
+          <div id="activityFeed">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  // Auth guard
+  const currentUser = JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
+  if (!currentUser) window.location.href = 'auth.html';
+
+  function logout() {
+    localStorage.removeItem('eduverse_current_user');
+    window.location.href = '../index.html';
+  }
+
+  // Populate user info
+  const firstName = currentUser?.firstName || 'Learner';
+  document.getElementById('navUserName').textContent = firstName;
+  document.getElementById('dashUserName').textContent = firstName;
+
+  const points = currentUser?.points || 0;
+  const level = currentUser?.level || 1;
+  const lessonsCompleted = currentUser?.lessonsCompleted?.length || 0;
+  const quizzesCompleted = currentUser?.quizzesCompleted?.length || 0;
+
+  document.getElementById('statLessons').textContent = lessonsCompleted;
+  document.getElementById('statPoints').textContent = points.toLocaleString();
+  document.getElementById('statQuizzes').textContent = quizzesCompleted;
+  document.getElementById('levelCircle').textContent = level;
+  document.getElementById('currentLevel').textContent = level;
+  document.getElementById('currentXP').textContent = points;
+
+  const xpForNext = 500;
+  const xpPct = Math.min((points / xpForNext) * 100, 100);
+  setTimeout(() => { document.getElementById('xpProgressBar').style.width = xpPct + '%'; }, 300);
+
+  const levelNames = ['','Curious Explorer','Knowledge Seeker','Bright Thinker','Devoted Scholar','Expert Learner','Master Mind','Sage','Luminary','Oracle','Grand Master'];
+  document.getElementById('levelName').textContent = levelNames[Math.min(level, levelNames.length-1)] || 'Master';
+
+  // Demo lessons for continue learning
+  const demoLessons = [
+    { id: 1, emoji: '🌍', title: 'African Cultural Heritage', category: 'History', progress: 65, duration: '42 min' },
+    { id: 2, emoji: '🔬', title: 'Cellular Biology Fundamentals', category: 'Science', progress: 30, duration: '35 min' },
+    { id: 3, emoji: '🗣️', title: 'Dioula Language Essentials', category: 'Language', progress: 10, duration: '28 min' },
+  ];
+
+  const continueLessonsEl = document.getElementById('continueLessons');
+  demoLessons.forEach(lesson => {
+    continueLessonsEl.innerHTML += `
+      <div class="lesson-item" onclick="window.location.href='lesson-view.html?id=${lesson.id}'">
+        <div class="lesson-thumb" style="background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(0,212,255,0.2));">${lesson.emoji}</div>
+        <div class="lesson-info">
+          <div class="lesson-name">${lesson.title}</div>
+          <div class="lesson-meta-row">
+            <span class="badge badge-primary" style="font-size:0.65rem; padding:0.1rem 0.4rem;">${lesson.category}</span>
+            <span>⏱ ${lesson.duration}</span>
+          </div>
+          <div class="progress-bar" style="height:4px; margin-top:0.5rem;">
+            <div class="progress-fill" style="width:${lesson.progress}%;"></div>
+          </div>
+        </div>
+        <div class="lesson-percent">${lesson.progress}%</div>
+      </div>
+    `;
+  });
+
+  // Recommended lessons
+  const recommended = [
+    { id: 4, emoji: '🏺', title: 'Ancient Egyptian Civilisation', category: 'History' },
+    { id: 5, emoji: '⚗️', title: 'Chemistry Basics', category: 'Science' },
+    { id: 6, emoji: '🌿', title: 'Traditional Medicine Plants', category: 'Culture' },
+  ];
+  const recEl = document.getElementById('recommendedList');
+  recommended.forEach(lesson => {
+    recEl.innerHTML += `
+      <div class="lesson-item" onclick="window.location.href='lesson-view.html?id=${lesson.id}'">
+        <div class="lesson-thumb" style="background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(255,107,157,0.2));">${lesson.emoji}</div>
+        <div class="lesson-info">
+          <div class="lesson-name">${lesson.title}</div>
+          <div class="lesson-meta-row">
+            <span class="badge badge-accent" style="font-size:0.65rem; padding:0.1rem 0.4rem;">${lesson.category}</span>
+            <span>New</span>
+          </div>
+        </div>
+        <span style="color:var(--primary-light); font-size:1rem;">→</span>
+      </div>
+    `;
+  });
+
+  // Badges
+  const allBadges = [
+    { emoji: '🌟', label: 'First Login', earned: true },
+    { emoji: '📖', label: 'First Lesson', earned: lessonsCompleted >= 1 },
+    { emoji: '🧠', label: 'Quiz Master', earned: quizzesCompleted >= 3 },
+    { emoji: '🔥', label: '7-Day Streak', earned: false },
+    { emoji: '🏆', label: 'Top Learner', earned: false },
+    { emoji: '🌍', label: 'World Explorer', earned: false },
+  ];
+  const badgesGrid = document.getElementById('badgesGrid');
+  allBadges.forEach(b => {
+    badgesGrid.innerHTML += `
+      <div class="badge-item ${b.earned ? '' : 'locked'}" title="${b.label}${b.earned ? '' : ' (locked)'}">
+        <span class="badge-emoji">${b.emoji}</span>
+        <div class="badge-label">${b.label}</div>
+      </div>
+    `;
+  });
+
+  // Activity feed
+  const activities = [
+    { icon: '🎉', text: `<strong>${firstName}</strong> joined EduVerse`, time: 'Just now' },
+    { icon: '📚', text: 'Started <strong>African Cultural Heritage</strong>', time: '2h ago' },
+    { icon: '🧠', text: 'Completed a quiz — scored <strong>80%</strong>', time: 'Yesterday' },
+    { icon: '🏆', text: 'Earned <strong>First Login</strong> badge', time: '2 days ago' },
+  ];
+  const activityEl = document.getElementById('activityFeed');
+  activities.forEach(a => {
+    activityEl.innerHTML += `
+      <div class="activity-item">
+        <span class="activity-icon">${a.icon}</span>
+        <div>
+          <div class="activity-text">${a.text}</div>
+          <div class="activity-time">${a.time}</div>
+        </div>
+      </div>
+    `;
+  });
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>

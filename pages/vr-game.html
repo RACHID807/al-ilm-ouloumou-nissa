@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VR Simulation — EduVerse</title>
+  <meta name="description" content="Immersive VR-style memory and matching game. Learn through play with EduVerse's interactive simulation engine." />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <style>
+    .game-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-2xl);
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+
+    .game-stat { text-align: center; }
+    .game-stat-value { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--text-primary); }
+    .game-stat-label { font-size: 0.75rem; color: var(--text-muted); }
+
+    .stats-bar {
+      display: flex;
+      gap: var(--space-xl);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg) var(--space-xl);
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    /* Scene Selector */
+    .scene-select {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .scene-card {
+      padding: var(--space-xl);
+      text-align: center;
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      border: 2px solid var(--border);
+      transition: all var(--transition-base);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scene-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity var(--transition-base);
+    }
+
+    .scene-card:hover { border-color: var(--primary); transform: translateY(-3px); }
+    .scene-card:hover::before { opacity: 1; }
+    .scene-card.active { border-color: var(--primary); background: rgba(124,58,237,0.1); }
+
+    .scene-card .scene-icon { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
+    .scene-card .scene-name { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; color: var(--text-primary); }
+    .scene-card .scene-desc { font-size: 0.75rem; color: var(--text-muted); }
+    .scene-locked { opacity: 0.4; pointer-events: none; }
+    .scene-badge { position: absolute; top: 8px; right: 8px; }
+
+    /* VR Environment */
+    .vr-environment {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      position: relative;
+      min-height: 500px;
+      display: none;
+    }
+
+    .vr-environment.active { display: block; }
+
+    .v-a-scene {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+    }
+
+    .vr-bg {
+      width: 100%;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      position: relative;
+      background: #000;
+    }
+
+    /* Override A-Frame default UI for integration */
+    .a-enter-vr { display: none !important; }
+
+    .vr-scene-title {
+      position: absolute;
+      top: var(--space-lg);
+      left: var(--space-lg);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      background: rgba(0,0,0,0.5);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-full);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+    }
+
+    .vr-hud {
+      position: absolute;
+      top: var(--space-lg);
+      right: var(--space-lg);
+      display: flex;
+      gap: var(--space-md);
+      z-index: 10;
+    }
+
+    .hud-item {
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+    }
+
+    /* 2D Overlay for Game Controls */
+    .vr-overlay-controls {
+      position: absolute;
+      bottom: var(--space-lg);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      gap: var(--space-md);
+      background: rgba(0,0,0,0.4);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Memory Card Game */
+    .memory-game {
+      width: 100%;
+      padding-top: 60px;
+    }
+
+    .memory-grid {
+      display: grid;
+      gap: var(--space-md);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .memory-grid.easy { grid-template-columns: repeat(4, 1fr); }
+    .memory-grid.medium { grid-template-columns: repeat(5, 1fr); }
+    .memory-grid.hard { grid-template-columns: repeat(6, 1fr); }
+
+    .memory-card {
+      aspect-ratio: 1;
+      cursor: pointer;
+      perspective: 600px;
+      position: relative;
+    }
+
+    .card-inner {
+      width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      border-radius: var(--radius-md);
+    }
+
+    .memory-card.flipped .card-inner { transform: rotateY(180deg); }
+    .memory-card.matched .card-inner { transform: rotateY(180deg); }
+    .memory-card.matched .card-front { border-color: var(--success); background: rgba(16,185,129,0.2); }
+
+    .card-front, .card-back {
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border: 2px solid var(--border);
+    }
+
+    .card-back {
+      background: var(--bg-card);
+      font-size: 1.5rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .card-front {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+      transform: rotateY(180deg);
+      font-size: 1.6rem;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-label { font-size: 0.6rem; color: var(--text-muted); font-family: 'Inter', sans-serif; text-align: center; line-height: 1.2; }
+
+    /* Difficulty buttons */
+    .diff-btns { display: flex; gap: var(--space-sm); margin-bottom: var(--space-lg); flex-wrap: wrap; }
+
+    /* Win screen overlay */
+    .win-screen {
+      position: absolute;
+      inset: 0;
+      background: rgba(7,7,26,0.9);
+      backdrop-filter: blur(16px);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: var(--space-lg);
+      border-radius: var(--radius-xl);
+      z-index: 10;
+    }
+
+    .win-screen.show { display: flex; }
+    .win-emoji { font-size: 4rem; animation: starPop 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+    .win-score { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 900; background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    @media (max-width: 768px) {
+      .memory-grid.hard { grid-template-columns: repeat(6, 1fr); }
+    }
+
+    /* Lock Screen Splash */
+    .lock-splash {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      min-height: 400px;
+    }
+    .lock-splash-icon { font-size: 5rem; margin-bottom: 2rem; filter: drop-shadow(0 0 20px var(--warning)); }
+    .lock-splash h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+    .lock-splash p { max-width: 500px; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar scrolled">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>EduVerse</a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="lessons.html">Lessons</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+        <li><a href="vr-game.html" class="active">VR Game</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="sidebar-menu">
+      <div class="sidebar-section-label">Main</div>
+      <li class="list-none"><a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a></li>
+      <li class="list-none"><a href="lessons.html" class="sidebar-link"><span class="icon">📚</span> My Lessons</a></li>
+      <li class="list-none"><a href="history.html" class="sidebar-link"><span class="icon">📜</span> History</a></li>
+      <div class="sidebar-section-label">Learn</div>
+      <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quizzes</a></li>
+      <li class="list-none"><a href="vr-game.html" class="sidebar-link active"><span class="icon">🥽</span> VR Simulation</a></li>
+      <li class="list-none"><a href="pronunciation.html" class="sidebar-link"><span class="icon">🗣️</span> Pronunciation Lab</a></li>
+      <div class="sidebar-section-label">Social</div>
+      <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Community</a></li>
+      <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a></li>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="animate-fadeInDown" style="margin-bottom:var(--space-xl);">
+      <h2>🥽 VR Learning Simulations</h2>
+      <p class="text-secondary">Choose a virtual environment — learn through immersive interactive gameplay.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar animate-fadeInUp" style="margin-bottom:var(--space-2xl);">
+      <div class="game-stat">
+        <div class="game-stat-value" id="totalGamesPlayed">0</div>
+        <div class="game-stat-label">Games Played</div>
+      </div>
+      <div class="game-stat">
+        <div class="game-stat-value" id="bestScore">—</div>
+        <div class="game-stat-label">Best Score</div>
+      </div>
+      <div class="game-stat">
+        <div class="game-stat-value" id="totalVRPoints">0</div>
+        <div class="game-stat-label">VR Points</div>
+      </div>
+      <div class="game-stat">
+        <div class="game-stat-value" id="gamesWon">0</div>
+        <div class="game-stat-label">Victories</div>
+      </div>
+    </div>
+
+    <!-- Scene Selector (Dynamically Rendered) -->
+    <div id="sceneSelector" class="animate-fadeInUp" style="display:none;">
+      <h4 style="margin-bottom:var(--space-lg);">Choose Your Environment</h4>
+      <div id="sceneGrid" class="scene-select"></div>
+    </div>
+
+    <!-- VR Locked Splash -->
+    <div id="vrLockedSplash" class="glass-card lock-splash animate-fadeInUp" style="display:none;">
+      <div class="lock-splash-icon">🔒</div>
+      <h2>VR Access Locked</h2>
+      <p>Immersive simulations require at least <strong>Level 3</strong> (Advanced Beginner). Complete lessons and quizzes to earn XP and unlock the VR lab!</p>
+      <div style="width:100%; max-width:400px; margin-bottom:2rem;">
+        <div class="progress-bar">
+          <div id="lockProgressFill" class="progress-fill" style="width:0%;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-top:0.5rem; font-size:0.8rem;">
+          <span id="lockCurrentLevel">Level 1</span>
+          <span>Level 3 (Target)</span>
+        </div>
+      </div>
+      <a href="dashboard.html" class="btn btn-primary btn-lg">Back to Learning →</a>
+    </div>
+
+    <!-- VR Environment -->
+    <div class="vr-environment glass-card" id="vrEnvironment">
+      <div class="vr-bg" id="vrBg">
+        <div class="vr-scene-title" id="vrSceneTitle">🌅 African Savannah</div>
+        <div class="vr-hud">
+          <div class="hud-item">⭐ <span id="gameScore">0</span></div>
+          <div class="hud-item">🔄 <span id="movesCount">0</span></div>
+          <div class="hud-item">⏱ <span id="gameTimer">00:00</span></div>
+        </div>
+
+        <!-- 3D Scene Area -->
+        <div id="vRArena" class="v-a-scene">
+          <a-scene embedded vr-mode-ui="enabled: false">
+            <a-camera id="vrCamera" position="0 1.6 0" look-controls wasd-controls-enabled="false">
+              <a-cursor color="#7C3AED" fuse="false" raycaster="objects: .memory-card-3d"></a-cursor>
+            </a-camera>
+            <a-sky id="vrSky" color="#000"></a-sky>
+            <a-plane position="0 0 0" rotation="-90 0 0" width="100" height="100" color="#111" opacity="0.5"></a-plane>
+            <a-entity id="cardContainer" position="0 1.6 -3"></a-entity>
+            <a-light type="ambient" color="#fff" intensity="0.5"></a-light>
+            <a-light type="point" position="0 5 0" color="#fff" intensity="1"></a-light>
+          </a-scene>
+        </div>
+
+        <div class="vr-overlay-controls">
+           <div class="diff-btns">
+             <button class="btn btn-ghost btn-sm" onclick="setDifficulty('easy')">🟢 Easy</button>
+             <button class="btn btn-primary btn-sm" onclick="setDifficulty('medium')">🟡 Medium</button>
+             <button class="btn btn-ghost btn-sm" onclick="setDifficulty('hard')">🔴 Hard</button>
+           </div>
+           <button class="btn btn-ghost btn-sm" onclick="resetGame()">🔄 Restart</button>
+           <button class="btn btn-ghost btn-sm" onclick="exitGame()">← Change Scene</button>
+        </div>
+
+        <!-- Win Screen -->
+        <div class="win-screen" id="winScreen">
+          <div class="win-emoji" id="winEmoji">🏆</div>
+          <h2 id="winTitle">You Won!</h2>
+          <div class="win-score" id="winScore">0 pts</div>
+          <p class="text-secondary" id="winSubtitle">Amazing memory!</p>
+          <div style="display:flex; gap:var(--space-md); flex-wrap:wrap; justify-content:center;">
+            <button class="btn btn-primary btn-lg" onclick="resetGame()">🔄 Play Again</button>
+            <button class="btn btn-ghost btn-lg" onclick="exitGame()">← Choose Scene</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const currentUser = JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
+  if (!currentUser) window.location.href = 'auth.html';
+  function logout() { localStorage.removeItem('eduverse_current_user'); window.location.href = '../index.html'; }
+
+  // Load stats
+  const vrStats = JSON.parse(localStorage.getItem('eduverse_vr_stats') || '{"played":0,"won":0,"bestScore":0,"totalPoints":0}');
+  document.getElementById('totalGamesPlayed').textContent = vrStats.played;
+  document.getElementById('bestScore').textContent = vrStats.bestScore > 0 ? vrStats.bestScore : '—';
+  document.getElementById('totalVRPoints').textContent = vrStats.totalPoints;
+  document.getElementById('gamesWon').textContent = vrStats.won;
+
+  const SCENE_DATA = {
+    savannah: {
+      title: '🌅 African Savannah',
+      gameTitle: '🦁 Wildlife Memory Match',
+      instruction: 'Match each animal with its habitat!',
+      requiredLevel: 3,
+      bg: '#FF6B2B',
+      sky: '#FF6B2B',
+      pairs: [
+        { a:'🦁', b:'Savannah', la:'Lion', lb:'Habitat' },
+        { a:'🐘', b:'Grassland', la:'Elephant', lb:'Habitat' },
+        { a:'🦒', b:'Acacia', la:'Giraffe', lb:'Food' },
+        { a:'🦓', b:'Plains', la:'Zebra', lb:'Habitat' },
+        { a:'🐊', b:'Riverbank', la:'Crocodile', lb:'Habitat' },
+        { a:'🦅', b:'Sky', la:'Eagle', lb:'Habitat' },
+        { a:'🐆', b:'Forest', la:'Leopard', lb:'Habitat' },
+        { a:'🦏', b:'Bush', la:'Rhino', lb:'Habitat' },
+      ]
+    },
+    history: {
+      title: '🏺 Ancient Empires',
+      gameTitle: '👑 Historical Matching',
+      instruction: 'Match the ruler with their empire!',
+      requiredLevel: 4,
+      bg: '#8B6914',
+      sky: '#8B6914',
+      pairs: [
+        { a:'Mansa Musa', b:'Mali Empire', la:'Ruler', lb:'Empire' },
+        { a:'Sundiata Keita', b:'Mali Empire', la:'Founder', lb:'Empire' },
+        { a:'Askia Muhammad', b:'Songhai Empire', la:'Ruler', lb:'Empire' },
+        { a:'Cleopatra', b:'Egypt', la:'Ruler', lb:'Kingdom' },
+        { a:'Shaka Zulu', b:'Zulu Nation', la:'King', lb:'Kingdom' },
+        { a:'Nzinga', b:'Ndongo Kingdom', la:'Queen', lb:'Kingdom' },
+      ]
+    },
+    space: {
+      title: '🌌 Space Explorer',
+      gameTitle: '🚀 Planetary Pairs',
+      instruction: 'Match each planet with its key feature!',
+      requiredLevel: 5,
+      bg: '#000010',
+      sky: '#07071A',
+      pairs: [
+        { a:'🌍', b:'Blue Marble', la:'Earth', lb:'Nickname' },
+        { a:'🔴', b:'Red Planet', la:'Mars', lb:'Nickname' },
+        { a:'🪐', b:'Rings', la:'Saturn', lb:'Feature' },
+        { a:'☀️', b:'Star', la:'Sun', lb:'Type' },
+        { a:'🌕', b:'Natural Satellite', la:'Moon', lb:'Type' },
+        { a:'💨', b:'Gas Giant', la:'Jupiter', lb:'Type' },
+        { a:'💎', b:'Ice Giant', la:'Neptune', lb:'Type' },
+        { a:'⭐', b:'Dwarf Planet', la:'Pluto', lb:'Type' },
+      ]
+    },
+    language: {
+      title: '🗣️ Language Lab',
+      gameTitle: '💬 Dioula Word Match',
+      instruction: 'Match English words with their Dioula translation!',
+      requiredLevel: 6,
+      bg: '#1a0a3b',
+      sky: '#1a0a3b',
+      pairs: [
+        { a:'Hello', b:'Aw ni ce', la:'English', lb:'Dioula' },
+        { a:'Water', b:'ji', la:'English', lb:'Dioula' },
+        { a:'Food', b:'dumu', la:'English', lb:'Dioula' },
+        { a:'Family', b:'jamu', la:'English', lb:'Dioula' },
+        { a:'One', b:'kelen', la:'English', lb:'Dioula' },
+        { a:'Five', b:'duuru', la:'English', lb:'Dioula' },
+        { a:'Thank you', b:'I ni ce', la:'English', lb:'Dioula' },
+        { a:'Market', b:'sugu', la:'English', lb:'Dioula' },
+      ]
+    }
+  };
+
+  // UI Initialization
+  function initUI() {
+    const user = currentUser;
+    if (user.level < 3 && user.role !== 'admin') {
+      document.getElementById('vrLockedSplash').style.display = 'flex';
+      document.getElementById('lockProgressFill').style.width = ((user.level / 3) * 100) + '%';
+      document.getElementById('lockCurrentLevel').textContent = `Level ${user.level}`;
+      return;
+    }
+
+    document.getElementById('sceneSelector').style.display = 'block';
+    renderSceneSelector();
+  }
+
+  function renderSceneSelector() {
+    const grid = document.getElementById('sceneGrid');
+    const user = currentUser;
+
+    grid.innerHTML = Object.keys(SCENE_DATA).map(key => {
+      const scene = SCENE_DATA[key];
+      const isLocked = user.level < scene.requiredLevel && user.role !== 'admin';
+      const icon = isLocked ? '🔒' : scene.title.split(' ')[0];
+      const name = isLocked ? `Level ${scene.requiredLevel} Required` : scene.title.split(' ').slice(1).join(' ');
+
+      return `
+        <div class="scene-card glass-card ${isLocked ? 'scene-locked' : ''}" 
+             onclick="${isLocked ? '' : `loadScene('${key}')`}">
+          <span class="scene-icon">${isLocked ? '🔒' : scene.title.split(' ')[0]}</span>
+          <div class="scene-name">${scene.title.split(' ').slice(1).join(' ')}</div>
+          <div class="scene-desc">${isLocked ? `Reach Level ${scene.requiredLevel} to unlock this environment.` : scene.instruction}</div>
+          ${isLocked ? `<span class="scene-badge badge badge-warning">LOCKED</span>` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  initUI();
+
+  let currentScene = null;
+  let currentDifficulty = 'medium';
+  let flipped = [];
+  let matched = 0;
+  let moves = 0;
+  let score = 0;
+  let gameStarted = false;
+  let timerInterval = null;
+  let gameSeconds = 0;
+  let totalPairs = 0;
+  let canFlip = true;
+
+  function loadScene(sceneId) {
+    currentScene = sceneId;
+    const scene = SCENE_DATA[sceneId];
+
+    document.getElementById('sceneSelector').style.display = 'none';
+    const env = document.getElementById('vrEnvironment');
+    env.classList.add('active');
+    document.getElementById('vrSceneTitle').textContent = scene.title;
+    document.getElementById('vrSky').setAttribute('color', scene.sky);
+
+    resetGame();
+  }
+
+  function setDifficulty(diff) {
+    currentDifficulty = diff;
+    document.querySelectorAll('.diff-btns .btn').forEach(b => b.className = 'btn btn-ghost btn-sm');
+    event.target.className = 'btn btn-primary btn-sm';
+    resetGame();
+  }
+
+  function buildCards() {
+    const scene = SCENE_DATA[currentScene];
+    const pairs = scene.pairs;
+    let numPairs;
+    if (currentDifficulty === 'easy') numPairs = Math.min(4, pairs.length);
+    else if (currentDifficulty === 'medium') numPairs = Math.min(6, pairs.length);
+    else numPairs = Math.min(8, pairs.length);
+
+    totalPairs = numPairs;
+    const selectedPairs = pairs.slice(0, numPairs);
+
+    const cards = [];
+    selectedPairs.forEach((pair, i) => {
+      cards.push({ id: `a${i}`, matchId: i, content: pair.a, label: pair.la });
+      cards.push({ id: `b${i}`, matchId: i, content: pair.b, label: pair.lb });
+    });
+
+    return cards.sort(() => Math.random() - 0.5);
+  }
+
+  function resetGame() {
+    clearInterval(timerInterval);
+    flipped = []; matched = 0; moves = 0; score = 0; gameSeconds = 0; canFlip = true;
+    document.getElementById('gameScore').textContent = 0;
+    document.getElementById('movesCount').textContent = 0;
+    document.getElementById('gameTimer').textContent = '00:00';
+    document.getElementById('winScreen').classList.remove('show');
+
+    const container = document.getElementById('cardContainer');
+    container.innerHTML = '';
+
+    const cards = buildCards();
+    const cols = currentDifficulty === 'easy' ? 4 : (currentDifficulty === 'medium' ? 4 : 4);
+    const spacing = 1.1;
+
+    cards.forEach((card, i) => {
+      const row = Math.floor(i / cols);
+      const col = i % cols;
+      const x = (col - (cols - 1) / 2) * spacing;
+      const y = (row - 1) * spacing;
+
+      const cardEntity = document.createElement('a-entity');
+      cardEntity.setAttribute('class', 'memory-card-3d');
+      cardEntity.setAttribute('position', `${x} ${y} 0`);
+      cardEntity.setAttribute('data-match', card.matchId);
+      cardEntity.setAttribute('data-id', card.id);
+
+      // Card Front (The content)
+      const front = document.createElement('a-plane');
+      front.setAttribute('width', '1');
+      front.setAttribute('height', '1');
+      front.setAttribute('rotation', '0 180 0');
+      front.setAttribute('material', 'color: #fff; opacity: 0.9; side: double;');
+      
+      // Emoji Content
+      const text = document.createElement('a-text');
+      text.setAttribute('value', card.content);
+      text.setAttribute('align', 'center');
+      text.setAttribute('position', '0 0.1 0.01');
+      text.setAttribute('color', '#000');
+      text.setAttribute('width', '4');
+      front.appendChild(text);
+
+      const label = document.createElement('a-text');
+      label.setAttribute('value', card.label);
+      label.setAttribute('align', 'center');
+      label.setAttribute('position', '0 -0.2 0.01');
+      label.setAttribute('color', '#666');
+      label.setAttribute('width', '2');
+      front.appendChild(label);
+
+      // Card Back
+      const back = document.createElement('a-plane');
+      back.setAttribute('width', '1');
+      back.setAttribute('height', '1');
+      back.setAttribute('material', 'color: #7C3AED; side: double;');
+      const backText = document.createElement('a-text');
+      backText.setAttribute('value', '?');
+      backText.setAttribute('align', 'center');
+      backText.setAttribute('position', '0 0 0.01');
+      backText.setAttribute('color', '#fff');
+      backText.setAttribute('width', '6');
+      back.appendChild(backText);
+
+      cardEntity.appendChild(front);
+      cardEntity.appendChild(back);
+
+      cardEntity.addEventListener('click', () => flipCard(cardEntity));
+      container.appendChild(cardEntity);
+    });
+
+    gameStarted = false;
+  }
+
+  function startTimer() {
+    if (gameStarted) return;
+    gameStarted = true;
+    timerInterval = setInterval(() => {
+      gameSeconds++;
+      const m = String(Math.floor(gameSeconds / 60)).padStart(2, '0');
+      const s = String(gameSeconds % 60).padStart(2, '0');
+      document.getElementById('gameTimer').textContent = `${m}:${s}`;
+    }, 1000);
+  }
+
+  function flipCard(cardEl) {
+    if (!canFlip) return;
+    if (cardEl.getAttribute('flipped') === 'true' || cardEl.getAttribute('matched') === 'true') return;
+    if (flipped.length >= 2) return;
+
+    startTimer();
+    
+    // Animation
+    cardEl.setAttribute('animation__flip', {
+      property: 'rotation',
+      to: '0 180 0',
+      dur: 500,
+      easing: 'easeOutQuad'
+    });
+    
+    cardEl.setAttribute('flipped', 'true');
+    flipped.push(cardEl);
+
+    if (flipped.length === 2) {
+      moves++;
+      document.getElementById('movesCount').textContent = moves;
+      canFlip = false;
+      checkMatch();
+    }
+  }
+
+  function checkMatch() {
+    const [c1, c2] = flipped;
+    if (c1.dataset.match === c2.dataset.match && c1.dataset.id !== c2.dataset.id) {
+      setTimeout(() => {
+        c1.setAttribute('matched', 'true');
+        c2.setAttribute('matched', 'true');
+        
+        // Visual feedback for match
+        c1.querySelector('a-plane[material]').setAttribute('material', 'color: #10B981; side: double;');
+        c2.querySelector('a-plane[material]').setAttribute('material', 'color: #10B981; side: double;');
+
+        matched++;
+        const pts = Math.max(10, 50 - moves * 2);
+        score += pts;
+        document.getElementById('gameScore').textContent = score;
+        flipped = [];
+        canFlip = true;
+
+        if (matched === totalPairs) {
+          clearInterval(timerInterval);
+          setTimeout(showWin, 800);
+        }
+      }, 500);
+    } else {
+      setTimeout(() => {
+        c1.setAttribute('animation__unflip', {
+          property: 'rotation',
+          to: '0 0 0',
+          dur: 500,
+          easing: 'easeOutQuad'
+        });
+        c2.setAttribute('animation__unflip', {
+          property: 'rotation',
+          to: '0 0 0',
+          dur: 500,
+          easing: 'easeOutQuad'
+        });
+        c1.removeAttribute('flipped');
+        c2.removeAttribute('flipped');
+        flipped = [];
+        canFlip = true;
+      }, 1000);
+    }
+  }
+
+  function showWin() {
+    const timeBonus = Math.max(0, 300 - gameSeconds) * 2;
+    const finalScore = score + timeBonus;
+
+    document.getElementById('winEmoji').textContent = finalScore > 300 ? '🏆' : '🎉';
+    document.getElementById('winTitle').textContent = finalScore > 300 ? 'Outstanding!' : 'You Won!';
+    document.getElementById('winScore').textContent = `${finalScore} pts`;
+    document.getElementById('winSubtitle').textContent = `Completed in ${gameSeconds}s with ${moves} moves. Time bonus: +${timeBonus}pts`;
+    document.getElementById('winScreen').classList.add('show');
+
+    // Save stats
+    vrStats.played++;
+    vrStats.won++;
+    vrStats.totalPoints += finalScore;
+    if (finalScore > vrStats.bestScore) vrStats.bestScore = finalScore;
+    localStorage.setItem('eduverse_vr_stats', JSON.stringify(vrStats));
+
+    document.getElementById('totalGamesPlayed').textContent = vrStats.played;
+    document.getElementById('bestScore').textContent = vrStats.bestScore;
+    document.getElementById('totalVRPoints').textContent = vrStats.totalPoints;
+    document.getElementById('gamesWon').textContent = vrStats.won;
+  }
+
+  function exitGame() {
+    clearInterval(timerInterval);
+    document.getElementById('vrEnvironment').classList.remove('active');
+    document.getElementById('sceneSelector').style.display = 'block';
+    document.getElementById('winScreen').classList.remove('show');
+    currentScene = null; gameStarted = false;
+  }
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>

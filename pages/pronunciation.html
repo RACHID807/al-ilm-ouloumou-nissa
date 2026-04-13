@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pronunciation Lab — EduVerse</title>
+  <meta name="description" content="Practice your pronunciation and get instant feedback in the EduVerse Pronunciation Lab." />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <style>
+    .lab-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .word-card {
+      padding: 4rem 2rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .current-word {
+      font-family: 'Outfit', sans-serif;
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      letter-spacing: 2px;
+    }
+    
+    .word-translation {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .speak-btn, .listen-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition-spring);
+      position: relative;
+    }
+    
+    .listen-btn {
+      background: rgba(124,58,237,0.15);
+      color: var(--primary-light);
+      border: 2px solid rgba(124,58,237,0.3);
+    }
+    .listen-btn:hover { background: rgba(124,58,237,0.25); transform: scale(1.05); }
+    
+    .speak-btn {
+      background: rgba(0,212,255,0.15);
+      color: var(--accent);
+      border: 2px solid rgba(0,212,255,0.3);
+    }
+    .speak-btn:hover { background: rgba(0,212,255,0.25); transform: scale(1.05); }
+    .speak-btn.recording {
+      background: rgba(239,68,68,0.2);
+      color: var(--danger);
+      border-color: var(--danger);
+      animation: pulse 1.5s infinite;
+    }
+    
+    .feedback-area {
+      margin-top: 2rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .feedback.success { color: var(--success); }
+    .feedback.error { color: var(--warning); }
+    
+    .lang-selector {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+    }
+    
+    .lang-chip {
+      padding: 0.5rem 1.5rem;
+      border-radius: var(--radius-full);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .lang-chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+      70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    
+    /* Lock Screen Splash */
+    .lock-splash {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      min-height: 500px;
+    }
+    .lock-splash-icon { font-size: 5rem; margin-bottom: 2rem; filter: drop-shadow(0 0 20px var(--primary)); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar scrolled">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>EduVerse</a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="lessons.html">Lessons</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="sidebar-menu">
+      <div class="sidebar-section-label">Main</div>
+      <li class="list-none"><a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a></li>
+      <li class="list-none"><a href="lessons.html" class="sidebar-link"><span class="icon">📚</span> My Lessons</a></li>
+      <li class="list-none"><a href="history.html" class="sidebar-link"><span class="icon">📜</span> History</a></li>
+      <div class="sidebar-section-label">Learn</div>
+      <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quizzes</a></li>
+      <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🥽</span> VR Simulation</a></li>
+      <li class="list-none"><a href="pronunciation.html" class="sidebar-link active"><span class="icon">🗣️</span> Pronunciation Lab</a></li>
+      <div class="sidebar-section-label">Social</div>
+      <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Community</a></li>
+      <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a></li>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    
+    <div id="labContainer" class="lab-container animate-fadeInUp">
+      <div class="page-header" style="margin-bottom:2rem; text-align:center;">
+        <h2>Pronunciation Lab 🗣️</h2>
+        <p class="text-secondary">Listen to native pronunciation and practice speaking to earn XP!</p>
+      </div>
+
+      <div class="lang-selector">
+        <button class="lang-chip active" onclick="setLanguage('en-US')">🇬🇧 English</button>
+        <button class="lang-chip" onclick="setLanguage('fr-FR')">🇫🇷 Français</button>
+      </div>
+
+      <div class="glass-card word-card">
+        <div class="current-word" id="wordDisplay">Loading...</div>
+        <div class="word-translation" id="translationDisplay">...</div>
+
+        <div class="action-buttons">
+          <button class="listen-btn" onclick="playCurrentWord()" title="Listen to Native Pronunciation">🔊</button>
+          <button class="speak-btn" id="recordVoiceBtn" onclick="startRecognition()" title="Click to Speak">🎙️</button>
+        </div>
+        
+        <div class="feedback-area" id="feedbackMsg"></div>
+      </div>
+      
+      <div style="text-align:center; margin-top:2rem;">
+        <button class="btn btn-ghost" onclick="nextWord()">Skip Word ⏭️</button>
+      </div>
+    </div>
+
+    <!-- Level Lock Splash -->
+    <div id="labLockedSplash" class="glass-card lock-splash animate-fadeInUp" style="display:none;">
+      <div class="lock-splash-icon">🔒</div>
+      <h2>Pronunciation Lab Locked</h2>
+      <p>The Pronunciation Lab relies on advanced speech recognition. Reach <strong>Level 2</strong> to unlock this module!</p>
+      <div style="width:100%; max-width:400px; margin-bottom:2rem;">
+        <div class="progress-bar">
+          <div id="lockProgressFill" class="progress-fill" style="width:0%;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-top:0.5rem; font-size:0.8rem;">
+          <span id="lockCurrentLevel">Level 1</span>
+          <span>Level 2 (Target)</span>
+        </div>
+      </div>
+      <a href="lessons.html" class="btn btn-primary btn-lg">Complete Lessons to Gain XP →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const currentUser = JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
+  if (!currentUser) window.location.href = 'auth.html';
+  function logout() { localStorage.removeItem('eduverse_current_user'); window.location.href = '../index.html'; }
+
+  // Access Guard (Level 2 required)
+  function checkAccess() {
+    const user = currentUser;
+    if (user.level < 2 && user.role !== 'admin') {
+      document.getElementById('labContainer').style.display = 'none';
+      document.getElementById('labLockedSplash').style.display = 'flex';
+      document.getElementById('lockProgressFill').style.width = ((user.level / 2) * 100) + '%';
+      document.getElementById('lockCurrentLevel').textContent = `Level ${user.level}`;
+      return false;
+    }
+    return true;
+  }
+
+  // Words Database
+  const PACKS = {
+    'en-US': [
+      { word: 'Beautiful', translation: 'Magnifique' },
+      { word: 'Education', translation: 'Éducation' },
+      { word: 'Development', translation: 'Développement' },
+      { word: 'Architecture', translation: 'Architecture' },
+      { word: 'Environment', translation: 'Environnement' },
+      { word: 'Consciousness', translation: 'Conscience' }
+    ],
+    'fr-FR': [
+      { word: 'Magnifique', translation: 'Beautiful' },
+      { word: 'Développement', translation: 'Development' },
+      { word: 'Aujourd\'hui', translation: 'Today' },
+      { word: 'Extraordinaire', translation: 'Extraordinary' },
+      { word: 'Reconnaissance', translation: 'Recognition' },
+      { word: 'Accueillir', translation: 'To welcome' }
+    ]
+  };
+
+  let currentLang = 'en-US';
+  let currentIndex = 0;
+  let wordList = PACKS[currentLang];
+
+  function setLanguage(lang) {
+    document.querySelectorAll('.lang-chip').forEach(c => {
+      if(c.textContent.includes(lang === 'en-US' ? 'English' : 'Français')) c.classList.add('active');
+      else c.classList.remove('active');
+    });
+    currentLang = lang;
+    wordList = PACKS[lang];
+    // Shuffle slightly
+    wordList = wordList.sort(() => Math.random() - 0.5);
+    currentIndex = 0;
+    updateUI();
+    document.getElementById('feedbackMsg').innerHTML = '';
+  }
+
+  function updateUI() {
+    const item = wordList[currentIndex];
+    document.getElementById('wordDisplay').textContent = item.word;
+    document.getElementById('translationDisplay').textContent = item.translation;
+  }
+
+  function nextWord() {
+    currentIndex = (currentIndex + 1) % wordList.length;
+    updateUI();
+    document.getElementById('feedbackMsg').innerHTML = '';
+  }
+
+  // Speech Synthesis
+  function playCurrentWord() {
+    if (!window.speechSynthesis) {
+      EduVerse.Toast.show('Speech Synthesis not supported in your browser.', 'error');
+      return;
+    }
+    const item = wordList[currentIndex];
+    const utterance = new SpeechSynthesisUtterance(item.word);
+    utterance.lang = currentLang;
+    utterance.rate = 0.85; // slightly slower for learning
+    window.speechSynthesis.speak(utterance);
+  }
+
+  // Speech Recognition
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognition;
+
+  if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    
+    recognition.onstart = function() {
+      document.getElementById('recordVoiceBtn').classList.add('recording');
+      document.getElementById('feedbackMsg').innerHTML = '<span class="text-muted">Listening...</span>';
+    };
+
+    recognition.onresult = function(event) {
+      const transcript = event.results[0][0].transcript.trim().toLowerCase();
+      const targetWord = wordList[currentIndex].word.toLowerCase();
+      
+      const feedback = document.getElementById('feedbackMsg');
+      
+      // Fuzzy match (allow slight variations or exact)
+      // Since some engines might output punctuation
+      const cleanTranscript = transcript.replace(/[.,!?]/g, '');
+      const cleanTarget = targetWord.replace(/[.,!?]/g, '');
+
+      if (cleanTranscript === cleanTarget || cleanTranscript.includes(cleanTarget) || cleanTarget.includes(cleanTranscript)) {
+        feedback.innerHTML = `<span class="feedback success">✅ Excellent! You said: "${transcript}"</span>`;
+        EduVerse.Auth.addXP(15);
+        setTimeout(nextWord, 2000);
+      } else {
+        feedback.innerHTML = `<span class="feedback error">❌ You said: "${transcript}". Try again!</span>`;
+      }
+    };
+
+    recognition.onerror = function(event) {
+      document.getElementById('feedbackMsg').innerHTML = `<span class="feedback error">Error: ${event.error}</span>`;
+    };
+
+    recognition.onend = function() {
+      document.getElementById('recordVoiceBtn').classList.remove('recording');
+    };
+  }
+
+  function startRecognition() {
+    if (!SpeechRecognition) {
+      EduVerse.Toast.show('Speech Recognition is not supported in your browser. Use Chrome/Edge.', 'error');
+      return;
+    }
+    recognition.lang = currentLang;
+    recognition.start();
+  }
+
+  // Init
+  if (checkAccess()) {
+    setLanguage('en-US'); // Will update UI automatically
+  }
+
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>

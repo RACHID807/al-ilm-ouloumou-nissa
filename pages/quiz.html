@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz — EduVerse</title>
+  <meta name="description" content="Test your knowledge with EduVerse's adaptive quiz engine — featuring MCQ, true/false, and fill-in-the-blank questions." />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <style>
+    .quiz-wrapper { max-width: 780px; margin: 0 auto; }
+
+    /* Quiz Header */
+    .quiz-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+
+    .quiz-timer {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .timer-circle {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      border: 3px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--primary-light);
+      transition: border-color 0.5s;
+    }
+
+    .timer-circle.warning { border-color: var(--warning); color: var(--warning); }
+    .timer-circle.danger { border-color: var(--danger); color: var(--danger); animation: pulseBorder 1s infinite; }
+
+    .quiz-progress-label { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* Question Card */
+    .question-card { padding: var(--space-2xl); margin-bottom: var(--space-xl); }
+
+    .question-type-badge { margin-bottom: var(--space-md); }
+    .question-text { font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 600; color: var(--text-primary); line-height: 1.5; margin-bottom: var(--space-xl); }
+
+    /* Options */
+    .options-list { display: flex; flex-direction: column; gap: var(--space-md); }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-lg);
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border);
+      background: var(--bg-card);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      font-size: 0.95rem;
+    }
+
+    .option:hover:not(.disabled) {
+      border-color: var(--primary);
+      background: rgba(124,58,237,0.08);
+    }
+
+    .option.selected {
+      border-color: var(--primary);
+      background: rgba(124,58,237,0.15);
+    }
+
+    .option.correct {
+      border-color: var(--success);
+      background: rgba(16,185,129,0.15);
+    }
+
+    .option.wrong {
+      border-color: var(--danger);
+      background: rgba(239,68,68,0.15);
+    }
+
+    .option.disabled { cursor: not-allowed; pointer-events: none; }
+
+    .option-key {
+      width: 36px; height: 36px;
+      min-width: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-input);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .option.selected .option-key { background: var(--primary); color: white; }
+    .option.correct .option-key { background: var(--success); color: white; }
+    .option.wrong .option-key { background: var(--danger); color: white; }
+
+    /* Fill in blank */
+    .fill-input {
+      width: 100%;
+      font-size: 1rem;
+      padding: 1rem;
+    }
+
+    /* Feedback */
+    .feedback-box {
+      padding: var(--space-lg);
+      border-radius: var(--radius-md);
+      margin-top: var(--space-lg);
+      display: none;
+    }
+
+    .feedback-box.show { display: flex; gap: var(--space-md); align-items: flex-start; }
+    .feedback-box.correct-fb { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); }
+    .feedback-box.wrong-fb { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); }
+
+    /* Results Screen */
+    .results-screen {
+      text-align: center;
+      padding: var(--space-3xl) var(--space-xl);
+      display: none;
+    }
+
+    .results-screen.show { display: block; }
+
+    .score-ring {
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: conic-gradient(var(--primary) 0deg, var(--accent) 0deg, var(--bg-input) 0deg);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto var(--space-xl);
+      position: relative;
+      box-shadow: 0 0 60px rgba(124,58,237,0.3);
+    }
+
+    .score-ring-inner {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+
+    .score-pct { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 900; }
+    .score-label { font-size: 0.75rem; color: var(--text-muted); }
+
+    .results-badges { display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap; margin: var(--space-xl) 0; }
+    .result-badge { padding: var(--space-md) var(--space-lg); border-radius: var(--radius-lg); text-align: center; min-width: 100px; }
+
+    .quiz-selector { max-width: 780px; margin: 0 auto 2rem; }
+    .quiz-topic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin-top: var(--space-lg); }
+    .quiz-topic-card { padding: var(--space-lg); text-align: center; cursor: pointer; border-radius: var(--radius-lg); transition: all var(--transition-base); border: 2px solid var(--border); }
+    .quiz-topic-card:hover, .quiz-topic-card.active { border-color: var(--primary); background: rgba(124,58,237,0.1); }
+    .quiz-topic-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .quiz-topic-label { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.9rem; }
+
+    @media (max-width: 768px) {
+      .quiz-topic-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar scrolled">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>EduVerse</a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="lessons.html">Lessons</a></li>
+        <li><a href="quiz.html" class="active">Quizzes</a></li>
+        <li><a href="community.html">Community</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="sidebar-menu">
+      <div class="sidebar-section-label">Main</div>
+      <li class="list-none"><a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a></li>
+      <li class="list-none"><a href="lessons.html" class="sidebar-link"><span class="icon">📚</span> My Lessons</a></li>
+      <li class="list-none"><a href="history.html" class="sidebar-link"><span class="icon">📜</span> History</a></li>
+      <div class="sidebar-section-label">Learn</div>
+      <li class="list-none"><a href="quiz.html" class="sidebar-link active"><span class="icon">🧠</span> Quizzes</a></li>
+      <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🥽</span> VR Simulation</a></li>
+      <li class="list-none"><a href="pronunciation.html" class="sidebar-link"><span class="icon">🗣️</span> Pronunciation Lab</a></li>
+      <div class="sidebar-section-label">Social</div>
+      <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Community</a></li>
+      <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a></li>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- Topic Selector (shown before quiz starts) -->
+    <div id="quizSelector" class="animate-fadeInUp">
+      <h2 style="margin-bottom:0.5rem;">🧠 Quiz Engine</h2>
+      <p class="text-secondary" style="margin-bottom:var(--space-xl);">Choose a topic and test your knowledge with our adaptive quiz system.</p>
+
+      <div class="quiz-topic-grid">
+        <div class="quiz-topic-card glass-card" onclick="startQuiz('history')">
+          <div class="quiz-topic-icon">🌍</div>
+          <div class="quiz-topic-label">African History</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">10 questions</div>
+        </div>
+        <div class="quiz-topic-card glass-card" onclick="startQuiz('science')">
+          <div class="quiz-topic-icon">🔬</div>
+          <div class="quiz-topic-label">Science</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">10 questions</div>
+        </div>
+        <div class="quiz-topic-card glass-card" onclick="startQuiz('language')">
+          <div class="quiz-topic-icon">🗣️</div>
+          <div class="quiz-topic-label">Languages</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">10 questions</div>
+        </div>
+        <div class="quiz-topic-card glass-card" onclick="startQuiz('culture')">
+          <div class="quiz-topic-icon">🎭</div>
+          <div class="quiz-topic-label">Culture</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">8 questions</div>
+        </div>
+        <div class="quiz-topic-card glass-card" onclick="startQuiz('mixed')">
+          <div class="quiz-topic-icon">🎲</div>
+          <div class="quiz-topic-label">Mixed Challenge</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">15 questions</div>
+        </div>
+        <div class="quiz-topic-card glass-card" onclick="startQuiz('history')">
+          <div class="quiz-topic-icon">⚡</div>
+          <div class="quiz-topic-label">Speed Round</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">10 q · 10s each</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiz Area -->
+    <div id="quizArea" style="display:none;">
+      <div class="quiz-wrapper">
+        <!-- Header -->
+        <div class="quiz-header animate-fadeInDown">
+          <div>
+            <div style="font-size:1.1rem; font-weight:700; font-family:'Outfit',sans-serif;" id="quizTopicLabel">Quiz</div>
+            <div class="quiz-progress-label">Question <span id="qNum">1</span> of <span id="qTotal">10</span></div>
+          </div>
+          <div style="flex:1; max-width:300px;">
+            <div class="progress-bar">
+              <div class="progress-fill" id="quizProgressFill" style="width:0%;"></div>
+            </div>
+          </div>
+          <div class="quiz-timer">
+            <div class="timer-circle" id="timerCircle">30</div>
+          </div>
+          <div style="font-size:1rem;">⭐ <span id="currentScore">0</span> pts</div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="question-card glass-card animate-scaleIn" id="questionCard">
+          <div class="question-type-badge">
+            <span class="badge badge-primary" id="qTypeBadge">MCQ</span>
+          </div>
+          <div class="question-text" id="questionText">Loading question...</div>
+          <div class="options-list" id="optionsList"></div>
+          <div class="feedback-box" id="feedbackBox">
+            <span style="font-size:1.5rem;" id="feedbackIcon"></span>
+            <div>
+              <strong id="feedbackTitle"></strong>
+              <p id="feedbackText" style="font-size:0.875rem; margin-top:0.25rem;"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next Button -->
+        <div style="text-align:right;">
+          <button class="btn btn-primary btn-lg" id="nextBtn" onclick="nextQuestion()" style="display:none;">
+            Next Question →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="resultsScreen" class="results-screen">
+      <div class="score-ring glass-card" id="scoreRing">
+        <div class="score-ring-inner">
+          <div class="score-pct text-gradient" id="resultPct">0%</div>
+          <div class="score-label">Score</div>
+        </div>
+      </div>
+
+      <h2 id="resultTitle" style="margin-bottom:0.5rem;">Quiz Complete! 🎉</h2>
+      <p class="text-secondary" id="resultSubtitle" style="margin-bottom:var(--space-xl);">Great job!</p>
+
+      <div class="results-badges" id="resultBadges"></div>
+
+      <div style="display:flex; gap:var(--space-md); justify-content:center; flex-wrap:wrap;">
+        <button class="btn btn-primary btn-lg" onclick="restartQuiz()">🔄 Try Again</button>
+        <a href="vr-game.html" class="btn btn-ghost btn-lg">🥽 Play VR Game</a>
+        <a href="lessons.html" class="btn btn-ghost btn-lg">📚 More Lessons</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const currentUser = JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
+  if (!currentUser) window.location.href = 'auth.html';
+  function logout() { localStorage.removeItem('eduverse_current_user'); window.location.href = '../index.html'; }
+
+  const QUIZ_BANK = {
+    history: [
+      { q:'Which ancient empire was known as the "Land of Gold" due to its vast gold reserves?', type:'mcq', options:['Roman Empire','Mali Empire','Ottoman Empire','Persian Empire'], answer:1, explanation:'The Mali Empire (c. 1235–1600) controlled extensive gold and salt trade routes across the Sahara.' },
+      { q:'What was the primary function of griots in West African societies?', type:'mcq', options:['Military commanders','Oral historians & storytellers','Agricultural advisors','Tax collectors'], answer:1, explanation:'Griots (also called jelis) were the living libraries of African societies, preserving history, genealogy, and traditions through oral tradition.' },
+      { q:'Mansa Musa is famous for his 1324 pilgrimage to Mecca, during which he is said to have distributed so much gold that he caused inflation in Egypt.', type:'tf', options:['True','False'], answer:0, explanation:'Mansa Musa\'s extravagant pilgrimage, during which he gave away enormous amounts of gold, caused inflation in North Africa and the Middle East for years.' },
+      { q:'The ancient city of _______ was a major centre of Islamic learning in Mali, housing 25,000 students.', type:'fill', options:['Timbuktu','Cairo','Marrakech','Alexandria'], answer:0, explanation:'Timbuktu was a major intellectual and spiritual capital of the Mali Empire, home to the renowned Sankore University.' },
+      { q:'Which civilisation built the Great Pyramid of Giza?', type:'mcq', options:['Nubian Kingdom','Phoenicians','Ancient Egyptians','Carthaginians'], answer:2, explanation:'The Great Pyramid of Giza was built for Pharaoh Khufu around 2560 BCE by the Ancient Egyptians.' },
+    ],
+    science: [
+      { q:'What is the powerhouse of the cell?', type:'mcq', options:['Nucleus','Ribosome','Mitochondria','Golgi apparatus'], answer:2, explanation:'Mitochondria produce ATP through cellular respiration, providing energy for all cell activities.' },
+      { q:'DNA stands for Deoxyribonucleic Acid.', type:'tf', options:['True','False'], answer:0, explanation:'DNA (Deoxyribonucleic Acid) is the molecule that carries the genetic instructions for all living organisms.' },
+      { q:'Water has the chemical formula _______.', type:'fill', options:['H2O','CO2','NaCl','O2'], answer:0, explanation:'Water is H2O — two hydrogen atoms bonded to one oxygen atom.' },
+      { q:'Which planet is known as the "Red Planet"?', type:'mcq', options:['Venus','Jupiter','Mars','Saturn'], answer:2, explanation:'Mars appears red due to iron oxide (rust) on its surface, earning it the nickname "Red Planet".' },
+      { q:'Photosynthesis occurs in which organelle of plant cells?', type:'mcq', options:['Mitochondria','Chloroplast','Vacuole','Nucleus'], answer:1, explanation:'Chloroplasts contain chlorophyll and are the sites where photosynthesis converts sunlight into glucose.' },
+    ],
+    language: [
+      { q:'What does "I ni sɔgɔma" mean in Dioula?', type:'mcq', options:['Good evening','Good morning','Thank you','Goodbye'], answer:1, explanation:'"I ni sɔgɔma" literally translates to "Good morning" in Dioula, a West African language.' },
+      { q:'Dioula is a tonal language, meaning the pitch of a sound changes its meaning.', type:'tf', options:['True','False'], answer:0, explanation:'Dioula is indeed tonal — the same syllable with different pitches can have completely different meanings.' },
+      { q:'The number "5" in Dioula is _______.', type:'fill', options:['duuru','kelen','fila','saba'], answer:0, explanation:'"Duuru" means five in Dioula. The first five numbers are: kelen (1), fila (2), saba (3), naani (4), duuru (5).' },
+      { q:'Which language family does Dioula belong to?', type:'mcq', options:['Bantu','Mande','Chadic','Afroasiatic'], answer:1, explanation:'Dioula belongs to the Mande language family, which includes many languages spoken across West Africa.' },
+      { q:'How do you say "Thank you" in French?', type:'mcq', options:['Gracias','Danke','Merci','Grazie'], answer:2, explanation:'"Merci" is the French word for "Thank you". French is widely spoken across West Africa.' },
+    ],
+    culture: [
+      { q:'Kente cloth is a traditional textile originally from which country?', type:'mcq', options:['Nigeria','Ghana','Côte d\'Ivoire','Senegal'], answer:1, explanation:'Kente is a silk and cotton fabric made of interwoven cloth strips, originally from the Ashanti Kingdom in Ghana.' },
+      { q:'The "djembe" is a traditional African percussion instrument.', type:'tf', options:['True','False'], answer:0, explanation:'The djembe is a goblet-shaped drum from West Africa, played with bare hands, central to many traditional ceremonies.' },
+      { q:'What is "ubuntu"? It is an African philosophy meaning "I am because _______ are."', type:'fill', options:['we','you','they','he'], answer:0, explanation:'"Ubuntu" is a Nguni Bantu concept meaning "I am because we are" — emphasising community, sharing, and interconnectedness.' },
+      { q:'Which annual festival in Côte d\'Ivoire celebrates the yam harvest?', type:'mcq', options:['Festima','Fête de l\'Igname','Ouidah Voodoo','FESPACO'], answer:1, explanation:'The Fête de l\'Igname (Yam Festival) is an important harvest celebration in several West African cultures, including in Côte d\'Ivoire.' },
+    ],
+    mixed: []
+  };
+
+  // Fill mixed with shuffled questions from all categories
+  QUIZ_BANK.mixed = [...QUIZ_BANK.history, ...QUIZ_BANK.science, ...QUIZ_BANK.language, ...QUIZ_BANK.culture]
+    .sort(() => Math.random() - 0.5).slice(0, 10);
+
+  let questions = [];
+  let currentQ = 0;
+  let score = 0;
+  let timerVal = 30;
+  let timerInterval = null;
+  let answered = false;
+  let quizTopic = '';
+
+  const topicLabels = { history:'🌍 African History', science:'🔬 Science', language:'🗣️ Languages', culture:'🎭 Culture', mixed:'🎲 Mixed Challenge' };
+
+  function startQuiz(topic) {
+    quizTopic = topic;
+    questions = QUIZ_BANK[topic].slice();
+    currentQ = 0; score = 0;
+
+    document.getElementById('quizSelector').style.display = 'none';
+    document.getElementById('quizArea').style.display = 'block';
+    document.getElementById('quizTopicLabel').textContent = topicLabels[topic];
+    document.getElementById('qTotal').textContent = questions.length;
+
+    showQuestion();
+  }
+
+  function showQuestion() {
+    answered = false;
+    const q = questions[currentQ];
+    const qNum = currentQ + 1;
+
+    document.getElementById('qNum').textContent = qNum;
+    document.getElementById('quizProgressFill').style.width = ((qNum / questions.length) * 100) + '%';
+    document.getElementById('currentScore').textContent = score;
+    document.getElementById('questionText').textContent = q.q;
+    document.getElementById('nextBtn').style.display = 'none';
+
+    const typeLabels = { mcq:'Multiple Choice', tf:'True / False', fill:'Fill in the Blank' };
+    document.getElementById('qTypeBadge').textContent = typeLabels[q.type] || 'MCQ';
+
+    // Render options
+    const optEl = document.getElementById('optionsList');
+    const keys = ['A','B','C','D'];
+
+    if (q.type === 'fill') {
+      optEl.innerHTML = `<input type="text" class="input fill-input" placeholder="Type your answer..." id="fillInput" />
+        <button class="btn btn-primary mt-md" onclick="checkFill()">Submit Answer</button>`;
+    } else {
+      optEl.innerHTML = q.options.map((opt, i) => `
+        <div class="option" onclick="selectOption(${i})" data-idx="${i}">
+          <span class="option-key">${keys[i]}</span>
+          <span>${opt}</span>
+        </div>
+      `).join('');
+    }
+
+    // Reset feedback
+    const fb = document.getElementById('feedbackBox');
+    fb.className = 'feedback-box';
+
+    // Reset timer
+    clearInterval(timerInterval);
+    timerVal = 30;
+    updateTimer();
+    timerInterval = setInterval(() => {
+      timerVal--;
+      updateTimer();
+      if (timerVal <= 0) { clearInterval(timerInterval); autoTimeout(); }
+    }, 1000);
+  }
+
+  function updateTimer() {
+    const el = document.getElementById('timerCircle');
+    el.textContent = timerVal;
+    el.className = 'timer-circle';
+    if (timerVal <= 10) el.classList.add('warning');
+    if (timerVal <= 5) { el.classList.remove('warning'); el.classList.add('danger'); }
+  }
+
+  function autoTimeout() {
+    if (!answered) {
+      answered = true;
+      const q = questions[currentQ];
+      showFeedback(false, q);
+      document.querySelectorAll('.option').forEach((o, i) => {
+        o.classList.add('disabled');
+        if (i === q.answer) o.classList.add('correct');
+      });
+      document.getElementById('nextBtn').style.display = 'inline-flex';
+    }
+  }
+
+  function selectOption(idx) {
+    if (answered) return;
+    answered = true;
+    clearInterval(timerInterval);
+
+    const q = questions[currentQ];
+    const options = document.querySelectorAll('.option');
+    options.forEach(o => o.classList.add('disabled'));
+
+    const selected = options[idx];
+    const correct = options[q.answer];
+
+    if (idx === q.answer) {
+      selected.classList.add('correct');
+      const pts = Math.max(10, timerVal * 3);
+      score += pts;
+      showFeedback(true, q, pts);
+    } else {
+      selected.classList.add('wrong');
+      correct.classList.add('correct');
+      showFeedback(false, q);
+    }
+
+    document.getElementById('nextBtn').style.display = 'inline-flex';
+  }
+
+  function checkFill() {
+    if (answered) return;
+    answered = true;
+    clearInterval(timerInterval);
+
+    const q = questions[currentQ];
+    const input = document.getElementById('fillInput');
+    const value = input.value.trim().toLowerCase();
+    const correctAnswer = q.options[q.answer].toLowerCase();
+    const isCorrect = value === correctAnswer || value.includes(correctAnswer) || correctAnswer.includes(value);
+
+    input.style.borderColor = isCorrect ? 'var(--success)' : 'var(--danger)';
+    if (isCorrect) { score += 20; showFeedback(true, q, 20); }
+    else { showFeedback(false, q); }
+
+    document.getElementById('nextBtn').style.display = 'inline-flex';
+  }
+
+  function showFeedback(isCorrect, q, pts = 0) {
+    const fb = document.getElementById('feedbackBox');
+    fb.className = `feedback-box show ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+    document.getElementById('feedbackIcon').textContent = isCorrect ? '🎉' : '😔';
+    document.getElementById('feedbackTitle').textContent = isCorrect ? `Correct! +${pts} pts` : `Incorrect — The answer is: ${q.options[q.answer]}`;
+    document.getElementById('feedbackText').textContent = q.explanation;
+    document.getElementById('currentScore').textContent = score;
+  }
+
+  function nextQuestion() {
+    currentQ++;
+    if (currentQ >= questions.length) {
+      showResults();
+    } else {
+      document.getElementById('questionCard').classList.remove('animate-scaleIn');
+      void document.getElementById('questionCard').offsetWidth;
+      document.getElementById('questionCard').classList.add('animate-scaleIn');
+      showQuestion();
+    }
+  }
+
+  function showResults() {
+    clearInterval(timerInterval);
+    document.getElementById('quizArea').style.display = 'none';
+    const results = document.getElementById('resultsScreen');
+    results.classList.add('show');
+
+    const maxScore = questions.length * 90;
+    const pct = Math.round((score / maxScore) * 100);
+    const clampedPct = Math.min(pct, 100);
+
+    document.getElementById('resultPct').textContent = clampedPct + '%';
+
+    // Animate score ring
+    const degrees = (clampedPct / 100) * 360;
+    document.getElementById('scoreRing').style.background = `conic-gradient(var(--primary) ${degrees}deg, var(--accent) ${degrees}deg, var(--bg-input) ${degrees}deg)`;
+
+    let title, subtitle;
+    if (clampedPct >= 90) { title = 'Outstanding! 🏆'; subtitle = 'You\'re a true master — incredible performance!'; }
+    else if (clampedPct >= 70) { title = 'Great Job! 🎉'; subtitle = 'Solid understanding — keep up the great work!'; }
+    else if (clampedPct >= 50) { title = 'Good Effort! 💪'; subtitle = 'You\'re getting there — review the lesson for a higher score.'; }
+    else { title = 'Keep Practicing! 📚'; subtitle = 'Every master started as a beginner — try again!'; }
+
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultSubtitle').textContent = subtitle;
+
+    const badgesData = [
+      { icon: '📊', label: 'Questions', value: questions.length },
+      { icon: '✅', label: 'Correct', value: Math.round(questions.length * clampedPct / 100) },
+      { icon: '⭐', label: 'Score', value: score + ' pts' },
+    ];
+
+    document.getElementById('resultBadges').innerHTML = badgesData.map(b => `
+      <div class="result-badge glass-card">
+        <div style="font-size:1.8rem;">${b.icon}</div>
+        <div style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.2rem; color:var(--text-primary);">${b.value}</div>
+        <div style="font-size:0.75rem; color:var(--text-muted);">${b.label}</div>
+      </div>
+    `).join('');
+
+    // Save to user data
+    if (currentUser) {
+      currentUser.points = (currentUser.points || 0) + score;
+      currentUser.quizzesCompleted = [...(currentUser.quizzesCompleted || []), { topic: quizTopic, score, pct: clampedPct, date: new Date().toISOString() }];
+      localStorage.setItem('eduverse_current_user', JSON.stringify(currentUser));
+    }
+  }
+
+  function restartQuiz() {
+    document.getElementById('resultsScreen').classList.remove('show');
+    document.getElementById('quizArea').style.display = 'none';
+    document.getElementById('quizSelector').style.display = 'block';
+  }
+
+  function restartSame() {
+    document.getElementById('resultsScreen').classList.remove('show');
+    startQuiz(quizTopic);
+  }
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>

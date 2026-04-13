@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lesson — EduVerse</title>
+  <meta name="description" content="Watch, learn and take notes on this EduVerse lesson. Then take the quiz or jump into the VR simulation." />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <style>
+    .lesson-layout { display: grid; grid-template-columns: 1fr 360px; gap: var(--space-xl); align-items: start; }
+
+    /* Video Player */
+    .video-container {
+      background: #000;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 16/9;
+      width: 100%;
+    }
+
+    .video-player {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: background var(--transition-fast);
+    }
+
+    .video-placeholder:hover { background: rgba(0,0,0,0.3); }
+
+    .play-btn {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: var(--grad-primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 0 40px rgba(124,58,237,0.6);
+      transition: transform var(--transition-spring);
+      border: none; cursor: pointer;
+    }
+
+    .play-btn:hover { transform: scale(1.1); }
+
+    .video-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+
+    .video-container:hover .video-controls { opacity: 1; }
+
+    .video-progress { width: 100%; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer; position: relative; }
+    .video-progress-fill { height: 100%; background: var(--grad-primary); border-radius: 4px; width: 0%; transition: width 0.1s; pointer-events: none; }
+
+    .video-controls-row { display: flex; align-items: center; gap: 0.75rem; }
+    .vc-btn { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; padding: 0.25rem; }
+    .vc-time { font-size: 0.8rem; color: rgba(255,255,255,0.8); font-family: 'Outfit', monospace; }
+    .vc-speed { font-size: 0.75rem; color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 4px; cursor: pointer; border: none; margin-left: auto; }
+
+    /* Lesson Content Tabs */
+    .lesson-tabs-content { margin-top: var(--space-xl); }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    .lesson-title-area { margin-bottom: var(--space-lg); }
+    .lesson-main-title { font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+    /* Notes Area */
+    .notes-area {
+      width: 100%;
+      min-height: 200px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      resize: vertical;
+      outline: none;
+      transition: border-color var(--transition-fast);
+    }
+
+    .notes-area:focus { border-color: var(--primary); }
+
+    /* Subtitle selector */
+    .subtitle-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: var(--space-md); }
+    .subtitle-chip { padding: 0.3rem 0.75rem; border-radius: var(--radius-full); border: 1px solid var(--border); font-size: 0.8rem; cursor: pointer; background: var(--bg-card); color: var(--text-secondary); transition: all var(--transition-fast); }
+    .subtitle-chip.active { background: rgba(124,58,237,0.2); border-color: var(--primary); color: var(--primary-light); }
+
+    /* Summary content */
+    .summary-point { display: flex; gap: 0.75rem; align-items: flex-start; margin-bottom: var(--space-md); }
+    .summary-point-icon { font-size: 1.1rem; margin-top: 2px; }
+    .summary-point-text { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
+
+    /* Sidebar */
+    .lesson-sidebar { display: flex; flex-direction: column; gap: var(--space-lg); }
+
+    .sidebar-card { padding: var(--space-lg); }
+    .sidebar-card-title { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: var(--space-md); }
+
+    .chapter-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .chapter-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.6rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background var(--transition-fast);
+      font-size: 0.85rem;
+    }
+    .chapter-item:hover { background: var(--bg-card); }
+    .chapter-item.active { background: rgba(124,58,237,0.15); color: var(--primary-light); }
+    .chapter-num { width: 24px; height: 24px; border-radius: 50%; background: var(--bg-input); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; min-width: 24px; }
+    .chapter-item.active .chapter-num { background: var(--primary); color: white; }
+    .chapter-done { margin-left: auto; color: var(--success); font-size: 0.8rem; }
+
+    .next-actions { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    @media (max-width: 1100px) { .lesson-layout { grid-template-columns: 1fr; } }
+
+    /* ── Video Panel (Intro / Recap) ── */
+    .video-panel {
+      background: #000;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
+
+    .video-panel iframe,
+    .video-panel video {
+      width: 100%; height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .video-placeholder-msg {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem;
+      background: linear-gradient(135deg, #0D0D2B, #1a0a3b);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .video-placeholder-msg .big-icon { font-size: 3rem; }
+
+    .recap-locked {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem;
+      background: rgba(7,7,26,0.92);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .recap-lock-icon { font-size: 3.5rem; }
+    .recap-lock-text { font-size: 0.9rem; color: var(--text-secondary); max-width: 260px; line-height: 1.6; }
+    .recap-progress-ring { width: 80px; height: 80px; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar scrolled">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>EduVerse</a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="lessons.html" class="active">Lessons</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <a href="lessons.html" class="btn btn-ghost btn-sm">← Back to Catalog</a>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="sidebar-menu">
+      <div class="sidebar-section-label">Main</div>
+      <li class="list-none"><a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a></li>
+      <li class="list-none"><a href="lessons.html" class="sidebar-link active"><span class="icon">📚</span> My Lessons</a></li>
+      <li class="list-none"><a href="history.html" class="sidebar-link"><span class="icon">📜</span> History</a></li>
+      <div class="sidebar-section-label">Learn</div>
+      <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quizzes</a></li>
+      <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🥽</span> VR Simulation</a></li>
+      <li class="list-none"><a href="pronunciation.html" class="sidebar-link"><span class="icon">🗣️</span> Pronunciation Lab</a></li>
+      <div class="sidebar-section-label">Social</div>
+      <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Community</a></li>
+      <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a></li>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="lesson-layout animate-fadeInUp">
+      <!-- Left: Video + Content -->
+      <div>
+        <!-- Video Player -->
+        <div class="video-container" id="videoContainer">
+          <div class="video-placeholder" id="videoPlaceholder" onclick="startVideo()">
+            <button class="play-btn" id="playBtn">▶</button>
+            <div style="font-size:0.9rem; color:rgba(255,255,255,0.8); font-family:'Outfit',sans-serif;">Click to play</div>
+          </div>
+
+          <!-- Simulated video progress -->
+          <div class="video-controls" id="videoControls" style="display:none;">
+            <div class="video-progress" id="videoProgressBar" onclick="seekVideo(event)">
+              <div class="video-progress-fill" id="videoProgressFill"></div>
+            </div>
+            <div class="video-controls-row">
+              <button class="vc-btn" onclick="togglePlay()" id="playPauseBtn">⏸</button>
+              <button class="vc-btn">⏮</button>
+              <button class="vc-btn">⏭</button>
+              <button class="vc-btn">🔊</button>
+              <span class="vc-time" id="videoTime">0:00 / 0:00</span>
+              <button class="vc-speed" onclick="cycleSpeed()" id="speedBtn">1×</button>
+              <button class="vc-btn">⛶</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lesson Title & Meta -->
+        <div class="lesson-title-area mt-lg" id="lessonTitleArea">
+          <div style="display:flex; gap:0.5rem; margin-bottom:0.75rem;" id="lessonBadges"></div>
+          <h2 class="lesson-main-title" id="lessonTitle">Loading...</h2>
+          <div style="display:flex; gap:var(--space-md); font-size:0.85rem; color:var(--text-muted); flex-wrap:wrap;" id="lessonMeta"></div>
+        </div>
+
+        <!-- Content Tabs -->
+        <div class="lesson-tabs-content">
+          <div class="tabs" style="flex-wrap:wrap;">
+            <button class="tab-btn active" id="tabBtn-pre" onclick="switchLessonTab('pre', this)">📺 Vidéo Intro</button>
+            <button class="tab-btn" id="tabBtn-intro" onclick="switchLessonTab('intro', this)">📹 Leçon Principale</button>
+            <button class="tab-btn" id="tabBtn-summary" onclick="switchLessonTab('summary', this)">📄 Résumé</button>
+            <button class="tab-btn" id="tabBtn-notes" onclick="switchLessonTab('notes', this)">📝 Notes</button>
+            <button class="tab-btn" id="tabBtn-recap" onclick="switchLessonTab('recap', this)" style="opacity:0.45;" title="Disponible après 80% de la leçon">🎬 Vidéo Récap 🔒</button>
+          </div>
+
+          <!-- PRE-LESSON INTRO VIDEO -->
+          <div class="tab-pane active mt-lg" id="tab-pre">
+            <div style="margin-bottom:var(--space-lg);">
+              <h4 style="margin-bottom:0.25rem;">📺 Vidéo d'Introduction</h4>
+              <p style="font-size:0.85rem; color:var(--text-muted);">Regardez cette courte introduction avant de démarrer la leçon.</p>
+            </div>
+            <div class="video-panel" id="introVideoPanel">
+              <div class="video-placeholder-msg" id="introPlaceholder">
+                <span class="big-icon">🎬</span>
+                <strong style="color:var(--text-primary);">Aucune vidéo d'introduction</strong>
+                <span>L'administrateur n'a pas encore ajouté de vidéo pour cette leçon.</span>
+              </div>
+            </div>
+            <div style="margin-top:var(--space-lg); display:flex; justify-content:flex-end;">
+              <button class="btn btn-primary" onclick="switchLessonTab('intro', document.getElementById('tabBtn-intro'))">Commencer la Leçon →</button>
+            </div>
+          </div>
+
+          <!-- MAIN LESSON (existing subtitle/text panel) -->
+          <div class="tab-pane mt-lg" id="tab-intro">
+            <div class="subtitle-row">
+              <span style="font-size:0.85rem; color:var(--text-muted);">Sous-titres :</span>
+              <button class="subtitle-chip active" onclick="setSubtitle('EN', this)">🇬🇧 English</button>
+              <button class="subtitle-chip" onclick="setSubtitle('FR', this)">🇫🇷 Français</button>
+              <button class="subtitle-chip" onclick="setSubtitle('DIO', this)">🗣 Dioula</button>
+              <button class="subtitle-chip" onclick="setSubtitle('BAO', this)">🗣 Baoulé</button>
+            </div>
+            <div class="glass-card" style="padding:var(--space-lg); border-left: 3px solid var(--primary);">
+              <p id="subtitleText" style="font-size:0.9rem; font-style:italic; line-height:1.8;">
+                "Bienvenue dans cette leçon. Dans cette vidéo, nous explorerons le monde fascinant du patrimoine culturel africain — des anciens royaumes aux expressions modernes d'identité, d'art et de tradition."
+              </p>
+            </div>
+          </div>
+
+          <!-- SUMMARY -->
+          <div class="tab-pane mt-lg" id="tab-summary">
+            <h4 style="margin-bottom:var(--space-lg);">Points Clés</h4>
+            <div id="summaryPoints"></div>
+          </div>
+
+          <!-- NOTES -->
+          <div class="tab-pane mt-lg" id="tab-notes">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--space-md);">
+              <h4>Notes Personnelles</h4>
+              <button class="btn btn-ghost btn-sm" onclick="saveNotes()">💾 Sauvegarder</button>
+            </div>
+            <textarea class="notes-area" id="notesArea" placeholder="Notez vos idées, questions et points importants ici..."></textarea>
+            <p class="text-muted mt-sm" style="font-size:0.8rem;">Les notes sont sauvegardées localement dans votre navigateur.</p>
+          </div>
+
+          <!-- RECAP VIDEO -->
+          <div class="tab-pane mt-lg" id="tab-recap">
+            <div style="margin-bottom:var(--space-lg);">
+              <h4 style="margin-bottom:0.25rem;">🎬 Vidéo Récapitulative</h4>
+              <p style="font-size:0.85rem; color:var(--text-muted);">Consolidez vos acquis avec cette vidéo de synthèse.</p>
+            </div>
+            <div class="video-panel" style="position:relative;" id="recapVideoPanel">
+              <!-- Locked overlay -->
+              <div class="recap-locked" id="recapLock">
+                <div class="recap-lock-icon">🔒</div>
+                <strong style="color:var(--text-primary); font-family:'Outfit',sans-serif;">Vidéo verrouillée</strong>
+                <p class="recap-lock-text">Regardez au moins <strong>80%</strong> de la leçon principale pour débloquer la vidéo récapitulative.</p>
+                <div style="margin-top:0.5rem;">
+                  <div style="font-size:0.85rem; color:var(--primary-light);" id="recapUnlockPct">0% regardé</div>
+                </div>
+              </div>
+              <!-- Recap content (hidden until unlocked) -->
+              <div id="recapContent" style="display:none; width:100%; height:100%; position:relative;">
+                <div class="video-placeholder-msg" id="recapPlaceholder">
+                  <span class="big-icon">🎬</span>
+                  <strong style="color:var(--text-primary);">Aucune vidéo récapitulative</strong>
+                  <span>L'administrateur n'a pas encore ajouté de vidéo récap pour cette leçon.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Sidebar -->
+      <div class="lesson-sidebar">
+        <!-- Progress Card -->
+        <div class="sidebar-card glass-card">
+          <div class="sidebar-card-title">Lesson Progress</div>
+          <div class="progress-bar" style="margin-bottom:0.5rem;">
+            <div class="progress-fill" id="lessonProgressFill" style="width:0%;"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:var(--text-muted);">
+            <span id="progressPct">0% complete</span>
+            <span id="progressTime">0 / 42 min</span>
+          </div>
+        </div>
+
+        <!-- Chapters -->
+        <div class="sidebar-card glass-card">
+          <div class="sidebar-card-title">Chapters</div>
+          <div class="chapter-list" id="chapterList"></div>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="sidebar-card glass-card">
+          <div class="sidebar-card-title">What's Next?</div>
+          <div class="next-actions">
+            <a href="quiz.html" class="btn btn-primary">🧠 Take the Quiz</a>
+            <a href="vr-game.html" class="btn btn-ghost">🥽 VR Simulation</a>
+            <a href="lessons.html" class="btn btn-ghost">← All Lessons</a>
+          </div>
+        </div>
+
+        <!-- Rating Card -->
+        <div class="sidebar-card glass-card">
+          <div class="sidebar-card-title">Rate this Lesson</div>
+          <div id="starRating" style="display:flex; gap:0.5rem; font-size:1.5rem; cursor:pointer; margin-bottom:0.75rem;">
+            <span onclick="rate(1)">⭐</span>
+            <span onclick="rate(2)">⭐</span>
+            <span onclick="rate(3)">⭐</span>
+            <span onclick="rate(4)">⭐</span>
+            <span onclick="rate(5)">⭐</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--text-muted);">⭐ 4.9 average from 2,341 learners</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const currentUser = JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
+  if (!currentUser) window.location.href = 'auth.html';
+  function logout() { localStorage.removeItem('eduverse_current_user'); window.location.href = '../index.html'; }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const lessonId = parseInt(urlParams.get('id') || '1');
+
+  const LESSONS = {
+    1: { emoji:'🌍', title:'African Cultural Heritage', category:'History', difficulty:'Beginner', duration:42, rating:4.9, students:2341,
+      summary:['West African civilisations like Mali, Songhai, and Ghana shaped global trade routes through the Sahara.','Oral tradition (griots) served as the living libraries of history, genealogy, and culture.','Traditional art forms — kente weaving, bronze casting, wood carving — carry deep symbolic meaning.','The Transatlantic Slave Trade disrupted centuries of cultural continuity, but diaspora communities preserved traditions.','Contemporary African artists are reclaiming and reimagining cultural heritage in global contexts.'],
+      chapters:['Introduction to West Africa', 'Ancient Empires & Trade', 'Art & Expression', 'Colonial Impact', 'Modern Heritage']
+    },
+    2: { emoji:'🔬', title:'Cellular Biology Fundamentals', category:'Science', difficulty:'Intermediate', duration:35, rating:4.8, students:1876,
+      summary:['All living organisms are made of cells — the fundamental unit of life.','Prokaryotic cells (bacteria) lack a nucleus; eukaryotic cells have a membrane-bound nucleus.','The cell membrane controls what enters and leaves the cell through selective permeability.','Mitochondria produce ATP energy through cellular respiration — "the powerhouse of the cell".','Cell division (mitosis and meiosis) is essential for growth, repair, and reproduction.'],
+      chapters:['What is a Cell?', 'Cell Types', 'Cell Membrane', 'Organelles Deep Dive', 'Cell Division']
+    },
+    3: { emoji:'🗣️', title:'Dioula Language Essentials', category:'Language', difficulty:'Beginner', duration:28, rating:4.7, students:934,
+      summary:['Dioula is a Mande language spoken by millions across West Africa (Côte d\'Ivoire, Burkina Faso, Mali).','It is a tonal language — pitch and tone change meaning significantly.','Basic greetings: "I ni sɔgɔma" (good morning), "I ni wula" (good evening).','Numbers from 1–20: kelen, fila, saba, naani, duuru…','Common marketplace phrases for buying, selling, and bargaining.'],
+      chapters:['Alphabet & Tones', 'Greetings', 'Numbers', 'Marketplace Phrases', 'Simple Sentences']
+    }
+  };
+
+  const lesson = LESSONS[lessonId] || LESSONS[1];
+
+  // Set lesson info
+  document.title = `${lesson.title} — EduVerse`;
+  document.getElementById('lessonTitle').textContent = lesson.title;
+  document.getElementById('lessonBadges').innerHTML = `
+    <span class="badge badge-primary">${lesson.category}</span>
+    <span class="badge badge-success">${lesson.difficulty}</span>
+  `;
+  document.getElementById('lessonMeta').innerHTML = `
+    <span>⏱ ${lesson.duration} min</span>
+    <span>👥 ${lesson.students.toLocaleString()} learners</span>
+    <span>⭐ ${lesson.rating}</span>
+  `;
+
+  // Summary points
+  const summaryEl = document.getElementById('summaryPoints');
+  lesson.summary.forEach(point => {
+    summaryEl.innerHTML += `
+      <div class="summary-point">
+        <span class="summary-point-icon">✅</span>
+        <span class="summary-point-text">${point}</span>
+      </div>
+    `;
+  });
+
+  // Chapters
+  const chaptersEl = document.getElementById('chapterList');
+  lesson.chapters.forEach((ch, i) => {
+    chaptersEl.innerHTML += `
+      <div class="chapter-item ${i === 0 ? 'active' : ''}" onclick="selectChapter(${i}, this)">
+        <span class="chapter-num">${i+1}</span>
+        <span>${ch}</span>
+        ${i === 0 ? '<span class="chapter-done">✓</span>' : ''}
+      </div>
+    `;
+  });
+
+  function selectChapter(i, el) {
+    document.querySelectorAll('.chapter-item').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Video simulation
+  let isPlaying = false;
+  let videoProgress = 0;
+  let videoInterval = null;
+  let speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+  let speedIdx = 2;
+
+  function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s.toString().padStart(2,'0')}`;
+  }
+
+  const totalSeconds = lesson.duration * 60;
+
+  function startVideo() {
+    document.getElementById('videoPlaceholder').style.display = 'none';
+    document.getElementById('videoControls').style.display = 'flex';
+    document.getElementById('videoContainer').style.background = 'linear-gradient(135deg, #0D0D2B, #1a0a3b)';
+    document.getElementById('videoContainer').innerHTML += `<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:4rem;pointer-events:none;">${lesson.emoji}</div>`;
+    isPlaying = true;
+    startProgress();
+  }
+
+  let canAccessRecap = false;
+
+  function startProgress() {
+    videoInterval = setInterval(() => {
+      if (!isPlaying) return;
+      videoProgress += speeds[speedIdx];
+      if (videoProgress >= totalSeconds) { videoProgress = totalSeconds; clearInterval(videoInterval); }
+      const pct = (videoProgress / totalSeconds) * 100;
+      document.getElementById('videoProgressFill').style.width = pct + '%';
+      document.getElementById('videoTime').textContent = `${formatTime(videoProgress)} / ${formatTime(totalSeconds)}`;
+      document.getElementById('lessonProgressFill').style.width = pct + '%';
+      document.getElementById('progressPct').textContent = Math.round(pct) + '% complete';
+      document.getElementById('progressTime').textContent = `${Math.round(videoProgress/60)} / ${lesson.duration} min`;
+
+      // Unlock Recap at 80%
+      if (pct >= 80 && !canAccessRecap) {
+        canAccessRecap = true;
+        const recapBtn = document.getElementById('tabBtn-recap');
+        recapBtn.style.opacity = '1';
+        recapBtn.textContent = '🎬 Vidéo Récap ✅';
+        recapBtn.title = 'Disponible !';
+        document.getElementById('recapLock').style.display = 'none';
+        document.getElementById('recapContent').style.display = 'block';
+        EduVerse.Toast.show('🎉 Vidéo récapitulative débloquée !', 'success');
+      } else if (!canAccessRecap) {
+        document.getElementById('recapUnlockPct').textContent = Math.round(pct) + '% regardé';
+      }
+    }, 1000);
+  }
+
+  function togglePlay() {
+    isPlaying = !isPlaying;
+    document.getElementById('playPauseBtn').textContent = isPlaying ? '⏸' : '▶';
+  }
+
+  function seekVideo(e) {
+    const bar = e.currentTarget;
+    const rect = bar.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    videoProgress = pct * totalSeconds;
+  }
+
+  function cycleSpeed() {
+    speedIdx = (speedIdx + 1) % speeds.length;
+    document.getElementById('speedBtn').textContent = speeds[speedIdx] + '×';
+  }
+
+  // Navigation Tabs
+  function switchLessonTab(tabId, el) {
+    if (tabId === 'recap' && !canAccessRecap) {
+      showToast('⚠️ Finissez au moins 80% de la leçon pour débloquer le récap !', 'info');
+      return;
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+    el.classList.add('active');
+    document.getElementById(`tab-${tabId}`).classList.add('active');
+
+    // Load video if it's pre or recap
+    if (tabId === 'pre') loadSpecialVideo('intro', 'introVideoPanel', 'introPlaceholder');
+    if (tabId === 'recap') loadSpecialVideo('recap', 'recapContent', 'recapPlaceholder');
+  }
+
+
+
+  function loadSpecialVideo(type, containerId, placeholderId) {
+    const videoData = JSON.parse(localStorage.getItem('eduverse_lesson_videos') || '{}');
+    const url = videoData[lessonId]?.[type];
+    const container = document.getElementById(containerId);
+
+    if (!url) return; // Keep placeholder
+
+    document.getElementById(placeholderId).style.display = 'none';
+
+    let html = '';
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      const vidId = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
+      html = `<iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe>`;
+    } else {
+      html = `<video src="${url}" controls poster="../assets/video-poster.jpg"></video>`;
+    }
+    container.innerHTML = html;
+  }
+
+  const subtitleTexts = {
+    EN: '"Welcome to this lesson. In this video, we will explore the fascinating world of African cultural heritage — from ancient kingdoms to modern expressions of identity, art, and tradition."',
+    FR: '"Bienvenue dans cette leçon. Dans cette vidéo, nous explorerons le monde fascinant du patrimoine culturel africain — des royaumes anciens aux expressions modernes d\'identité, d\'art et de tradition."',
+    DIO: '"Bisimila o kɛnɛ. O jɛlini kɔnɔ, an bɛna Afrika jɛkabaara ɲagami ka sɔrɔ — kungo jamana kɔrɔ fɔ sisan."',
+    BAO: '"Akwaba ɛ klɛ yi mu. Ɛ video yi mu, é ka Africa adi gua ba su talɔ — amuin blɔli kɔ sue nin yi."'
+  };
+
+  function setSubtitle(lang, el) {
+    document.querySelectorAll('.subtitle-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('subtitleText').textContent = subtitleTexts[lang];
+  }
+
+  // Notes
+  const notesKey = `eduverse_notes_${lessonId}`;
+  const savedNotes = localStorage.getItem(notesKey) || '';
+  document.getElementById('notesArea').value = savedNotes;
+
+  function saveNotes() {
+    const notes = document.getElementById('notesArea').value;
+    localStorage.setItem(notesKey, notes);
+    alert('✅ Notes saved!');
+  }
+
+  function rate(stars) {
+    const starEl = document.getElementById('starRating');
+    starEl.querySelectorAll('span').forEach((s, i) => {
+      s.textContent = i < stars ? '⭐' : '☆';
+    });
+  }
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>
