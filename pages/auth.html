@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign In / Register — EduVerse</title>
-  <meta name="description" content="Create your free EduVerse account or sign in to continue your learning journey." />
+  <title>Connexion / Inscription — Sigma Learn</title>
+  <meta name="description" content="Créez votre compte gratuit Sigma Learn ou connectez-vous pour continuer votre apprentissage." />
   <link rel="stylesheet" href="../css/main.css" />
   <link rel="stylesheet" href="../css/animations.css" />
   <link rel="stylesheet" href="../css/components.css" />
@@ -20,8 +20,8 @@
 
     /* Left Panel */
     .auth-panel-left {
-      background: radial-gradient(ellipse at 30% 50%, rgba(124,58,237,0.35) 0%, transparent 60%),
-                  radial-gradient(ellipse at 80% 20%, rgba(0,212,255,0.2) 0%, transparent 50%),
+      background: radial-gradient(ellipse at 30% 50%, rgba(255, 143, 0,0.35) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 20%, rgba(46, 125, 50,0.2) 0%, transparent 50%),
                   var(--bg-surface);
       display: flex;
       flex-direction: column;
@@ -125,7 +125,7 @@
     .auth-tab.active {
       background: var(--primary);
       color: white;
-      box-shadow: 0 2px 12px rgba(124,58,237,0.4);
+      box-shadow: 0 2px 12px rgba(255, 143, 0,0.4);
     }
 
     .auth-form { display: flex; flex-direction: column; gap: 1rem; }
@@ -216,8 +216,8 @@
 <body>
 
 <div style="display:flex; justify-content:space-between; position:fixed; top:1.5rem; left:1.5rem; right:1.5rem; z-index:10; pointer-events:none;">
-  <a href="../index.html" class="back-home" style="position:static; pointer-events:auto;">← Back to Home</a>
-  <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem; pointer-events:auto;"><span class="theme-toggle-icon">☀️</span></button>
+  <a href="../index.html" class="back-home" style="position:static; pointer-events:auto;">← Retour à l'accueil</a>
+  <button class="btn btn-ghost btn-icon" onclick="SigmaLearn.Theme.toggle()" title="Basculer le thème" style="padding:0.4rem; pointer-events:auto;"><span class="theme-toggle-icon">☀️</span></button>
 </div>
 
 <div class="auth-page">
@@ -226,48 +226,48 @@
     <div class="brand animate-fadeInDown">
       <div class="nav-logo">
         <div class="nav-logo-icon">🎓</div>
-        EduVerse
+        Sigma Learn
       </div>
     </div>
 
     <div class="auth-feature-list animate-fadeInUp">
       <div class="auth-feature-item">
-        <div class="auth-feature-icon" style="background: rgba(124,58,237,0.2);">🎥</div>
+        <div class="auth-feature-icon" style="background: rgba(255, 143, 0,0.2);">🗣️</div>
         <div>
-          <h2>148+ Expert Video Lessons</h2>
-          <p>HD lessons across history, science, language and culture — watchable at your own pace.</p>
+          <h2>Apprentissage ciblé du Djoula</h2>
+          <p>Des leçons spécifiques et pratiques pour maîtriser le Djoula à votre rythme.</p>
         </div>
       </div>
       <div class="auth-feature-item">
-        <div class="auth-feature-icon" style="background: rgba(0,212,255,0.15);">🥽</div>
+        <div class="auth-feature-icon" style="background: rgba(46, 125, 50,0.15);">🎤</div>
         <div>
-          <h2>Immersive VR Simulations</h2>
-          <p>Step into virtual environments that bring complex topics to life.</p>
+          <h2>Mises en situation pratiques</h2>
+          <p>Plongez dans des environnements interactifs pour pratiquer vos acquis.</p>
         </div>
       </div>
       <div class="auth-feature-item">
         <div class="auth-feature-icon" style="background: rgba(16,185,129,0.15);">🏆</div>
         <div>
-          <h2>Earn Badges & Certificates</h2>
-          <p>Get recognized for your achievements with shareable digital credentials.</p>
+          <h2>Gagnez Badges et Certificats</h2>
+          <p>Faites reconnaître vos progrès avec des récompenses virtuelles.</p>
         </div>
       </div>
       <div class="auth-feature-item">
         <div class="auth-feature-icon" style="background: rgba(245,158,11,0.15);">💬</div>
         <div>
-          <h2>Thriving Community</h2>
-          <p>45,000+ active learners in subject-specific groups and chat rooms.</p>
+          <h2>Communauté Active</h2>
+          <p>Échangez avec d'autres apprenants passionnés par le Djoula.</p>
         </div>
       </div>
     </div>
 
     <div class="auth-testimonial animate-fadeInUp delay-400">
-      <p>"EduVerse completely transformed how I learn. The VR simulations made history come alive — I felt like I was actually there!"</p>
+      <p>"Sigma Learn a complètement transformé ma façon d'apprendre. Les mises en situation rendent la pratique vivante !"</p>
       <div class="reviewer">
         <div class="reviewer-avatar">👩🏾</div>
         <div>
           <div class="reviewer-name">Aminata Koné</div>
-          <div class="reviewer-title">Student, Abidjan · ⭐⭐⭐⭐⭐</div>
+          <div class="reviewer-title">Apprenante, Abidjan · ⭐⭐⭐⭐⭐</div>
         </div>
       </div>
     </div>
@@ -277,14 +277,14 @@
   <div class="auth-panel-right">
     <div class="auth-form-container animate-fadeInUp">
       <div style="text-align:center; margin-bottom:2rem;">
-        <h2 style="margin-bottom:0.5rem;">Welcome to EduVerse</h2>
-        <p>Your journey to smarter learning starts here.</p>
+        <h2 style="margin-bottom:0.5rem;">Bienvenue sur Sigma Learn</h2>
+        <p>Votre voyage pour maîtriser le Djoula commence ici.</p>
       </div>
 
       <!-- Tabs -->
       <div class="auth-tabs">
-        <button class="auth-tab active" id="loginTab" onclick="switchTab('login')">Sign In</button>
-        <button class="auth-tab" id="registerTab" onclick="switchTab('register')">Register</button>
+        <button class="auth-tab active" id="loginTab" onclick="switchTab('login')">Se connecter</button>
+        <button class="auth-tab" id="registerTab" onclick="switchTab('register')">S'inscrire</button>
       </div>
 
       <!-- Error Message -->
@@ -293,33 +293,33 @@
       <!-- LOGIN FORM -->
       <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
         <div class="input-group">
-          <label for="loginEmail">Email Address</label>
+          <label for="loginEmail">Adresse E-mail</label>
           <div class="input-icon-wrap">
             <span class="input-icon">📧</span>
-            <input id="loginEmail" type="email" class="input" placeholder="you@example.com" required />
+            <input id="loginEmail" type="email" class="input" placeholder="vous@exemple.com" required />
           </div>
         </div>
         <div class="input-group">
-          <label for="loginPassword">Password</label>
+          <label for="loginPassword">Mot de passe</label>
           <div class="input-icon-wrap">
             <span class="input-icon">🔒</span>
             <input id="loginPassword" type="password" class="input" placeholder="••••••••" required />
           </div>
         </div>
         <div style="text-align:right; margin-top:-0.5rem;">
-          <a href="#" style="font-size:0.8rem; color:var(--text-muted);">Forgot password?</a>
+          <a href="#" style="font-size:0.8rem; color:var(--text-muted);">Mot de passe oublié ?</a>
         </div>
         <button type="submit" class="btn btn-primary w-full btn-lg" id="loginBtn">
-          Sign In →
+          Se connecter →
         </button>
 
-        <div class="auth-divider"><span>OR CONTINUE WITH</span></div>
+        <div class="auth-divider"><span>OU CONTINUER AVEC</span></div>
         <div class="social-btns">
           <button type="button" class="social-btn">🌐 Google</button>
           <button type="button" class="social-btn">📘 Facebook</button>
         </div>
         <p style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-top:1rem;">
-          Don't have an account? <a href="#" onclick="switchTab('register')" style="color:var(--primary-light);">Register free</a>
+          Pas encore de compte ? <a href="#" onclick="switchTab('register')" style="color:var(--primary-light);">Créer un compte gratuitement</a>
         </p>
       </form>
 
@@ -327,33 +327,33 @@
       <form class="auth-form" id="registerForm" style="display:none;" onsubmit="handleRegister(event)">
         <div class="form-row">
           <div class="input-group">
-            <label for="regFirstName">First Name</label>
+            <label for="regFirstName">Prénom</label>
             <input id="regFirstName" type="text" class="input" placeholder="Aminata" required />
           </div>
           <div class="input-group">
-            <label for="regLastName">Last Name</label>
+            <label for="regLastName">Nom</label>
             <input id="regLastName" type="text" class="input" placeholder="Koné" required />
           </div>
         </div>
         <div class="input-group">
-          <label for="regEmail">Email Address</label>
+          <label for="regEmail">Adresse E-mail</label>
           <div class="input-icon-wrap">
             <span class="input-icon">📧</span>
-            <input id="regEmail" type="email" class="input" placeholder="you@example.com" required />
+            <input id="regEmail" type="email" class="input" placeholder="vous@exemple.com" required />
           </div>
         </div>
         <div class="input-group">
-          <label for="regPhone">Phone Number (optional)</label>
+          <label for="regPhone">Numéro de Téléphone (optionnel)</label>
           <div class="input-icon-wrap">
             <span class="input-icon">📱</span>
             <input id="regPhone" type="tel" class="input" placeholder="+225 XX XX XX XX" />
           </div>
         </div>
         <div class="input-group">
-          <label for="regPassword">Password</label>
+          <label for="regPassword">Mot de passe</label>
           <div class="input-icon-wrap">
             <span class="input-icon">🔒</span>
-            <input id="regPassword" type="password" class="input" placeholder="Min. 8 characters" required oninput="checkStrength(this.value)" />
+            <input id="regPassword" type="password" class="input" placeholder="Min. 8 caractères" required oninput="checkStrength(this.value)" />
           </div>
           <div class="password-strength">
             <div class="strength-bar" id="strengthBar"></div>
@@ -363,20 +363,20 @@
         <div class="checkbox-group">
           <input type="checkbox" id="agreeTerms" required />
           <label for="agreeTerms">
-            I agree to the <a href="privacy.html">Privacy Policy</a> and <a href="#">Terms of Service</a>. I understand my data is secure.
+            J'accepte la <a href="privacy.html">Politique de Confidentialité</a> et les <a href="#">Conditions d'Utilisation</a>. Mes données sont sécurisées.
           </label>
         </div>
         <button type="submit" class="btn btn-primary w-full btn-lg" id="registerBtn">
-          Create Free Account 🚀
+          Créer un Compte Gratuit 🚀
         </button>
 
-        <div class="auth-divider"><span>OR CONTINUE WITH</span></div>
+        <div class="auth-divider"><span>OU CONTINUER AVEC</span></div>
         <div class="social-btns">
           <button type="button" class="social-btn">🌐 Google</button>
           <button type="button" class="social-btn">📘 Facebook</button>
         </div>
         <p style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-top:1rem;">
-          Already have an account? <a href="#" onclick="switchTab('login')" style="color:var(--primary-light);">Sign in</a>
+          Vous avez déjà un compte ? <a href="#" onclick="switchTab('login')" style="color:var(--primary-light);">Se connecter</a>
         </p>
       </form>
     </div>
@@ -423,7 +423,7 @@
     const password = document.getElementById('loginPassword').value;
     const btn = document.getElementById('loginBtn');
 
-    btn.textContent = 'Signing in...';
+    btn.textContent = 'Connexion en cours...';
     btn.disabled = true;
 
     try {
@@ -432,33 +432,29 @@
         const cred = await window.auth.signInWithEmailAndPassword(email, password);
         const userDoc = await window.db.collection('users').doc(email).get();
         if (userDoc.exists) {
-          localStorage.setItem('eduverse_current_user', JSON.stringify(userDoc.data()));
+          localStorage.setItem('sigma_current_user', JSON.stringify(userDoc.data()));
         } else {
           // Fallback if doc doesn't exist but auth exists
-          const mockUser = { firstName: cred.user.displayName || 'User', lastName: '', email, role: 'student', points: 0, level: 1 };
-          localStorage.setItem('eduverse_current_user', JSON.stringify(mockUser));
+          const mockUser = { firstName: cred.user.displayName || 'Utilisateur', lastName: '', email, role: 'student', points: 0, level: 1 };
+          localStorage.setItem('sigma_current_user', JSON.stringify(mockUser));
         }
         window.location.href = 'dashboard.html';
       } else {
         // Local fallback
-        const users = JSON.parse(localStorage.getItem('eduverse_users') || '[]');
+        const users = JSON.parse(localStorage.getItem('sigma_users') || '[]');
         const user = users.find(u => u.email === email && u.password === password);
         if (user) {
-          localStorage.setItem('eduverse_current_user', JSON.stringify(user));
+          localStorage.setItem('sigma_current_user', JSON.stringify(user));
           window.location.href = 'dashboard.html';
-        } else if (email === 'admin@eduverse.com' && password === 'admin123') {
-          const admin = { firstName: 'Admin', lastName: 'User', email, role: 'admin', points: 9999, level: 50 };
-          localStorage.setItem('eduverse_current_user', JSON.stringify(admin));
-          window.location.href = 'admin.html';
         } else {
-          showError('Invalid email or password. Try registering a new account.');
-          btn.textContent = 'Sign In →';
+          showError('Email ou mot de passe invalide. Essayez de créer un compte.');
+          btn.textContent = 'Se connecter →';
           btn.disabled = false;
         }
       }
     } catch (err) {
-      showError(err.message || 'Invalid email or password.');
-      btn.textContent = 'Sign In →';
+      showError(err.message || 'Email ou mot de passe invalide.');
+      btn.textContent = 'Se connecter →';
       btn.disabled = false;
     }
   }
@@ -472,9 +468,9 @@
     const phone = document.getElementById('regPhone').value.trim();
     const btn = document.getElementById('registerBtn');
 
-    if (password.length < 8) { showError('Password must be at least 8 characters.'); return; }
+    if (password.length < 8) { showError('Le mot de passe doit faire au moins 8 caractères.'); return; }
 
-    btn.textContent = 'Creating account...';
+    btn.textContent = 'Création du compte...';
     btn.disabled = true;
 
     const newUser = {
@@ -495,25 +491,25 @@
         // Save to Firestore
         await window.db.collection('users').doc(email).set(newUser);
         
-        localStorage.setItem('eduverse_current_user', JSON.stringify(newUser));
+        localStorage.setItem('sigma_current_user', JSON.stringify(newUser));
         window.location.href = 'dashboard.html';
       } else {
         // Local Fallback
-        const users = JSON.parse(localStorage.getItem('eduverse_users') || '[]');
+        const users = JSON.parse(localStorage.getItem('sigma_users') || '[]');
         if (users.find(u => u.email === email)) {
-          showError('An account with this email already exists.');
-          btn.textContent = 'Create Free Account 🚀';
+          showError('Un compte avec cet email existe déjà.');
+          btn.textContent = 'Créer un Compte Gratuit 🚀';
           btn.disabled = false;
           return;
         }
         users.push({ ...newUser, password }); // Save pass for local mock
-        localStorage.setItem('eduverse_users', JSON.stringify(users));
-        localStorage.setItem('eduverse_current_user', JSON.stringify(newUser));
+        localStorage.setItem('sigma_users', JSON.stringify(users));
+        localStorage.setItem('sigma_current_user', JSON.stringify(newUser));
         window.location.href = 'dashboard.html';
       }
     } catch (err) {
-      showError(err.message || 'Registration failed.');
-      btn.textContent = 'Create Free Account 🚀';
+      showError(err.message || 'L\\'inscription a échoué.');
+      btn.textContent = 'Créer un Compte Gratuit 🚀';
       btn.disabled = false;
     }
   }
@@ -529,10 +525,10 @@
 
     const configs = [
       { width: '0%', color: '', text: '' },
-      { width: '25%', color: '#EF4444', text: '⚠️ Weak' },
-      { width: '50%', color: '#F59E0B', text: '⚡ Fair' },
-      { width: '75%', color: '#3B82F6', text: '✅ Good' },
-      { width: '100%', color: '#10B981', text: '🔐 Strong' }
+      { width: '25%', color: '#EF4444', text: '⚠️ Faible' },
+      { width: '50%', color: '#F59E0B', text: '⚡ Moyen' },
+      { width: '75%', color: '#3B82F6', text: '✅ Bon' },
+      { width: '100%', color: '#10B981', text: '🔐 Fort' }
     ];
 
     bar.style.width = configs[strength].width;

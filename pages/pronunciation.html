@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pronunciation Lab — EduVerse</title>
-  <meta name="description" content="Practice your pronunciation and get instant feedback in the EduVerse Pronunciation Lab." />
+  <title>Prononciation — Sigma Learn</title>
+  <meta name="description" content="Pratiquez votre prononciation du Djoula et obtenez un retour instantané." />
   <link rel="stylesheet" href="../css/main.css" />
   <link rel="stylesheet" href="../css/animations.css" />
   <link rel="stylesheet" href="../css/components.css" />
@@ -61,18 +61,18 @@
     }
     
     .listen-btn {
-      background: rgba(124,58,237,0.15);
+      background: rgba(255, 143, 0,0.15);
       color: var(--primary-light);
-      border: 2px solid rgba(124,58,237,0.3);
+      border: 2px solid rgba(255, 143, 0,0.3);
     }
-    .listen-btn:hover { background: rgba(124,58,237,0.25); transform: scale(1.05); }
+    .listen-btn:hover { background: rgba(255, 143, 0,0.25); transform: scale(1.05); }
     
     .speak-btn {
-      background: rgba(0,212,255,0.15);
+      background: rgba(46, 125, 50,0.15);
       color: var(--accent);
-      border: 2px solid rgba(0,212,255,0.3);
+      border: 2px solid rgba(46, 125, 50,0.3);
     }
-    .speak-btn:hover { background: rgba(0,212,255,0.25); transform: scale(1.05); }
+    .speak-btn:hover { background: rgba(46, 125, 50,0.25); transform: scale(1.05); }
     .speak-btn.recording {
       background: rgba(239,68,68,0.2);
       color: var(--danger);
@@ -139,16 +139,16 @@
 <nav class="navbar scrolled">
   <div class="container">
     <div class="nav-inner">
-      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>EduVerse</a>
+      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>Sigma Learn</a>
       <ul class="nav-links">
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="lessons.html">Lessons</a></li>
-        <li><a href="community.html">Community</a></li>
-        <li><a href="profile.html">Profile</a></li>
+        <li><a href="dashboard.html">Tableau de bord</a></li>
+        <li><a href="lessons.html">Leçons</a></li>
+        <li><a href="community.html">Communauté</a></li>
+        <li><a href="profile.html">Profil</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
-        <button class="btn btn-danger btn-sm" onclick="logout()">Sign Out</button>
+        <button class="btn btn-ghost btn-icon" onclick="SigmaLearn.Theme.toggle()" title="Basculer le thème" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Se déconnecter</button>
       </div>
     </div>
   </div>
@@ -157,17 +157,17 @@
 <div class="app-layout">
   <aside class="sidebar">
     <div class="sidebar-menu">
-      <div class="sidebar-section-label">Main</div>
-      <li class="list-none"><a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a></li>
-      <li class="list-none"><a href="lessons.html" class="sidebar-link"><span class="icon">📚</span> My Lessons</a></li>
-      <li class="list-none"><a href="history.html" class="sidebar-link"><span class="icon">📜</span> History</a></li>
-      <div class="sidebar-section-label">Learn</div>
-      <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quizzes</a></li>
-      <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🥽</span> VR Simulation</a></li>
-      <li class="list-none"><a href="pronunciation.html" class="sidebar-link active"><span class="icon">🗣️</span> Pronunciation Lab</a></li>
+      <div class="sidebar-section-label">Principal</div>
+      <li class="list-none"><a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Tableau de bord</a></li>
+      <li class="list-none"><a href="lessons.html" class="sidebar-link"><span class="icon">📚</span> Mes Leçons</a></li>
+      <li class="list-none"><a href="history.html" class="sidebar-link"><span class="icon">📜</span> Historique</a></li>
+      <div class="sidebar-section-label">Apprendre</div>
+      <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quiz</a></li>
+      <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🎤</span> Mise en situation</a></li>
+      <li class="list-none"><a href="pronunciation.html" class="sidebar-link active"><span class="icon">🗣️</span> Prononciation</a></li>
       <div class="sidebar-section-label">Social</div>
-      <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Community</a></li>
-      <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a></li>
+      <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Communauté</a></li>
+      <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> Mon Profil</a></li>
     </div>
   </aside>
 
@@ -175,56 +175,56 @@
     
     <div id="labContainer" class="lab-container animate-fadeInUp">
       <div class="page-header" style="margin-bottom:2rem; text-align:center;">
-        <h2>Pronunciation Lab 🗣️</h2>
-        <p class="text-secondary">Listen to native pronunciation and practice speaking to earn XP!</p>
+        <h2>Laboratoire de Prononciation 🗣️</h2>
+        <p class="text-secondary">Écoutez la prononciation et entraînez-vous à parler Djoula pour gagner de l'XP !</p>
       </div>
 
       <div class="lang-selector">
-        <button class="lang-chip active" onclick="setLanguage('en-US')">🇬🇧 English</button>
-        <button class="lang-chip" onclick="setLanguage('fr-FR')">🇫🇷 Français</button>
+        <button class="lang-chip active" onclick="setLanguage('djoula-1')">Niveau 1</button>
+        <button class="lang-chip" onclick="setLanguage('djoula-2')">Niveau 2</button>
       </div>
 
       <div class="glass-card word-card">
-        <div class="current-word" id="wordDisplay">Loading...</div>
+        <div class="current-word" id="wordDisplay">Chargement...</div>
         <div class="word-translation" id="translationDisplay">...</div>
 
         <div class="action-buttons">
-          <button class="listen-btn" onclick="playCurrentWord()" title="Listen to Native Pronunciation">🔊</button>
-          <button class="speak-btn" id="recordVoiceBtn" onclick="startRecognition()" title="Click to Speak">🎙️</button>
+          <button class="listen-btn" onclick="playCurrentWord()" title="Écouter la prononciation">🔊</button>
+          <button class="speak-btn" id="recordVoiceBtn" onclick="startRecognition()" title="Cliquez pour parler">🎙️</button>
         </div>
         
         <div class="feedback-area" id="feedbackMsg"></div>
       </div>
       
       <div style="text-align:center; margin-top:2rem;">
-        <button class="btn btn-ghost" onclick="nextWord()">Skip Word ⏭️</button>
+        <button class="btn btn-ghost" onclick="nextWord()">Passer au mot suivant ⏭️</button>
       </div>
     </div>
 
     <!-- Level Lock Splash -->
     <div id="labLockedSplash" class="glass-card lock-splash animate-fadeInUp" style="display:none;">
       <div class="lock-splash-icon">🔒</div>
-      <h2>Pronunciation Lab Locked</h2>
-      <p>The Pronunciation Lab relies on advanced speech recognition. Reach <strong>Level 2</strong> to unlock this module!</p>
+      <h2>Accès Verrouillé</h2>
+      <p>Le laboratoire utilise une reconnaissance vocale avancée. Atteignez le <strong>Niveau 2</strong> pour débloquer ce module !</p>
       <div style="width:100%; max-width:400px; margin-bottom:2rem;">
         <div class="progress-bar">
           <div id="lockProgressFill" class="progress-fill" style="width:0%;"></div>
         </div>
         <div style="display:flex; justify-content:space-between; margin-top:0.5rem; font-size:0.8rem;">
-          <span id="lockCurrentLevel">Level 1</span>
-          <span>Level 2 (Target)</span>
+          <span id="lockCurrentLevel">Niveau 1</span>
+          <span>Niveau 2 (Cible)</span>
         </div>
       </div>
-      <a href="lessons.html" class="btn btn-primary btn-lg">Complete Lessons to Gain XP →</a>
+      <a href="lessons.html" class="btn btn-primary btn-lg">Compléter des leçons pour gagner de l'XP →</a>
     </div>
 
   </main>
 </div>
 
 <script>
-  const currentUser = JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
+  const currentUser = JSON.parse(localStorage.getItem('sigma_current_user') || 'null');
   if (!currentUser) window.location.href = 'auth.html';
-  function logout() { localStorage.removeItem('eduverse_current_user'); window.location.href = '../index.html'; }
+  function logout() { localStorage.removeItem('sigma_current_user'); window.location.href = '../index.html'; }
 
   // Access Guard (Level 2 required)
   function checkAccess() {
@@ -233,39 +233,40 @@
       document.getElementById('labContainer').style.display = 'none';
       document.getElementById('labLockedSplash').style.display = 'flex';
       document.getElementById('lockProgressFill').style.width = ((user.level / 2) * 100) + '%';
-      document.getElementById('lockCurrentLevel').textContent = `Level ${user.level}`;
+      document.getElementById('lockCurrentLevel').textContent = `Niveau ${user.level}`;
       return false;
     }
     return true;
   }
 
   // Words Database
+  // We use fr-FR voice to approximate Djoula sounds as modern browsers lack native Dioula speech.
   const PACKS = {
-    'en-US': [
-      { word: 'Beautiful', translation: 'Magnifique' },
-      { word: 'Education', translation: 'Éducation' },
-      { word: 'Development', translation: 'Développement' },
-      { word: 'Architecture', translation: 'Architecture' },
-      { word: 'Environment', translation: 'Environnement' },
-      { word: 'Consciousness', translation: 'Conscience' }
+    'djoula-1': [
+      { word: 'Ini ce', translation: 'Bonjour / Merci' },
+      { word: 'Sugu', translation: 'Marché' },
+      { word: 'Ji', translation: 'Eau' },
+      { word: 'Dumu', translation: 'Manger' },
+      { word: 'Muso', translation: 'Femme' },
+      { word: 'Cɛ', translation: 'Homme' }
     ],
-    'fr-FR': [
-      { word: 'Magnifique', translation: 'Beautiful' },
-      { word: 'Développement', translation: 'Development' },
-      { word: 'Aujourd\'hui', translation: 'Today' },
-      { word: 'Extraordinaire', translation: 'Extraordinary' },
-      { word: 'Reconnaissance', translation: 'Recognition' },
-      { word: 'Accueillir', translation: 'To welcome' }
+    'djoula-2': [
+      { word: 'Ini sɔgɔma', translation: 'Bonjour (Matin)' },
+      { word: 'Kelen', translation: 'Un (1)' },
+      { word: 'Fila', translation: 'Deux (2)' },
+      { word: 'Saba', translation: 'Trois (3)' },
+      { word: 'Tɔgɔ bi di', translation: 'Comment tu t\'appelles ?' },
+      { word: 'Ba', translation: 'Mère' }
     ]
   };
 
-  let currentLang = 'en-US';
+  let currentLang = 'djoula-1';
   let currentIndex = 0;
   let wordList = PACKS[currentLang];
 
   function setLanguage(lang) {
     document.querySelectorAll('.lang-chip').forEach(c => {
-      if(c.textContent.includes(lang === 'en-US' ? 'English' : 'Français')) c.classList.add('active');
+      if(c.textContent.includes(lang === 'djoula-1' ? 'Niveau 1' : 'Niveau 2')) c.classList.add('active');
       else c.classList.remove('active');
     });
     currentLang = lang;
@@ -292,12 +293,12 @@
   // Speech Synthesis
   function playCurrentWord() {
     if (!window.speechSynthesis) {
-      EduVerse.Toast.show('Speech Synthesis not supported in your browser.', 'error');
+      SigmaLearn.Toast.show('La synthèse vocale n\'est pas supportée par votre navigateur.', 'error');
       return;
     }
     const item = wordList[currentIndex];
     const utterance = new SpeechSynthesisUtterance(item.word);
-    utterance.lang = currentLang;
+    utterance.lang = 'fr-FR'; // Fallback to French engine for phonetic approximation
     utterance.rate = 0.85; // slightly slower for learning
     window.speechSynthesis.speak(utterance);
   }
@@ -313,7 +314,7 @@
     
     recognition.onstart = function() {
       document.getElementById('recordVoiceBtn').classList.add('recording');
-      document.getElementById('feedbackMsg').innerHTML = '<span class="text-muted">Listening...</span>';
+      document.getElementById('feedbackMsg').innerHTML = '<span class="text-muted">Écoute en cours...</span>';
     };
 
     recognition.onresult = function(event) {
@@ -328,16 +329,16 @@
       const cleanTarget = targetWord.replace(/[.,!?]/g, '');
 
       if (cleanTranscript === cleanTarget || cleanTranscript.includes(cleanTarget) || cleanTarget.includes(cleanTranscript)) {
-        feedback.innerHTML = `<span class="feedback success">✅ Excellent! You said: "${transcript}"</span>`;
-        EduVerse.Auth.addXP(15);
+        feedback.innerHTML = `<span class="feedback success">✅ Excellent! Vous avez dit: "${transcript}"</span>`;
+        SigmaLearn.Auth.addXP(15);
         setTimeout(nextWord, 2000);
       } else {
-        feedback.innerHTML = `<span class="feedback error">❌ You said: "${transcript}". Try again!</span>`;
+        feedback.innerHTML = `<span class="feedback error">❌ Vous avez dit: "${transcript}". Réessayez !</span>`;
       }
     };
 
     recognition.onerror = function(event) {
-      document.getElementById('feedbackMsg').innerHTML = `<span class="feedback error">Error: ${event.error}</span>`;
+      document.getElementById('feedbackMsg').innerHTML = `<span class="feedback error">Erreur: ${event.error}</span>`;
     };
 
     recognition.onend = function() {
@@ -347,16 +348,16 @@
 
   function startRecognition() {
     if (!SpeechRecognition) {
-      EduVerse.Toast.show('Speech Recognition is not supported in your browser. Use Chrome/Edge.', 'error');
+      SigmaLearn.Toast.show('La reconnaissance vocale n\'est pas supportée. Utilisez Chrome/Edge.', 'error');
       return;
     }
-    recognition.lang = currentLang;
+    recognition.lang = 'fr-FR'; // Fallback to French engine recognition
     recognition.start();
   }
 
   // Init
   if (checkAccess()) {
-    setLanguage('en-US'); // Will update UI automatically
+    setLanguage('djoula-1'); // Will update UI automatically
   }
 
 </script>

@@ -1,6 +1,6 @@
 /**
- * EduVerse — Global Application JS
- * Handles: Auth state, global utilities, ripple effects, toast system, tooltips
+ * Sigma Learn — Global Application JS
+ * Gère : L'état d'authentification, utilitaires globaux, effets, toasts, infobulles
  */
 
 // ============================================
@@ -55,7 +55,7 @@ initFirebase().catch(err => console.error("Firebase init failed:", err));
 const Auth = {
   getCurrentUser() {
     try {
-      return JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
+      return JSON.parse(localStorage.getItem('sigma_current_user') || 'null');
     } catch { return null; }
   },
 
@@ -64,7 +64,7 @@ const Auth = {
   },
 
   logout() {
-    localStorage.removeItem('eduverse_current_user');
+    localStorage.removeItem('sigma_current_user');
     window.location.href = this.getBasePath() + 'index.html';
   },
 
@@ -72,7 +72,7 @@ const Auth = {
     const user = this.getCurrentUser();
     if (!user) return;
     const updated = { ...user, ...updates };
-    localStorage.setItem('eduverse_current_user', JSON.stringify(updated));
+    localStorage.setItem('sigma_current_user', JSON.stringify(updated));
 
     // Sync to Firestore if Firebase available
     if (window.db && user.email) {
@@ -87,7 +87,7 @@ const Auth = {
     const newPoints = (user.points || 0) + amount;
     const newLevel = Math.floor(newPoints / 500) + 1;
     this.updateUser({ points: newPoints, level: newLevel });
-    Toast.show(`+${amount} XP earned! ⭐`, 'success');
+    Toast.show(`+${amount} XP gagnés ! ⭐`, 'success');
   },
 
   getBasePath() {
@@ -105,14 +105,14 @@ const Auth = {
 // ============================================
 const Theme = {
   init() {
-    const saved = localStorage.getItem('eduverse_theme') || 'dark';
+    const saved = localStorage.getItem('sigma_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', saved);
     this.updateIcon(saved);
   },
   toggle() {
     const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', current);
-    localStorage.setItem('eduverse_theme', current);
+    localStorage.setItem('sigma_theme', current);
     this.updateIcon(current);
   },
   updateIcon(theme) {
@@ -246,10 +246,10 @@ function initSidebar() {
 }
 
 function initSidebarLocks() {
-  const user = EduVerse.Auth.getCurrentUser();
+  const user = SigmaLearn.Auth.getCurrentUser();
   if (!user) return;
 
-  const levels = EduVerse.Auth.getAccessLevels();
+  const levels = SigmaLearn.Auth.getAccessLevels();
   const links = document.querySelectorAll('.sidebar-link');
 
   links.forEach(link => {
@@ -275,7 +275,7 @@ function initSidebarLocks() {
 
       // Prevent navigation if already on another page, or show toast
       link.onclick = (e) => {
-        EduVerse.Toast.show(`Niveau ${required} requis pour accéder à cette section !`, 'warning');
+        SigmaLearn.Toast.show(`Niveau ${required} requis pour accéder à cette section !`, 'warning');
         e.preventDefault();
         return false;
       };
@@ -378,18 +378,16 @@ const Storage = {
 // GLOBAL LESSON DATA (shared across pages)
 // ============================================
 const LESSONS_DATA = [
-  { id: 1, emoji: '🌍', title: 'African Cultural Heritage', category: 'History', difficulty: 'Beginner', duration: 42, rating: 4.9, students: 2341 },
-  { id: 2, emoji: '🔬', title: 'Cellular Biology Fundamentals', category: 'Science', difficulty: 'Intermediate', duration: 35, rating: 4.8, students: 1876 },
-  { id: 3, emoji: '🗣️', title: 'Dioula Language Essentials', category: 'Language', difficulty: 'Beginner', duration: 28, rating: 4.7, students: 934 },
-  { id: 4, emoji: '🏺', title: 'Ancient Egyptian Civilisation', category: 'History', difficulty: 'Beginner', duration: 55, rating: 4.9, students: 3200 },
-  { id: 5, emoji: '⚗️', title: 'Chemistry: Atoms & Molecules', category: 'Science', difficulty: 'Intermediate', duration: 40, rating: 4.6, students: 1100 },
-  { id: 6, emoji: '🌿', title: 'Traditional Medicinal Plants', category: 'Culture', difficulty: 'Beginner', duration: 30, rating: 4.8, students: 780 },
-  { id: 7, emoji: '📐', title: 'Euclidean Geometry Mastery', category: 'Math', difficulty: 'Intermediate', duration: 50, rating: 4.5, students: 650 },
-  { id: 8, emoji: '🦁', title: 'Wildlife of the Savannah', category: 'Science', difficulty: 'Beginner', duration: 38, rating: 4.9, students: 2100 },
-  { id: 9, emoji: '🎭', title: 'Baoulé Language & Stories', category: 'Language', difficulty: 'Beginner', duration: 32, rating: 4.8, students: 420 },
-  { id: 10, emoji: '🌌', title: 'Stars & the Universe', category: 'Science', difficulty: 'Advanced', duration: 60, rating: 4.9, students: 1560 },
-  { id: 11, emoji: '🎵', title: 'West African Musical Traditions', category: 'Culture', difficulty: 'Beginner', duration: 25, rating: 4.7, students: 890 },
-  { id: 12, emoji: '📊', title: 'Statistics & Data Literacy', category: 'Math', difficulty: 'Intermediate', duration: 45, rating: 4.6, students: 720 },
+  { id: 1, emoji: '🗣️', title: 'Les bases du Djoula', category: 'Débutant', difficulty: 'Facile', duration: 45, rating: 4.9, students: 3120 },
+  { id: 2, emoji: '👋', title: 'Salutations et Présentations', category: 'Conversation', difficulty: 'Facile', duration: 30, rating: 4.8, students: 2854 },
+  { id: 3, emoji: '🛒', title: 'Au Marché : Négocier les prix', category: 'Pratique', difficulty: 'Moyen', duration: 40, rating: 4.7, students: 1940 },
+  { id: 4, emoji: '🔢', title: 'Les Nombres et le Temps', category: 'Vocabulaire', difficulty: 'Facile', duration: 35, rating: 4.9, students: 2310 },
+  { id: 5, emoji: '👨‍👩‍👧', title: 'La Famille et les Proches', category: 'Vocabulaire', difficulty: 'Moyen', duration: 40, rating: 4.8, students: 1650 },
+  { id: 6, emoji: '🍲', title: 'Nourriture et Restauration', category: 'Pratique', difficulty: 'Moyen', duration: 45, rating: 4.6, students: 1420 },
+  { id: 7, emoji: '🚌', title: 'Voyager et se déplacer', category: 'Conversation', difficulty: 'Moyen', duration: 30, rating: 4.7, students: 1280 },
+  { id: 8, emoji: '❤️', title: 'Sentiments et Émotions', category: 'Vocabulaire', difficulty: 'Avancé', duration: 50, rating: 4.9, students: 850 },
+  { id: 9, emoji: '📖', title: 'Grammaire Essentielle : Les Pronoms', category: 'Grammaire', difficulty: 'Avancé', duration: 60, rating: 4.5, students: 780 },
+  { id: 10, emoji: '🏙️', title: 'Décrire sa Ville en Djoula', category: 'Pratique', difficulty: 'Avancé', duration: 55, rating: 4.8, students: 910 }
 ];
 
 // ============================================
@@ -397,8 +395,8 @@ const LESSONS_DATA = [
 // ============================================
 const LevelSystem = {
   LEVEL_NAMES: [
-    '', 'Curious Explorer', 'Knowledge Seeker', 'Bright Thinker', 'Devoted Scholar',
-    'Expert Learner', 'Master Mind', 'Sage', 'Luminary', 'Oracle', 'Grand Master'
+    '', 'Explorateur Curieux', 'Chercheur de Savoir', 'Pensée Brillante', 'Érudit Dévoué',
+    'Apprenti Expert', 'Maître d\\'Esprit', 'Sage', 'Luminaire', 'Oracle', 'Grand Maître'
   ],
   XP_PER_LEVEL: 500,
 
@@ -438,4 +436,4 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================
 // EXPORT GLOBALS (usable in any page)
 // ============================================
-window.EduVerse = { Auth, Toast, Storage, LevelSystem, LESSONS_DATA, Theme, navigateTo, animateNumber };
+window.SigmaLearn = { Auth, Toast, Storage, LevelSystem, LESSONS_DATA, Theme, navigateTo, animateNumber };

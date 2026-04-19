@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lessons — EduVerse</title>
+  <title>Leçons — Sigma Learn</title>
   <meta name="description"
-    content="Browse and filter 148+ expert-crafted lessons on history, science, language and culture on EduVerse." />
+    content="Parcourez et filtrez nos leçons d'apprentissage du Djoula sur Sigma Learn." />
   <link rel="stylesheet" href="../css/main.css" />
   <link rel="stylesheet" href="../css/animations.css" />
   <link rel="stylesheet" href="../css/components.css" />
@@ -46,7 +46,7 @@
 
     .chip:hover,
     .chip.active {
-      background: rgba(124, 58, 237, 0.15);
+      background: rgba(255, 143, 0, 0.15);
       border-color: var(--primary);
       color: var(--primary-light);
     }
@@ -162,19 +162,19 @@
     <div class="container">
       <div class="nav-inner">
         <a href="../index.html" class="nav-logo">
-          <div class="nav-logo-icon">🎓</div>EduVerse
+          <div class="nav-logo-icon">🎓</div>Sigma Learn
         </a>
         <ul class="nav-links">
-          <li><a href="dashboard.html">Dashboard</a></li>
-          <li><a href="lessons.html" class="active">Lessons</a></li>
-          <li><a href="community.html">Community</a></li>
-          <li><a href="profile.html">Profile</a></li>
+          <li><a href="dashboard.html">Tableau de bord</a></li>
+          <li><a href="lessons.html" class="active">Leçons</a></li>
+          <li><a href="community.html">Communauté</a></li>
+          <li><a href="profile.html">Profil</a></li>
         </ul>
         <div class="nav-actions">
-          <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme"
+          <button class="btn btn-ghost btn-icon" onclick="SigmaLearn.Theme.toggle()" title="Basculer le thème"
             style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
-          <a href="profile.html" class="btn btn-ghost btn-sm">👤 <span id="navUser">Profile</span></a>
-          <button class="btn btn-danger btn-sm" onclick="logout()">Sign Out</button>
+          <a href="profile.html" class="btn btn-ghost btn-sm">👤 <span id="navUser">Profil</span></a>
+          <button class="btn btn-danger btn-sm" onclick="logout()">Se déconnecter</button>
         </div>
       </div>
     </div>
@@ -183,87 +183,74 @@
   <div class="app-layout">
     <aside class="sidebar">
       <div class="sidebar-menu">
-        <div class="sidebar-section-label">Main</div>
-        <li class="list-none"><a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a>
+        <div class="sidebar-section-label">Principal</div>
+        <li class="list-none"><a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Tableau de bord</a>
         </li>
-        <li class="list-none"><a href="lessons.html" class="sidebar-link active"><span class="icon">📚</span> My
-            Lessons</a></li>
-        <li class="list-none"><a href="history.html" class="sidebar-link"><span class="icon">📜</span> History</a></li>
-        <div class="sidebar-section-label">Learn</div>
-        <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quizzes</a></li>
-        <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🥽</span> VR Simulation</a>
+        <li class="list-none"><a href="lessons.html" class="sidebar-link active"><span class="icon">📚</span> Mes Leçons</a></li>
+        <li class="list-none"><a href="history.html" class="sidebar-link"><span class="icon">📜</span> Historique</a></li>
+        <div class="sidebar-section-label">Apprendre</div>
+        <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quiz</a></li>
+        <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🎤</span> Mise en situation</a>
         </li>
-        <li class="list-none"><a href="pronunciation.html" class="sidebar-link"><span class="icon">🗣️</span>
-            Pronunciation Lab</a></li>
+        <li class="list-none"><a href="pronunciation.html" class="sidebar-link"><span class="icon">🗣️</span> Prononciation</a></li>
         <div class="sidebar-section-label">Social</div>
-        <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Community</a>
+        <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Communauté</a>
         </li>
-        <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a>
+        <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> Mon Profil</a>
         </li>
       </div>
     </aside>
 
     <main class="main-content">
       <div class="page-header animate-fadeInDown" style="margin-bottom:var(--space-2xl);">
-        <h2>Lesson Catalog</h2>
-        <p class="text-secondary">Explore all <strong style="color:var(--text-primary);">148</strong> expert-crafted
-          lessons at your own pace.</p>
+        <h2>Catalogue de Leçons</h2>
+        <p class="text-secondary">Explorez nos leçons de <strong style="color:var(--text-primary);">Djoula</strong> créées par des experts à votre rythme.</p>
       </div>
 
       <!-- Filter Bar -->
       <div class="filter-bar animate-fadeInUp">
         <div class="filter-search input-icon-wrap">
           <span class="input-icon">🔍</span>
-          <input type="text" class="input" placeholder="Search lessons..." id="searchInput" oninput="filterLessons()" />
+          <input type="text" class="input" placeholder="Chercher une leçon..." id="searchInput" oninput="filterLessons()" />
         </div>
         <div class="filter-chips" id="categoryFilters">
-          <button class="chip active" onclick="setCategory('all', this)">All</button>
-          <button class="chip" onclick="setCategory('History', this)">🏛 History</button>
-          <button class="chip" onclick="setCategory('Science', this)">🔬 Science</button>
-          <button class="chip" onclick="setCategory('Language', this)">🗣 Language</button>
-          <button class="chip" onclick="setCategory('Culture', this)">🎨 Culture</button>
-          <button class="chip" onclick="setCategory('Math', this)">📐 Math</button>
+          <button class="chip active" onclick="setCategory('all', this)">Tout</button>
+          <button class="chip" onclick="setCategory('Débutant', this)">🌱 Débutant</button>
+          <button class="chip" onclick="setCategory('Conversation', this)">💬 Conversation</button>
+          <button class="chip" onclick="setCategory('Vocabulaire', this)">📖 Vocabulaire</button>
+          <button class="chip" onclick="setCategory('Pratique', this)">🛠 Pratique</button>
         </div>
         <div class="filter-chips">
-          <button class="chip" onclick="setDifficulty('all', this)">All Levels</button>
-          <button class="chip" onclick="setDifficulty('Beginner', this)">🟢 Beginner</button>
-          <button class="chip" onclick="setDifficulty('Intermediate', this)">🟡 Intermediate</button>
-          <button class="chip" onclick="setDifficulty('Advanced', this)">🔴 Advanced</button>
+          <button class="chip active" onclick="setDifficulty('all', this)">Tous les niveaux</button>
+          <button class="chip" onclick="setDifficulty('Facile', this)">🟢 Facile</button>
+          <button class="chip" onclick="setDifficulty('Moyen', this)">🟡 Moyen</button>
+          <button class="chip" onclick="setDifficulty('Difficile', this)">🔴 Difficile</button>
         </div>
       </div>
 
-      <div style="margin-bottom: var(--space-lg);" class="lessons-count" id="lessonsCount">Showing all 12 lessons</div>
+      <div style="margin-bottom: var(--space-lg);" class="lessons-count" id="lessonsCount">Affichage de toutes les leçons</div>
 
       <!-- Lessons Grid -->
       <div class="lessons-grid" id="lessonsGrid"></div>
       <div class="empty-state hidden" id="emptyState">
         <div class="empty-icon">🔍</div>
-        <h3>No lessons found</h3>
-        <p>Try adjusting your filters or search term.</p>
+        <h3>Aucune leçon trouvée</h3>
+        <p>Essayez de changer vos filtres ou termes de recherche.</p>
       </div>
     </main>
   </div>
 
   <script>
-    const currentUser = JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
+    const currentUser = JSON.parse(localStorage.getItem('sigma_current_user') || 'null');
     if (!currentUser) window.location.href = 'auth.html';
     if (currentUser) document.getElementById('navUser').textContent = currentUser.firstName;
 
-    function logout() { localStorage.removeItem('eduverse_current_user'); window.location.href = '../index.html'; }
+    function logout() { localStorage.removeItem('sigma_current_user'); window.location.href = '../index.html'; }
 
-    const LESSONS = [
-      { id: 1, emoji: '🌍', title: 'African Cultural Heritage', desc: 'Explore the rich traditions, art, and oral history of West African civilisations from ancient empires to modern culture.', category: 'History', difficulty: 'Beginner', duration: '42 min', rating: 4.9, students: 2341, bg: 'linear-gradient(135deg, rgba(124,58,237,0.4), rgba(0,212,255,0.2))' },
-      { id: 2, emoji: '🔬', title: 'Cellular Biology Fundamentals', desc: 'Dive into the microscopic world of cells with stunning 3D animations and virtual lab simulations.', category: 'Science', difficulty: 'Intermediate', duration: '35 min', rating: 4.8, students: 1876, bg: 'linear-gradient(135deg, rgba(0,212,255,0.3), rgba(16,185,129,0.3))' },
-      { id: 3, emoji: '🗣️', title: 'Dioula Language Essentials', desc: 'Master conversational Dioula with native speaker audio, interactive exercises and immersive scenarios.', category: 'Language', difficulty: 'Beginner', duration: '28 min', rating: 4.7, students: 934, bg: 'linear-gradient(135deg, rgba(255,107,157,0.3), rgba(124,58,237,0.4))' },
-      { id: 4, emoji: '🏺', title: 'Ancient Egyptian Civilisation', desc: 'Travel through 3,000 years of Egyptian history — pharaohs, pyramids, hieroglyphs and everyday life.', category: 'History', difficulty: 'Beginner', duration: '55 min', rating: 4.9, students: 3200, bg: 'linear-gradient(135deg, rgba(245,158,11,0.3), rgba(239,68,68,0.2))' },
-      { id: 5, emoji: '⚗️', title: 'Chemistry: Atoms & Molecules', desc: 'Understand the building blocks of matter through interactive molecular models and experiments.', category: 'Science', difficulty: 'Intermediate', duration: '40 min', rating: 4.6, students: 1100, bg: 'linear-gradient(135deg, rgba(59,130,246,0.3), rgba(0,212,255,0.3))' },
-      { id: 6, emoji: '🌿', title: 'Traditional Medicinal Plants', desc: 'Learn about indigenous healing flora across Africa — their uses, preparation, and cultural significance.', category: 'Culture', difficulty: 'Beginner', duration: '30 min', rating: 4.8, students: 780, bg: 'linear-gradient(135deg, rgba(16,185,129,0.3), rgba(0,212,255,0.2))' },
-      { id: 7, emoji: '📐', title: 'Euclidean Geometry Mastery', desc: 'Master geometric proofs, theorems, and spatial reasoning through visual interactive lessons.', category: 'Math', difficulty: 'Intermediate', duration: '50 min', rating: 4.5, students: 650, bg: 'linear-gradient(135deg, rgba(124,58,237,0.3), rgba(255,107,157,0.3))' },
-      { id: 8, emoji: '🦁', title: 'Wildlife of the Savannah', desc: 'An immersive exploration of African wildlife ecology — predator-prey dynamics, migration, and conservation.', category: 'Science', difficulty: 'Beginner', duration: '38 min', rating: 4.9, students: 2100, bg: 'linear-gradient(135deg, rgba(245,158,11,0.3), rgba(16,185,129,0.3))' },
-      { id: 9, emoji: '🎭', title: 'Baoulé Language & Stories', desc: 'Learn the Baoulé language through traditional folk stories, songs, and practical conversation drills.', category: 'Language', difficulty: 'Beginner', duration: '32 min', rating: 4.8, students: 420, bg: 'linear-gradient(135deg, rgba(255,107,157,0.3), rgba(245,158,11,0.2))' },
-      { id: 10, emoji: '🌌', title: 'Stars & the Universe', desc: 'Explore cosmology, black holes, and the life cycle of stars through stunning VR space simulations.', category: 'Science', difficulty: 'Advanced', duration: '60 min', rating: 4.9, students: 1560, bg: 'linear-gradient(135deg, rgba(7,7,26,0.8), rgba(124,58,237,0.6))' },
-      { id: 11, emoji: '🎵', title: 'West African Musical Traditions', desc: 'Discover the rhythms, instruments, and cultural stories behind traditional West African music.', category: 'Culture', difficulty: 'Beginner', duration: '25 min', rating: 4.7, students: 890, bg: 'linear-gradient(135deg, rgba(239,68,68,0.2), rgba(255,107,157,0.3))' },
-      { id: 12, emoji: '📊', title: 'Statistics & Data Literacy', desc: 'Build practical data skills: reading charts, understanding probability, and drawing conclusions.', category: 'Math', difficulty: 'Intermediate', duration: '45 min', rating: 4.6, students: 720, bg: 'linear-gradient(135deg, rgba(59,130,246,0.4), rgba(16,185,129,0.2))' },
+    const LESSONS = (window.SigmaLearn && window.SigmaLearn.LESSONS_DATA) ? window.SigmaLearn.LESSONS_DATA : [
+      { id: 1, emoji: '🗣️', title: 'Les bases du Djoula', desc: 'Découvrez les règles de base, l\\'alphabet et la prononciation correcte de la langue Djoula.', category: 'Débutant', difficulty: 'Facile', duration: '30 min', rating: 4.9, students: 3120, bg: 'linear-gradient(135deg, rgba(255, 143, 0,0.4), rgba(46, 125, 50,0.2))' },
+      { id: 2, emoji: '👋', title: 'Salutations et Présentations', desc: 'Apprenez à saluer et à vous présenter de manière appropriée selon la culture locale.', category: 'Conversation', difficulty: 'Facile', duration: '25 min', rating: 4.8, students: 2854, bg: 'linear-gradient(135deg, rgba(46, 125, 50,0.3), rgba(16,185,129,0.3))' },
+      { id: 3, emoji: '🛒', title: 'Au Marché : Négocier les prix', desc: 'Leçons pratiques pour faire les achats, demander les prix et négocier au marché.', category: 'Pratique', difficulty: 'Moyen', duration: '40 min', rating: 4.7, students: 1940, bg: 'linear-gradient(135deg, rgba(255,107,157,0.3), rgba(255, 143, 0,0.4))' },
     ];
 
     let activeCategory = 'all';
@@ -294,7 +281,7 @@
       renderLessons(filtered);
     }
 
-    const diffColors = { Beginner: 'badge-success', Intermediate: 'badge-warning', Advanced: 'badge-danger' };
+    const diffColors = { 'Facile': 'badge-success', 'Moyen': 'badge-warning', 'Difficile': 'badge-danger' };
 
     function renderLessons(lessons) {
       const grid = document.getElementById('lessonsGrid');
@@ -309,7 +296,7 @@
       }
 
       empty.classList.add('hidden');
-      count.textContent = `Showing ${lessons.length} lesson${lessons.length !== 1 ? 's' : ''}`;
+      count.textContent = `Affichage de ${lessons.length} leçon${lessons.length !== 1 ? 's' : ''}`;
 
       grid.innerHTML = lessons.map((l, i) => `
       <div class="lesson-card glass-card animate-fadeInUp" style="animation-delay:${i * 60}ms;" onclick="window.location.href='lesson-view.html?id=${l.id}'">
@@ -327,7 +314,7 @@
               <span>👥 ${l.students.toLocaleString()}</span>
               <span>⭐ ${l.rating}</span>
             </div>
-            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); window.location.href='lesson-view.html?id=${l.id}'">Start →</button>
+            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); window.location.href='lesson-view.html?id=${l.id}'">Commencer →</button>
           </div>
         </div>
       </div>

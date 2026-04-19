@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EduVerse — Next-Gen Interactive Learning Platform</title>
-  <meta name="description" content="EduVerse is a cutting-edge, multimodal educational platform featuring VR simulations, AI-powered quizzes, community learning, and rich video lessons tailored for every learner." />
+  <title>Sigma Learn — Apprendre le Djoula</title>
+  <meta name="description" content="Sigma Learn est la plateforme de référence pour apprendre et maîtriser la langue Djoula." />
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/animations.css" />
   <link rel="stylesheet" href="css/components.css" />
@@ -29,8 +29,8 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(124,58,237,0.15);
-      border: 1px solid rgba(124,58,237,0.3);
+      background: rgba(255, 143, 0,0.15);
+      border: 1px solid rgba(255, 143, 0,0.3);
       border-radius: var(--radius-full);
       padding: 0.4rem 1rem;
       font-size: 0.8rem;
@@ -97,7 +97,7 @@
       display: flex;
       flex-direction: column;
       gap: var(--space-md);
-      border-color: rgba(124,58,237,0.3);
+      border-color: rgba(255, 143, 0,0.3);
       animation: float 5s ease-in-out infinite;
     }
 
@@ -235,7 +235,7 @@
       font-weight: 800;
       font-size: 1.1rem;
       color: white;
-      box-shadow: 0 0 20px rgba(124,58,237,0.4);
+      box-shadow: 0 0 20px rgba(255, 143, 0,0.4);
     }
 
     /* === COURSES PREVIEW === */
@@ -247,7 +247,7 @@
 
     /* === CTA SECTION === */
     .cta-section {
-      background: radial-gradient(ellipse at center, rgba(124,58,237,0.2) 0%, transparent 70%),
+      background: radial-gradient(ellipse at center, rgba(255, 143, 0,0.2) 0%, transparent 70%),
                   var(--bg-surface);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -329,18 +329,18 @@
     <div class="nav-inner">
       <a href="index.html" class="nav-logo">
         <div class="nav-logo-icon">🎓</div>
-        EduVerse
+        Sigma Learn
       </a>
       <ul class="nav-links">
-        <li><a href="#features">Features</a></li>
-        <li><a href="#courses">Courses</a></li>
-        <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="pages/community.html">Community</a></li>
+        <li><a href="#features">Fonctionnalités</a></li>
+        <li><a href="#courses">Cours</a></li>
+        <li><a href="#how-it-works">Comment ça marche</a></li>
+        <li><a href="pages/community.html">Communauté</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
-        <a href="pages/auth.html" class="btn btn-ghost btn-sm">Sign In</a>
-        <a href="pages/auth.html#register" class="btn btn-primary btn-sm">Get Started Free</a>
+        <button class="btn btn-ghost btn-icon" onclick="SigmaLearn.Theme.toggle()" title="Basculer le thème" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <a href="pages/auth.html" class="btn btn-ghost btn-sm">Se connecter</a>
+        <a href="pages/auth.html#register" class="btn btn-primary btn-sm">Démarrer gratuitement</a>
       </div>
     </div>
   </div>
@@ -353,23 +353,23 @@
     <div class="hero-content animate-fadeInUp">
       <div class="hero-badge">
         <span class="dot"></span>
-        Now with AI-Powered Learning & VR Simulations
+        Apprenez le Djoula avec l'IA et l'immersion
       </div>
       <h1>
-        Learn Smarter,<br />
-        <span class="text-gradient">Experience Deeper.</span>
+        Maîtrisez le Djoula,<br />
+        <span class="text-gradient">Connectez-vous à la culture.</span>
       </h1>
       <p>
-        EduVerse combines video lessons, interactive VR environments, adaptive quizzes,
-        and a vibrant community — all in one beautifully designed platform built for
-        the modern learner.
+        Sigma Learn combine des leçons interactives, des mises en situation pratiques, 
+        des quiz adaptatifs et une communauté active — le tout dans une plateforme 
+        spécialement conçue pour apprendre le Djoula naturellement.
       </p>
       <div class="hero-actions">
         <a href="pages/auth.html#register" class="btn btn-primary btn-lg">
-          🚀 Start Learning Free
+          🚀 Commencer à apprendre
         </a>
         <a href="#courses" class="btn btn-ghost btn-lg">
-          📚 Browse Courses
+          📚 Parcourir les cours
         </a>
       </div>
     </div>
@@ -379,33 +379,33 @@
   <div class="hero-visual">
     <div class="hero-card-stack">
       <div class="float-card main glass-card animate-fadeInUp delay-300">
-        <div class="lesson-preview-thumb" style="background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(0,212,255,0.2));">🌍</div>
-        <div class="lesson-preview-title">African Cultural Heritage</div>
+        <div class="lesson-preview-thumb" style="background: linear-gradient(135deg, rgba(255, 143, 0,0.3), rgba(46, 125, 50,0.2));">🗣️</div>
+        <div class="lesson-preview-title">Les bases du Djoula</div>
         <div class="progress-bar" style="margin-top: 0.5rem;">
           <div class="progress-fill" style="width: 65%;"></div>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted);">
-          <span>65% Complete</span>
+          <span>65% Complété</span>
           <span>🏆 32 pts</span>
         </div>
       </div>
 
       <div class="float-card mini-1 glass-card animate-scaleIn delay-500">
         <div class="mini-stat">
-          <div class="mini-stat-icon" style="background: rgba(124,58,237,0.2);">📖</div>
+          <div class="mini-stat-icon" style="background: rgba(255, 143, 0,0.2);">📖</div>
           <div>
-            <div class="mini-stat-label">Lessons</div>
-            <div class="mini-stat-value">148</div>
+            <div class="mini-stat-label">Leçons</div>
+            <div class="mini-stat-value">120</div>
           </div>
         </div>
       </div>
 
       <div class="float-card mini-2 glass-card animate-scaleIn delay-600">
         <div class="mini-stat">
-          <div class="mini-stat-icon" style="background: rgba(0,212,255,0.15);">🎮</div>
+          <div class="mini-stat-icon" style="background: rgba(46, 125, 50,0.15);">🎙️</div>
           <div>
-            <div class="mini-stat-label">VR Simulations</div>
-            <div class="mini-stat-value">24</div>
+            <div class="mini-stat-label">Exercices Audio</div>
+            <div class="mini-stat-value">45</div>
           </div>
         </div>
       </div>
@@ -418,20 +418,20 @@
   <div class="container">
     <div class="stats-grid">
       <div class="stat-item animate-fadeInUp">
-        <div class="stat-item-value" data-count="45000">0</div>
-        <div class="stat-item-label">Active Learners</div>
+        <div class="stat-item-value" data-count="15000">0</div>
+        <div class="stat-item-label">Apprenants Actifs</div>
       </div>
       <div class="stat-item animate-fadeInUp delay-200">
-        <div class="stat-item-value" data-count="148">0</div>
-        <div class="stat-item-label">Expert-Crafted Lessons</div>
+        <div class="stat-item-value" data-count="120">0</div>
+        <div class="stat-item-label">Leçons de Djoula</div>
       </div>
       <div class="stat-item animate-fadeInUp delay-300">
-        <div class="stat-item-value" data-count="24">0</div>
-        <div class="stat-item-label">VR Environments</div>
+        <div class="stat-item-value" data-count="45">0</div>
+        <div class="stat-item-label">Dialogues Audio</div>
       </div>
       <div class="stat-item animate-fadeInUp delay-400">
-        <div class="stat-item-value" data-count="12">0</div>
-        <div class="stat-item-label">Languages Supported</div>
+        <div class="stat-item-value" data-count="60">0</div>
+        <div class="stat-item-label">Heures de Contenu</div>
       </div>
     </div>
   </div>
@@ -441,43 +441,43 @@
 <section class="section" id="features">
   <div class="container">
     <div class="text-center mb-3xl">
-      <div class="section-label">Why EduVerse</div>
-      <h2 class="section-title">Everything you need to <span class="text-gradient">master anything.</span></h2>
+      <div class="section-label">Pourquoi Sigma Learn</div>
+      <h2 class="section-title">Tout ce dont vous avez besoin pour <span class="text-gradient">maîtriser le Djoula.</span></h2>
       <p class="section-subtitle text-secondary">
-        Built for modern learners who demand flexibility, engagement, and measurable results.
+        Conçu pour s'adapter à votre rythme, avec des outils immersifs pour garantir des résultats rapides.
       </p>
     </div>
 
     <div class="features-grid">
       <div class="feature-card glass-card card-tilt animate-fadeInUp">
-        <div class="feature-icon" style="background: rgba(124,58,237,0.2);">🎥</div>
-        <h3>HD Video Lessons</h3>
-        <p>Crisp, expertly produced video content with multi-speed playback, auto-subtitles, and personal note-taking tools baked right in.</p>
+        <div class="feature-icon" style="background: rgba(255, 143, 0,0.2);">🎥</div>
+        <h3>Leçons Vidéo HD</h3>
+        <p>Du contenu vidéo net, produit par des experts avec des sous-titres et des explications claires du vocabulaire Djoula.</p>
       </div>
       <div class="feature-card glass-card card-tilt animate-fadeInUp delay-100">
-        <div class="feature-icon" style="background: rgba(0,212,255,0.15);">🥽</div>
-        <h3>VR Learning Simulations</h3>
-        <p>Step inside immersive 3D learning environments that make abstract concepts tangible — from historical voyages to science labs.</p>
+        <div class="feature-icon" style="background: rgba(46, 125, 50,0.15);">🎙️</div>
+        <h3>Laboratoire de Prononciation</h3>
+        <p>Améliorez votre accent avec des outils de reconnaissance vocale et des retours en temps réel pour parler comme un natif.</p>
       </div>
       <div class="feature-card glass-card card-tilt animate-fadeInUp delay-200">
         <div class="feature-icon" style="background: rgba(255,107,157,0.15);">🧠</div>
-        <h3>Adaptive AI Quizzes</h3>
-        <p>Intelligent quizzes that adapt to your learning pace and knowledge gaps, giving you targeted practice where it matters most.</p>
+        <h3>Quiz Adaptatifs</h3>
+        <p>Des quiz intelligents qui s'adaptent à votre niveau pour renforcer vos faiblesses grammaticales et lexicales.</p>
       </div>
       <div class="feature-card glass-card card-tilt animate-fadeInUp delay-300">
         <div class="feature-icon" style="background: rgba(16,185,129,0.15);">💬</div>
-        <h3>Community & Mentoring</h3>
-        <p>Connect with fellow learners and expert tutors in topic-specific chat rooms, study groups, and collaborative spaces.</p>
+        <h3>Communauté Active</h3>
+        <p>Échangez avec d'autres apprenants et des tuteurs natifs pour pratiquer votre Djoula dans des discussions réelles.</p>
       </div>
       <div class="feature-card glass-card card-tilt animate-fadeInUp delay-400">
         <div class="feature-icon" style="background: rgba(245,158,11,0.15);">🏆</div>
-        <h3>Gamification & Badges</h3>
-        <p>Earn XP, unlock achievement badges, climb leaderboards, and celebrate every milestone on your learning journey.</p>
+        <h3>Gamification</h3>
+        <p>Gagnez de l'XP, débloquez des badges et gravissez les classements pour rester motivé tout au long de votre apprentissage.</p>
       </div>
       <div class="feature-card glass-card card-tilt animate-fadeInUp delay-500">
         <div class="feature-icon" style="background: rgba(59,130,246,0.15);">📊</div>
-        <h3>Progress Analytics</h3>
-        <p>Deep-dive dashboards showing your learning velocity, strengths, weaknesses, and personalized path to mastery.</p>
+        <h3>Suivi de Progression</h3>
+        <p>Des tableaux de bord détaillés montrant votre évolution, vos forces et votre parcours personnalisé vers la fluidité.</p>
       </div>
     </div>
   </div>
@@ -487,66 +487,66 @@
 <section class="section" id="courses" style="background: var(--bg-surface);">
   <div class="container">
     <div class="text-center mb-3xl">
-      <div class="section-label">Course Catalog</div>
-      <h2 class="section-title">Explore our <span class="text-gradient">featured courses</span></h2>
+      <div class="section-label">Catalogue de Cours</div>
+      <h2 class="section-title">Découvrez nos <span class="text-gradient">leçons phares</span></h2>
       <p class="section-subtitle text-secondary">
-        From cultural heritage to cutting-edge science — something for every curious mind.
+        Du vocabulaire de base aux conversations complexes, progressez pas à pas.
       </p>
     </div>
 
     <div class="courses-grid">
       <div class="lesson-card glass-card animate-fadeInUp">
-        <div class="lesson-card-thumb" style="background: linear-gradient(135deg, rgba(124,58,237,0.4), rgba(0,212,255,0.3));">🌍</div>
+        <div class="lesson-card-thumb" style="background: linear-gradient(135deg, rgba(255, 143, 0,0.4), rgba(46, 125, 50,0.3));">🗣️</div>
         <div class="lesson-card-body">
           <div class="lesson-card-meta">
-            <span class="badge badge-primary">History</span>
-            <span class="text-muted" style="font-size:0.8rem;">⏱ 42 min</span>
+            <span class="badge badge-primary">Débutant</span>
+            <span class="text-muted" style="font-size:0.8rem;">⏱ 45 min</span>
           </div>
-          <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">African Cultural Heritage</h4>
-          <p style="font-size:0.85rem;">Dive deep into the rich traditions, art, and history of West African civilisations.</p>
+          <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">Les bases du Djoula</h4>
+          <p style="font-size:0.85rem;">Maîtrisez les phonèmes essentiels et la structure de l'alphabet Djoula en un temps record.</p>
           <div class="progress-bar mt-md">
             <div class="progress-fill" style="width: 0%;"></div>
           </div>
           <div style="display:flex; justify-content:space-between; margin-top:0.75rem;">
-            <a href="pages/auth.html" class="btn btn-primary btn-sm">Start Course</a>
+            <a href="pages/auth.html" class="btn btn-primary btn-sm">Commencer</a>
             <span style="font-size:0.8rem; color:var(--text-muted); align-self:center;">⭐ 4.9</span>
           </div>
         </div>
       </div>
 
       <div class="lesson-card glass-card animate-fadeInUp delay-200">
-        <div class="lesson-card-thumb" style="background: linear-gradient(135deg, rgba(0,212,255,0.3), rgba(16,185,129,0.3));">🔬</div>
+        <div class="lesson-card-thumb" style="background: linear-gradient(135deg, rgba(46, 125, 50,0.3), rgba(16,185,129,0.3));">👋</div>
         <div class="lesson-card-body">
           <div class="lesson-card-meta">
-            <span class="badge badge-accent">Science</span>
-            <span class="text-muted" style="font-size:0.8rem;">⏱ 35 min</span>
+            <span class="badge badge-accent">Conversation</span>
+            <span class="text-muted" style="font-size:0.8rem;">⏱ 30 min</span>
           </div>
-          <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">Cellular Biology Fundamentals</h4>
-          <p style="font-size:0.85rem;">Explore the microscopic world of cells with interactive 3D models and VR labs.</p>
+          <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">Salutations et Présentations</h4>
+          <p style="font-size:0.85rem;">Apprenez l'art de saluer poliment et de demander des nouvelles selon la tradition locale.</p>
           <div class="progress-bar mt-md">
             <div class="progress-fill" style="width: 0%;"></div>
           </div>
           <div style="display:flex; justify-content:space-between; margin-top:0.75rem;">
-            <a href="pages/auth.html" class="btn btn-primary btn-sm">Start Course</a>
+            <a href="pages/auth.html" class="btn btn-primary btn-sm">Commencer</a>
             <span style="font-size:0.8rem; color:var(--text-muted); align-self:center;">⭐ 4.8</span>
           </div>
         </div>
       </div>
 
       <div class="lesson-card glass-card animate-fadeInUp delay-400">
-        <div class="lesson-card-thumb" style="background: linear-gradient(135deg, rgba(255,107,157,0.3), rgba(124,58,237,0.4));">🗣️</div>
+        <div class="lesson-card-thumb" style="background: linear-gradient(135deg, rgba(255,107,157,0.3), rgba(255, 143, 0,0.4));">🛒</div>
         <div class="lesson-card-body">
           <div class="lesson-card-meta">
-            <span class="badge badge-warning">Language</span>
-            <span class="text-muted" style="font-size:0.8rem;">⏱ 28 min</span>
+            <span class="badge badge-warning">Pratique</span>
+            <span class="text-muted" style="font-size:0.8rem;">⏱ 40 min</span>
           </div>
-          <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">Dioula Language Essentials</h4>
-          <p style="font-size:0.85rem;">Master conversational Dioula with native audio recordings and immersive exercises.</p>
+          <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">Au Marché : Négocier les prix</h4>
+          <p style="font-size:0.85rem;">Pratiquez pour acheter et marchander avec assurance sur un marché typique d'Afrique de l'Ouest.</p>
           <div class="progress-bar mt-md">
             <div class="progress-fill" style="width: 0%;"></div>
           </div>
           <div style="display:flex; justify-content:space-between; margin-top:0.75rem;">
-            <a href="pages/auth.html" class="btn btn-primary btn-sm">Start Course</a>
+            <a href="pages/auth.html" class="btn btn-primary btn-sm">Commencer</a>
             <span style="font-size:0.8rem; color:var(--text-muted); align-self:center;">⭐ 4.7</span>
           </div>
         </div>
@@ -554,7 +554,7 @@
     </div>
 
     <div class="text-center mt-xl">
-      <a href="pages/auth.html" class="btn btn-ghost btn-lg">View All 148 Courses →</a>
+      <a href="pages/auth.html" class="btn btn-ghost btn-lg">Voir toutes les 120 leçons →</a>
     </div>
   </div>
 </section>
@@ -563,37 +563,37 @@
 <section class="section" id="how-it-works">
   <div class="container">
     <div class="text-center mb-3xl">
-      <div class="section-label">Getting Started</div>
-      <h2 class="section-title">Learn your way, <span class="text-gradient">in 4 simple steps.</span></h2>
+      <div class="section-label">Premiers pas</div>
+      <h2 class="section-title">Apprenez à votre rythme, <span class="text-gradient">en 4 étapes simples.</span></h2>
     </div>
 
     <div class="steps-list">
       <div class="step-item animate-slideInLeft">
         <div class="step-number">1</div>
         <div>
-          <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Create Your Free Account</h4>
-          <p style="font-size:0.9rem;">Sign up in seconds — name, email, and you're in. No credit card needed.</p>
+          <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Créez votre compte gratuit</h4>
+          <p style="font-size:0.9rem;">Inscrivez-vous en quelques secondes — juste un nom et un email.</p>
         </div>
       </div>
       <div class="step-item animate-slideInLeft delay-200">
         <div class="step-number">2</div>
         <div>
-          <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Choose Your Learning Path</h4>
-          <p style="font-size:0.9rem;">Browse 148+ expert lessons across history, science, language, and culture.</p>
+          <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Choisissez votre leçon</h4>
+          <p style="font-size:0.9rem;">Parcourez des dizaines de cours adaptés aux débutants ou aux niveaux avancés.</p>
         </div>
       </div>
       <div class="step-item animate-slideInLeft delay-300">
         <div class="step-number">3</div>
         <div>
-          <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Watch, Play & Quiz</h4>
-          <p style="font-size:0.9rem;">Engage with video content, VR simulations, and adaptive quizzes that reinforce your knowledge.</p>
+          <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Regardez, Pratiquez & Testez-vous</h4>
+          <p style="font-size:0.9rem;">Interagissez avec des vidéos, des exercices oraux et des quiz adaptatifs qui renforcent vos connaissances.</p>
         </div>
       </div>
       <div class="step-item animate-slideInLeft delay-400">
         <div class="step-number">4</div>
         <div>
-          <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Level Up & Get Certified</h4>
-          <p style="font-size:0.9rem;">Earn badges, XP points, and shareable certificates as proof of your mastery.</p>
+          <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Progressez et soyez Certifié</h4>
+          <p style="font-size:0.9rem;">Gagnez des badges, des points d'XP, et prouvez votre fluidité linguistique.</p>
         </div>
       </div>
     </div>
@@ -604,17 +604,17 @@
 <section class="cta-section">
   <div class="container">
     <div class="animate-scaleIn">
-      <div class="section-label">Join 45,000+ Learners</div>
-      <h2 style="margin-bottom: var(--space-lg);">Ready to unlock your <span class="text-gradient">full potential?</span></h2>
+      <div class="section-label">Rejoignez 15 000+ Apprenants</div>
+      <h2 style="margin-bottom: var(--space-lg);">Prêt à découvrir <span class="text-gradient">le Djoula ?</span></h2>
       <p class="text-secondary" style="max-width:480px; margin: 0 auto var(--space-2xl);">
-        Join a global community of curious minds and start your journey today — completely free.
+        Rejoignez une communauté passionnée de culture africaine et débutez votre voyage linguistique aujourd'hui — 100% gratuit.
       </p>
       <div style="display:flex; gap:var(--space-md); justify-content:center; flex-wrap:wrap;">
         <a href="pages/auth.html#register" class="btn btn-primary btn-lg animate-glow">
-          🎓 Start For Free Today
+          🎓 Commencer gratuitement
         </a>
         <a href="pages/admin.html" class="btn btn-ghost btn-lg">
-          🔧 Admin Dashboard
+          🔧 Admin Panel
         </a>
       </div>
     </div>
@@ -628,46 +628,46 @@
       <div class="footer-col">
         <div class="nav-logo" style="margin-bottom:var(--space-md);">
           <div class="nav-logo-icon">🎓</div>
-          EduVerse
+          Sigma Learn
         </div>
         <p style="font-size:0.875rem; max-width:280px; line-height:1.8;">
-          Next-generation multimodal educational platform designed to make learning immersive, engaging, and effective for every learner.
+          Plateforme éducative spécialisée conçue pour rendre l'apprentissage de la langue Djoula complètement immersif.
         </p>
       </div>
       <div class="footer-col">
-        <h5>Platform</h5>
+        <h5>Plateforme</h5>
         <ul>
-          <li><a href="pages/lessons.html">Lesson Catalog</a></li>
-          <li><a href="pages/vr-game.html">VR Simulations</a></li>
-          <li><a href="pages/quiz.html">Quiz Engine</a></li>
-          <li><a href="pages/community.html">Community</a></li>
+          <li><a href="pages/lessons.html">Catalogue des cours</a></li>
+          <li><a href="pages/pronunciation.html">Prononciation</a></li>
+          <li><a href="pages/quiz.html">Moteur de Quiz</a></li>
+          <li><a href="pages/community.html">Communauté</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h5>Account</h5>
+        <h5>Compte</h5>
         <ul>
-          <li><a href="pages/auth.html">Sign In</a></li>
-          <li><a href="pages/auth.html#register">Register</a></li>
-          <li><a href="pages/profile.html">My Profile</a></li>
-          <li><a href="pages/history.html">Learning History</a></li>
+          <li><a href="pages/auth.html">Se Connecter</a></li>
+          <li><a href="pages/auth.html#register">S'inscrire</a></li>
+          <li><a href="pages/profile.html">Mon Profil</a></li>
+          <li><a href="pages/history.html">Historique</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h5>Legal</h5>
+        <h5>Légal</h5>
         <ul>
-          <li><a href="pages/privacy.html">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="pages/privacy.html">Politique de Confidentialité</a></li>
+          <li><a href="#">Conditions d'Usage</a></li>
+          <li><a href="#">Gestion des Cookies</a></li>
           <li><a href="pages/admin.html">Admin</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <p style="font-size:0.8rem; color:var(--text-muted);">© 2026 EduVerse. All rights reserved.</p>
+      <p style="font-size:0.8rem; color:var(--text-muted);">© 2026 Sigma Learn. Tous droits réservés.</p>
       <div style="display:flex; gap:var(--space-md);">
-        <span style="font-size:1.2rem; cursor:pointer; opacity:0.6; hover:opacity:1;">🐦</span>
-        <span style="font-size:1.2rem; cursor:pointer; opacity:0.6;">💼</span>
-        <span style="font-size:1.2rem; cursor:pointer; opacity:0.6;">📘</span>
+        <span style="font-size:1.2rem; cursor:pointer; opacity:0.6; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">🐦</span>
+        <span style="font-size:1.2rem; cursor:pointer; opacity:0.6; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">💼</span>
+        <span style="font-size:1.2rem; cursor:pointer; opacity:0.6; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">📘</span>
       </div>
     </div>
   </div>
@@ -683,7 +683,7 @@
   // Particle generation
   function createParticles() {
     const container = document.getElementById('heroParticles');
-    const colors = ['#7C3AED', '#00D4FF', '#FF6B9D'];
+    const colors = ['#FF8F00', '#2E7D32', '#43A047'];
     for (let i = 0; i < 20; i++) {
       const p = document.createElement('div');
       p.className = 'particle';

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard — EduVerse</title>
-  <meta name="description" content="Your personal EduVerse learning dashboard — track progress, pick up where you left off, and discover new courses." />
+  <title>Tableau de Bord — Sigma Learn</title>
+  <meta name="description" content="Votre tableau de bord Sigma Learn personnel — suivez vos progrès, reprenez là où vous vous étiez arrêté." />
   <link rel="stylesheet" href="../css/main.css" />
   <link rel="stylesheet" href="../css/animations.css" />
   <link rel="stylesheet" href="../css/components.css" />
@@ -79,7 +79,7 @@
     .level-card { padding: var(--space-xl); margin-bottom: var(--space-xl); }
     .level-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-md); }
     .level-badge { display: flex; align-items: center; gap: 0.75rem; }
-    .level-circle { width: 52px; height: 52px; border-radius: 50%; background: var(--grad-primary); display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: white; box-shadow: 0 0 20px rgba(124,58,237,0.4); }
+    .level-circle { width: 52px; height: 52px; border-radius: 50%; background: var(--grad-primary); display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: white; box-shadow: 0 0 20px rgba(255, 143, 0,0.4); }
     .level-info-text { font-size: 0.8rem; color: var(--text-muted); }
     .level-name { font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--text-primary); }
 
@@ -138,19 +138,19 @@
     <div class="nav-inner">
       <a href="../index.html" class="nav-logo">
         <div class="nav-logo-icon">🎓</div>
-        EduVerse
+        Sigma Learn
       </a>
       <ul class="nav-links">
-        <li><a href="dashboard.html" class="active">Dashboard</a></li>
-        <li><a href="lessons.html">Lessons</a></li>
-        <li><a href="community.html">Community</a></li>
-        <li><a href="profile.html">Profile</a></li>
+        <li><a href="dashboard.html" class="active">Tableau de bord</a></li>
+        <li><a href="lessons.html">Leçons</a></li>
+        <li><a href="community.html">Communauté</a></li>
+        <li><a href="profile.html">Profil</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <button class="btn btn-ghost btn-icon" onclick="SigmaLearn.Theme.toggle()" title="Basculer le thème" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
         <button class="btn btn-ghost btn-sm btn-icon" title="Notifications" id="notifBtn">🔔<span class="notification-dot"></span></button>
-        <a href="profile.html" class="btn btn-ghost btn-sm" id="userMenuBtn">👤 <span id="navUserName">Loading...</span></a>
-        <button class="btn btn-danger btn-sm" onclick="logout()">Sign Out</button>
+        <a href="profile.html" class="btn btn-ghost btn-sm" id="userMenuBtn">👤 <span id="navUserName">Chargement...</span></a>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Se déconnecter</button>
       </div>
     </div>
   </div>
@@ -160,52 +160,52 @@
 <div class="app-layout">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-menu">
-      <div class="sidebar-section-label">Main</div>
-      <li class="list-none"><a href="dashboard.html" class="sidebar-link active"><span class="icon">🏠</span> Dashboard</a></li>
-      <li class="list-none"><a href="lessons.html" class="sidebar-link"><span class="icon">📚</span> My Lessons</a></li>
-      <li class="list-none"><a href="history.html" class="sidebar-link"><span class="icon">📜</span> History</a></li>
-      <div class="sidebar-section-label">Learn</div>
-      <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quizzes</a></li>
-      <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🥽</span> VR Simulation</a></li>
-      <li class="list-none"><a href="pronunciation.html" class="sidebar-link"><span class="icon">🗣️</span> Pronunciation Lab</a></li>
+      <div class="sidebar-section-label">Principal</div>
+      <li class="list-none"><a href="dashboard.html" class="sidebar-link active"><span class="icon">🏠</span> Tableau de bord</a></li>
+      <li class="list-none"><a href="lessons.html" class="sidebar-link"><span class="icon">📚</span> Mes Leçons</a></li>
+      <li class="list-none"><a href="history.html" class="sidebar-link"><span class="icon">📜</span> Historique</a></li>
+      <div class="sidebar-section-label">Apprendre</div>
+      <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quiz</a></li>
+      <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🥽</span> Mise en situation</a></li>
+      <li class="list-none"><a href="pronunciation.html" class="sidebar-link"><span class="icon">🗣️</span> Prononciation</a></li>
       <div class="sidebar-section-label">Social</div>
-      <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Community</a></li>
-      <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a></li>
+      <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Communauté</a></li>
+      <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> Mon Profil</a></li>
     </div>
   </aside>
 
   <main class="main-content">
     <!-- Page Header -->
     <div class="page-header animate-fadeInDown">
-      <div class="greeting">Good morning, <span id="dashUserName">learner</span>! 👋</div>
-      <p class="text-secondary">Ready to continue your learning journey today?</p>
+      <div class="greeting">Bonjour, <span id="dashUserName">apprenant</span> ! 👋</div>
+      <p class="text-secondary">Prêt à continuer votre apprentissage du Djoula aujourd'hui ?</p>
     </div>
 
     <!-- Stats Row -->
     <div class="stats-row">
       <div class="stat-card glass-card animate-fadeInUp">
         <div class="stat-icon">📚</div>
-        <div class="stat-label">Lessons Completed</div>
+        <div class="stat-label">Leçons Complétées</div>
         <div class="stat-num" id="statLessons">0</div>
-        <div class="stat-change text-success">↑ 3 this week</div>
+        <div class="stat-change text-success">↑ 3 cette semaine</div>
       </div>
       <div class="stat-card glass-card animate-fadeInUp delay-100">
         <div class="stat-icon">⭐</div>
-        <div class="stat-label">Total XP Points</div>
+        <div class="stat-label">Points d'XP Totaux</div>
         <div class="stat-num" id="statPoints">0</div>
-        <div class="stat-change text-accent">↑ 120 this week</div>
+        <div class="stat-change text-accent">↑ 120 cette semaine</div>
       </div>
       <div class="stat-card glass-card animate-fadeInUp delay-200">
         <div class="stat-icon">🧠</div>
-        <div class="stat-label">Quizzes Passed</div>
+        <div class="stat-label">Quiz Réussis</div>
         <div class="stat-num" id="statQuizzes">0</div>
-        <div class="stat-change text-warning">→ 1 pending</div>
+        <div class="stat-change text-warning">→ 1 en attente</div>
       </div>
       <div class="stat-card glass-card animate-fadeInUp delay-300">
         <div class="stat-icon">🔥</div>
-        <div class="stat-label">Day Streak</div>
+        <div class="stat-label">Série de jours</div>
         <div class="stat-num" id="statStreak">1</div>
-        <div class="stat-change text-danger">Keep it up!</div>
+        <div class="stat-change text-danger">Continuez !</div>
       </div>
     </div>
 
@@ -215,11 +215,11 @@
         <div class="level-badge">
           <div class="level-circle" id="levelCircle">1</div>
           <div>
-            <div class="level-name" id="levelName">Curious Explorer</div>
-            <div class="level-info-text">Level <span id="currentLevel">1</span> · <span id="currentXP">0</span> / 500 XP to next level</div>
+            <div class="level-name" id="levelName">Explorateur Curieux</div>
+            <div class="level-info-text">Niveau <span id="currentLevel">1</span> · <span id="currentXP">0</span> / 500 XP pour le suivant</div>
           </div>
         </div>
-        <span class="badge badge-primary">🎯 Active</span>
+        <span class="badge badge-primary">🎯 Actif</span>
       </div>
       <div class="progress-bar">
         <div class="progress-fill" id="xpProgressBar" style="width: 0%;"></div>
@@ -228,25 +228,25 @@
 
     <!-- Quick Actions -->
     <div class="quick-actions animate-fadeInUp">
-      <a href="lessons.html" class="quick-action glass-card" style="border-color: rgba(124,58,237,0.3);">
+      <a href="lessons.html" class="quick-action glass-card" style="border-color: rgba(255, 143, 0,0.3);">
         <span class="quick-action-icon">📚</span>
-        <span class="quick-action-label">Browse Lessons</span>
-        <span class="quick-action-sub">148 available</span>
+        <span class="quick-action-label">Parcourir les Leçons</span>
+        <span class="quick-action-sub">120 disponibles</span>
       </a>
-      <a href="quiz.html" class="quick-action glass-card" style="border-color: rgba(0,212,255,0.3);">
+      <a href="quiz.html" class="quick-action glass-card" style="border-color: rgba(46, 125, 50,0.3);">
         <span class="quick-action-icon">🧠</span>
-        <span class="quick-action-label">Take a Quiz</span>
-        <span class="quick-action-sub">Test your knowledge</span>
+        <span class="quick-action-label">Faire un Quiz</span>
+        <span class="quick-action-sub">Testez vos acquis</span>
       </a>
       <a href="vr-game.html" class="quick-action glass-card" style="border-color: rgba(255,107,157,0.3);">
-        <span class="quick-action-icon">🥽</span>
-        <span class="quick-action-label">VR Simulation</span>
-        <span class="quick-action-sub">Immersive experience</span>
+        <span class="quick-action-icon">🎤</span>
+        <span class="quick-action-label">Mise en situation</span>
+        <span class="quick-action-sub">Pratique immersive</span>
       </a>
       <a href="community.html" class="quick-action glass-card" style="border-color: rgba(16,185,129,0.3);">
         <span class="quick-action-icon">💬</span>
-        <span class="quick-action-label">Join Community</span>
-        <span class="quick-action-sub">12 new messages</span>
+        <span class="quick-action-label">Communauté</span>
+        <span class="quick-action-sub">12 nouveaux messages</span>
       </a>
     </div>
 
@@ -255,7 +255,7 @@
       <!-- Left: Continue Learning -->
       <div>
         <div class="glass-card" style="padding: var(--space-xl);">
-          <div class="section-title-sm">Continue Learning <a href="lessons.html">View All →</a></div>
+          <div class="section-title-sm">Continuer l'Apprentissage <a href="lessons.html">Voir Tout →</a></div>
           <div id="continueLessons">
             <!-- Populated by JS -->
           </div>
@@ -263,7 +263,7 @@
 
         <!-- Recommended -->
         <div class="glass-card" style="padding: var(--space-xl); margin-top: var(--space-xl);">
-          <div class="section-title-sm">Recommended for You <a href="lessons.html">Explore →</a></div>
+          <div class="section-title-sm">Recommandé pour vous <a href="lessons.html">Explorer →</a></div>
           <div id="recommendedList">
             <!-- Populated by JS -->
           </div>
@@ -273,14 +273,14 @@
       <!-- Right: Achievements + Activity -->
       <div>
         <div class="glass-card" style="padding: var(--space-xl); margin-bottom: var(--space-xl);">
-          <div class="section-title-sm" style="margin-bottom:var(--space-md);">My Badges</div>
+          <div class="section-title-sm" style="margin-bottom:var(--space-md);">Mes Badges</div>
           <div class="badges-grid" id="badgesGrid">
             <!-- Populated by JS -->
           </div>
         </div>
 
         <div class="glass-card" style="padding: var(--space-xl);">
-          <div class="section-title-sm" style="margin-bottom:var(--space-md);">Recent Activity</div>
+          <div class="section-title-sm" style="margin-bottom:var(--space-md);">Activité Récente</div>
           <div id="activityFeed">
             <!-- Populated by JS -->
           </div>
@@ -292,11 +292,11 @@
 
 <script>
   // Auth guard
-  const currentUser = JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
+  const currentUser = JSON.parse(localStorage.getItem('sigma_current_user') || 'null');
   if (!currentUser) window.location.href = 'auth.html';
 
   function logout() {
-    localStorage.removeItem('eduverse_current_user');
+    localStorage.removeItem('sigma_current_user');
     window.location.href = '../index.html';
   }
 
@@ -321,52 +321,54 @@
   const xpPct = Math.min((points / xpForNext) * 100, 100);
   setTimeout(() => { document.getElementById('xpProgressBar').style.width = xpPct + '%'; }, 300);
 
-  const levelNames = ['','Curious Explorer','Knowledge Seeker','Bright Thinker','Devoted Scholar','Expert Learner','Master Mind','Sage','Luminary','Oracle','Grand Master'];
-  document.getElementById('levelName').textContent = levelNames[Math.min(level, levelNames.length-1)] || 'Master';
+  const levelNames = ['', 'Explorateur Curieux', 'Chercheur de Savoir', 'Pensée Brillante', 'Érudit Dévoué', 'Apprenti Expert', 'Maître d\\'Esprit', 'Sage', 'Luminaire', 'Oracle', 'Grand Maître'];
+  document.getElementById('levelName').textContent = levelNames[Math.min(level, levelNames.length-1)] || 'Maître';
 
   // Demo lessons for continue learning
-  const demoLessons = [
-    { id: 1, emoji: '🌍', title: 'African Cultural Heritage', category: 'History', progress: 65, duration: '42 min' },
-    { id: 2, emoji: '🔬', title: 'Cellular Biology Fundamentals', category: 'Science', progress: 30, duration: '35 min' },
-    { id: 3, emoji: '🗣️', title: 'Dioula Language Essentials', category: 'Language', progress: 10, duration: '28 min' },
+  const demoLessons = (window.SigmaLearn && window.SigmaLearn.LESSONS_DATA) ? window.SigmaLearn.LESSONS_DATA.slice(0,3) : [
+    { id: 1, emoji: '🗣️', title: 'Les bases du Djoula', category: 'Débutant', progress: 65, duration: '45 min' },
+    { id: 2, emoji: '👋', title: 'Salutations et Présentations', category: 'Conversation', progress: 30, duration: '30 min' },
+    { id: 3, emoji: '🛒', title: 'Au Marché : Négocier les prix', category: 'Pratique', progress: 10, duration: '40 min' },
   ];
 
   const continueLessonsEl = document.getElementById('continueLessons');
   demoLessons.forEach(lesson => {
+    // using mock progress since we dynamically fetched from SigmaLearn
+    const prog = lesson.progress || Math.floor(Math.random() * 80) + 10;
     continueLessonsEl.innerHTML += `
       <div class="lesson-item" onclick="window.location.href='lesson-view.html?id=${lesson.id}'">
-        <div class="lesson-thumb" style="background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(0,212,255,0.2));">${lesson.emoji}</div>
+        <div class="lesson-thumb" style="background: linear-gradient(135deg, rgba(255, 143, 0,0.3), rgba(46, 125, 50,0.2));">${lesson.emoji}</div>
         <div class="lesson-info">
           <div class="lesson-name">${lesson.title}</div>
           <div class="lesson-meta-row">
             <span class="badge badge-primary" style="font-size:0.65rem; padding:0.1rem 0.4rem;">${lesson.category}</span>
-            <span>⏱ ${lesson.duration}</span>
+            <span>⏱ ${lesson.duration || '30 min'}</span>
           </div>
           <div class="progress-bar" style="height:4px; margin-top:0.5rem;">
-            <div class="progress-fill" style="width:${lesson.progress}%;"></div>
+            <div class="progress-fill" style="width:${prog}%;"></div>
           </div>
         </div>
-        <div class="lesson-percent">${lesson.progress}%</div>
+        <div class="lesson-percent">${prog}%</div>
       </div>
     `;
   });
 
   // Recommended lessons
-  const recommended = [
-    { id: 4, emoji: '🏺', title: 'Ancient Egyptian Civilisation', category: 'History' },
-    { id: 5, emoji: '⚗️', title: 'Chemistry Basics', category: 'Science' },
-    { id: 6, emoji: '🌿', title: 'Traditional Medicine Plants', category: 'Culture' },
+  const recommended = (window.SigmaLearn && window.SigmaLearn.LESSONS_DATA) ? window.SigmaLearn.LESSONS_DATA.slice(3,6) : [
+    { id: 4, emoji: '🔢', title: 'Les Nombres et le Temps', category: 'Vocabulaire' },
+    { id: 5, emoji: '👨‍👩‍👧', title: 'La Famille et les Proches', category: 'Vocabulaire' },
+    { id: 6, emoji: '🍲', title: 'Nourriture et Restauration', category: 'Pratique' },
   ];
   const recEl = document.getElementById('recommendedList');
   recommended.forEach(lesson => {
     recEl.innerHTML += `
       <div class="lesson-item" onclick="window.location.href='lesson-view.html?id=${lesson.id}'">
-        <div class="lesson-thumb" style="background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(255,107,157,0.2));">${lesson.emoji}</div>
+        <div class="lesson-thumb" style="background: linear-gradient(135deg, rgba(46, 125, 50,0.2), rgba(255,107,157,0.2));">${lesson.emoji}</div>
         <div class="lesson-info">
           <div class="lesson-name">${lesson.title}</div>
           <div class="lesson-meta-row">
             <span class="badge badge-accent" style="font-size:0.65rem; padding:0.1rem 0.4rem;">${lesson.category}</span>
-            <span>New</span>
+            <span>Nouveau</span>
           </div>
         </div>
         <span style="color:var(--primary-light); font-size:1rem;">→</span>
@@ -376,17 +378,17 @@
 
   // Badges
   const allBadges = [
-    { emoji: '🌟', label: 'First Login', earned: true },
-    { emoji: '📖', label: 'First Lesson', earned: lessonsCompleted >= 1 },
-    { emoji: '🧠', label: 'Quiz Master', earned: quizzesCompleted >= 3 },
-    { emoji: '🔥', label: '7-Day Streak', earned: false },
-    { emoji: '🏆', label: 'Top Learner', earned: false },
-    { emoji: '🌍', label: 'World Explorer', earned: false },
+    { emoji: '🌟', label: '1er Connexion', earned: true },
+    { emoji: '📖', label: '1ère Leçon', earned: lessonsCompleted >= 1 },
+    { emoji: '🧠', label: 'Pro des Quiz', earned: quizzesCompleted >= 3 },
+    { emoji: '🔥', label: 'Série de 7 Jours', earned: false },
+    { emoji: '🏆', label: 'Top Apprenant', earned: false },
+    { emoji: '🌍', label: 'Explorateur', earned: false },
   ];
   const badgesGrid = document.getElementById('badgesGrid');
   allBadges.forEach(b => {
     badgesGrid.innerHTML += `
-      <div class="badge-item ${b.earned ? '' : 'locked'}" title="${b.label}${b.earned ? '' : ' (locked)'}">
+      <div class="badge-item ${b.earned ? '' : 'locked'}" title="${b.label}${b.earned ? '' : ' (verrouillé)'}">
         <span class="badge-emoji">${b.emoji}</span>
         <div class="badge-label">${b.label}</div>
       </div>
@@ -395,10 +397,10 @@
 
   // Activity feed
   const activities = [
-    { icon: '🎉', text: `<strong>${firstName}</strong> joined EduVerse`, time: 'Just now' },
-    { icon: '📚', text: 'Started <strong>African Cultural Heritage</strong>', time: '2h ago' },
-    { icon: '🧠', text: 'Completed a quiz — scored <strong>80%</strong>', time: 'Yesterday' },
-    { icon: '🏆', text: 'Earned <strong>First Login</strong> badge', time: '2 days ago' },
+    { icon: '🎉', text: `<strong>${firstName}</strong> a rejoint Sigma Learn`, time: 'À l\\'instant' },
+    { icon: '📚', text: 'Commencé <strong>Les bases du Djoula</strong>', time: 'il y a 2h' },
+    { icon: '🧠', text: 'Complété un quiz — score <strong>80%</strong>', time: 'Hier' },
+    { icon: '🏆', text: 'Gagné le badge <strong>1er Connexion</strong>', time: 'il y a 2 jours' },
   ];
   const activityEl = document.getElementById('activityFeed');
   activities.forEach(a => {

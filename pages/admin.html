@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard — EduVerse</title>
-  <meta name="description" content="EduVerse administrator dashboard — manage users, content, analytics, and platform notifications." />
+  <title>Panneau d'Administration — Sigma Learn</title>
+  <meta name="description" content="Tableau de bord administrateur Sigma Learn — gérez les utilisateurs, le contenu Djoula, les statistiques et les notifications." />
   <link rel="stylesheet" href="../css/main.css" />
   <link rel="stylesheet" href="../css/animations.css" />
   <link rel="stylesheet" href="../css/components.css" />
@@ -83,15 +83,14 @@
 <nav class="navbar scrolled">
   <div class="container">
     <div class="nav-inner">
-      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>EduVerse <span class="badge badge-danger" style="margin-left:0.25rem; font-size:0.65rem;">ADMIN</span></a>
+      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>Sigma Learn <span class="badge badge-danger" style="margin-left:0.25rem; font-size:0.65rem;">ADMIN</span></a>
       <ul class="nav-links">
-        <li><a href="dashboard.html">Learner View</a></li>
-        <li><a href="admin.html" class="active">Admin Panel</a></li>
+        <li><a href="admin.html" class="active">Panneau Admin</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <button class="btn btn-ghost btn-icon" onclick="SigmaLearn.Theme.toggle()" title="Basculer le thème" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
         <span id="adminName" style="font-size:0.875rem; color:var(--text-secondary);">⚡ Admin</span>
-        <button class="btn btn-danger btn-sm" onclick="logout()">Sign Out</button>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Se déconnecter</button>
       </div>
     </div>
   </div>
@@ -101,13 +100,12 @@
   <aside class="sidebar">
     <div class="sidebar-menu">
       <div class="sidebar-section-label">Admin</div>
-      <li class="list-none"><a href="#overview" class="sidebar-link active" onclick="showSection('overview',this)"><span class="icon">📊</span> Overview</a></li>
-      <li class="list-none"><a href="#users" class="sidebar-link" onclick="showSection('users',this)"><span class="icon">👥</span> Users</a></li>
-      <li class="list-none"><a href="#content" class="sidebar-link" onclick="showSection('content',this)"><span class="icon">📚</span> Content</a></li>
+      <li class="list-none"><a href="#overview" class="sidebar-link active" onclick="showSection('overview',this)"><span class="icon">📊</span> Aperçu</a></li>
+      <li class="list-none"><a href="#users" class="sidebar-link" onclick="showSection('users',this)"><span class="icon">👥</span> Utilisateurs</a></li>
+      <li class="list-none"><a href="#content" class="sidebar-link" onclick="showSection('content',this)"><span class="icon">📚</span> Contenu</a></li>
       <li class="list-none"><a href="#notifications" class="sidebar-link" onclick="showSection('notifications',this)"><span class="icon">🔔</span> Notifications</a></li>
-      <div class="sidebar-section-label">System</div>
-      <li class="list-none"><a href="../index.html" class="sidebar-link"><span class="icon">🌐</span> View Site</a></li>
-      <li class="list-none"><a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Learner View</a></li>
+      <div class="sidebar-section-label">Système</div>
+      <li class="list-none"><a href="../index.html" class="sidebar-link"><span class="icon">🌐</span> Voir le site</a></li>
     </div>
   </aside>
 
@@ -117,36 +115,36 @@
     <div id="section-overview" class="admin-section animate-fadeInUp">
       <div class="admin-header">
         <div>
-          <h2>Admin Dashboard</h2>
-          <p class="text-secondary">Platform overview — <span id="adminDate">Today</span></p>
+          <h2>Tableau de bord Admin</h2>
+          <p class="text-secondary">Aperçu de la plateforme — <span id="adminDate">Aujourd'hui</span></p>
         </div>
         <div style="display:flex; gap:var(--space-sm);">
-          <button class="btn btn-ghost btn-sm" onclick="refreshStats()">🔄 Refresh</button>
-          <button class="btn btn-primary btn-sm" onclick="showSection('notifications', document.querySelector('[onclick*=notifications]'))">📣 Notify Users</button>
+          <button class="btn btn-ghost btn-sm" onclick="refreshStats()">🔄 Actualiser</button>
+          <button class="btn btn-primary btn-sm" onclick="showSection('notifications', document.querySelector('[onclick*=notifications]'))">📣 Notifier</button>
         </div>
       </div>
 
       <!-- Key Stats -->
       <div class="admin-stats">
         <div class="admin-stat-card glass-card users">
-          <div class="stat-title">Total Users</div>
+          <div class="stat-title">Utilisateurs Totaux</div>
           <div class="stat-val text-gradient" id="aStatUsers">0</div>
-          <div class="stat-trend text-success">↑ +12 this week</div>
+          <div class="stat-trend text-success">↑ +12 cette semaine</div>
         </div>
         <div class="admin-stat-card glass-card lessons">
-          <div class="stat-title">Total Lessons</div>
-          <div class="stat-val" style="color:var(--accent);">12</div>
-          <div class="stat-trend text-accent">Available in catalog</div>
+          <div class="stat-title">Leçons Totales</div>
+          <div class="stat-val" style="color:var(--accent);">10</div>
+          <div class="stat-trend text-accent">Disponibles dans le catalogue</div>
         </div>
         <div class="admin-stat-card glass-card quizzes">
-          <div class="stat-title">Quizzes Completed</div>
+          <div class="stat-title">Quiz Complétés</div>
           <div class="stat-val" style="color:var(--success);" id="aStatQuizzes">0</div>
-          <div class="stat-trend text-success">↑ Platform-wide</div>
+          <div class="stat-trend text-success">↑ Sur la plateforme</div>
         </div>
         <div class="admin-stat-card glass-card revenue">
-          <div class="stat-title">Avg. Completion Rate</div>
+          <div class="stat-title">Taux de Complétion</div>
           <div class="stat-val" style="color:var(--warning);">74%</div>
-          <div class="stat-trend text-warning">↑ +3% vs last month</div>
+          <div class="stat-trend text-warning">↑ +3% ce mois</div>
         </div>
       </div>
 
@@ -155,8 +153,8 @@
         <!-- Weekly Activity Bar Chart -->
         <div class="chart-wrap glass-card">
           <div class="chart-title">
-            Weekly Active Learners
-            <span class="badge badge-success">↑ Live</span>
+            Apprenants Actifs Hebdo
+            <span class="badge badge-success">↑ En ligne</span>
           </div>
           <div class="bar-chart" id="barChart"></div>
           <div style="display:flex; justify-content:space-around; margin-top:0.5rem;" id="barLabels"></div>
@@ -164,26 +162,26 @@
 
         <!-- Category Donut -->
         <div class="chart-wrap glass-card">
-          <div class="chart-title">Content by Category</div>
+          <div class="chart-title">Contenu par Catégorie</div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-xl); align-items:center;">
             <div class="donut-chart">
               <svg viewBox="0 0 36 36" class="donut-svg" width="160" height="160">
                 <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--bg-input)" stroke-width="3"/>
-                <circle id="d1" cx="18" cy="18" r="15.9155" fill="none" stroke="var(--primary)" stroke-width="3" stroke-dasharray="33 67" stroke-dashoffset="0"/>
-                <circle id="d2" cx="18" cy="18" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="25 75" stroke-dashoffset="-33"/>
-                <circle id="d3" cx="18" cy="18" r="15.9155" fill="none" stroke="var(--success)" stroke-width="3" stroke-dasharray="17 83" stroke-dashoffset="-58"/>
-                <circle id="d4" cx="18" cy="18" r="15.9155" fill="none" stroke="var(--warning)" stroke-width="3" stroke-dasharray="25 75" stroke-dashoffset="-75"/>
+                <circle id="d1" cx="18" cy="18" r="15.9155" fill="none" stroke="var(--primary)" stroke-width="3" stroke-dasharray="30 70" stroke-dashoffset="0"/>
+                <circle id="d2" cx="18" cy="18" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="40 60" stroke-dashoffset="-30"/>
+                <circle id="d3" cx="18" cy="18" r="15.9155" fill="none" stroke="var(--success)" stroke-width="3" stroke-dasharray="20 80" stroke-dashoffset="-70"/>
+                <circle id="d4" cx="18" cy="18" r="15.9155" fill="none" stroke="var(--warning)" stroke-width="3" stroke-dasharray="10 90" stroke-dashoffset="-90"/>
               </svg>
               <div class="donut-text">
-                <span class="donut-val">12</span>
-                <span class="donut-label">Lessons</span>
+                <span class="donut-val">10</span>
+                <span class="donut-label">Leçons</span>
               </div>
             </div>
             <div class="legend">
-              <div class="legend-item"><span class="legend-dot" style="background:var(--primary);"></span> History (33%)</div>
-              <div class="legend-item"><span class="legend-dot" style="background:var(--accent);"></span> Science (25%)</div>
-              <div class="legend-item"><span class="legend-dot" style="background:var(--success);"></span> Language (17%)</div>
-              <div class="legend-item"><span class="legend-dot" style="background:var(--warning);"></span> Culture/Math (25%)</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--primary);"></span> Conversation (30%)</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--accent);"></span> Vocabulaire (40%)</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--success);"></span> Pratique (20%)</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--warning);"></span> Grammaire (10%)</div>
             </div>
           </div>
         </div>
@@ -192,17 +190,17 @@
       <!-- Recent Signups -->
       <div class="glass-card users-section">
         <div class="table-header">
-          <h4>Recent Signups</h4>
-          <button class="btn btn-ghost btn-sm" onclick="showSection('users', document.querySelector('[onclick*=users]'))">View All Users →</button>
+          <h4>Inscriptions Récentes</h4>
+          <button class="btn btn-ghost btn-sm" onclick="showSection('users', document.querySelector('[onclick*=users]'))">Tous les utilisateurs →</button>
         </div>
         <table id="recentUsersTable">
           <thead>
             <tr>
-              <th>User</th>
+              <th>Utilisateur</th>
               <th>Email</th>
-              <th>Role</th>
+              <th>Rôle</th>
               <th>XP</th>
-              <th>Joined</th>
+              <th>Rejoint le</th>
             </tr>
           </thead>
           <tbody id="recentUsersBody"></tbody>
@@ -213,11 +211,11 @@
     <!-- USERS SECTION -->
     <div id="section-users" class="admin-section animate-fadeInUp" style="display:none;">
       <div class="admin-header">
-        <h2>👥 User Management</h2>
+        <h2>👥 Gestion des Utilisateurs</h2>
         <div style="display:flex;gap:var(--space-sm);">
           <div class="input-icon-wrap">
             <span class="input-icon">🔍</span>
-            <input type="text" class="input" placeholder="Search users..." id="userSearch" oninput="filterUsers()" style="width:220px;" />
+            <input type="text" class="input" placeholder="Chercher..." id="userSearch" oninput="filterUsers()" style="width:220px;" />
           </div>
         </div>
       </div>
@@ -226,26 +224,26 @@
         <table>
           <thead>
             <tr>
-              <th>User</th>
+              <th>Utilisateur</th>
               <th>Email</th>
-              <th>Role</th>
+              <th>Rôle</th>
               <th>Points</th>
-              <th>Quizzes</th>
-              <th>Joined</th>
+              <th>Quiz</th>
+              <th>Rejoint le</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody id="allUsersBody"></tbody>
         </table>
-        <div id="noUsersMsg" class="hidden" style="text-align:center; padding:2rem; color:var(--text-muted);">No users found.</div>
+        <div id="noUsersMsg" class="hidden" style="text-align:center; padding:2rem; color:var(--text-muted);">Aucun utilisateur trouvé.</div>
       </div>
     </div>
 
     <!-- CONTENT SECTION -->
     <div id="section-content" class="admin-section animate-fadeInUp" style="display:none;">
       <div class="admin-header">
-        <h2>📚 Content Management</h2>
-        <button class="btn btn-primary btn-sm" onclick="alert('Add Lesson: Feature coming in next version.')">+ Add Lesson</button>
+        <h2>📚 Gestion du Contenu</h2>
+        <button class="btn btn-primary btn-sm" onclick="alert('Ajouter une Leçon : Fonctionnalité à venir.')">+ Ajouter</button>
       </div>
 
       <div class="glass-card" style="padding:var(--space-xl);">
@@ -256,65 +254,65 @@
     <!-- NOTIFICATIONS SECTION -->
     <div id="section-notifications" class="admin-section animate-fadeInUp" style="display:none;">
       <div class="admin-header">
-        <h2>🔔 Send Notifications</h2>
+        <h2>🔔 Envoyer des Notifications</h2>
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-xl);">
         <div class="glass-card notif-section">
-          <h4 style="margin-bottom:var(--space-lg);">Compose Notification</h4>
+          <h4 style="margin-bottom:var(--space-lg);">Rédiger une Notification</h4>
           <div class="notif-form">
             <div class="input-group">
-              <label>Target Audience</label>
+              <label>Audience Cible</label>
               <select class="notif-select" id="notifTarget">
-                <option value="all">All Users</option>
-                <option value="students">Students Only</option>
-                <option value="new">New Users (last 7 days)</option>
-                <option value="inactive">Inactive Users</option>
+                <option value="all">Tous les utilisateurs</option>
+                <option value="students">Étudiants uniquement</option>
+                <option value="new">Nouveaux Inscrits (7 j)</option>
+                <option value="inactive">Inactifs</option>
               </select>
             </div>
             <div class="input-group">
-              <label>Notification Type</label>
+              <label>Type de Notification</label>
               <select class="notif-select" id="notifType">
-                <option value="info">📢 General Info</option>
-                <option value="lesson">📚 New Lesson Alert</option>
-                <option value="quiz">🧠 Quiz Challenge</option>
-                <option value="badge">🏆 Badge Awarded</option>
-                <option value="reminder">🔔 Learning Reminder</option>
+                <option value="info">📢 Information Générale</option>
+                <option value="lesson">📚 Nouvelle Leçon</option>
+                <option value="quiz">🧠 Défi Quiz</option>
+                <option value="badge">🏆 Badge Attribué</option>
+                <option value="reminder">🔔 Rappel d'Étude</option>
               </select>
             </div>
             <div class="input-group">
-              <label>Title</label>
-              <input type="text" class="input" id="notifTitle" placeholder="e.g. New Lesson Available!" />
+              <label>Titre</label>
+              <input type="text" class="input" id="notifTitle" placeholder="Ex: Nouvelle leçon disponible !" />
             </div>
             <div class="input-group">
               <label>Message</label>
-              <textarea class="input notif-textarea" id="notifMessage" placeholder="Write your notification message..."></textarea>
+              <textarea class="input notif-textarea" id="notifMessage" placeholder="Écrivez votre message ici..."></textarea>
             </div>
-            <button class="btn btn-primary" onclick="sendNotification()">📣 Send Notification</button>
+            <button class="btn btn-primary" onclick="sendNotification()">📣 Envoyer</button>
           </div>
         </div>
 
         <div class="glass-card notif-section">
-          <h4 style="margin-bottom:var(--space-lg);">Sent Notifications</h4>
+          <h4 style="margin-bottom:var(--space-lg);">Envoyées</h4>
           <div id="sentNotifs">
             <div class="content-row" style="flex-direction:column; align-items:flex-start;">
               <div style="display:flex;gap:0.75rem;align-items:center;width:100%;">
                 <span style="font-size:1.2rem;">📢</span>
                 <div class="content-info">
-                  <div class="content-name">Welcome to EduVerse! 🎓</div>
-                  <div class="content-meta">Sent to: All Users · 2 days ago</div>
+                  <div class="content-name">Bienvenue sur Sigma Learn ! 🎓</div>
+                  <div class="content-meta">À: Tous · il y a 2 jours</div>
                 </div>
-                <span class="badge badge-success">Delivered</span>
+                <span class="badge badge-success">Livré</span>
               </div>
             </div>
             <div class="content-row" style="flex-direction:column; align-items:flex-start;">
               <div style="display:flex;gap:0.75rem;align-items:center;width:100%;">
                 <span style="font-size:1.2rem;">📚</span>
                 <div class="content-info">
-                  <div class="content-name">New: Traditional Medicinal Plants</div>
-                  <div class="content-meta">Sent to: All Users · 1 day ago</div>
+                  <div class="content-name">Nouveau : Salutations et Dialogues</div>
+                  <div class="content-meta">À: Tous · il y a 1 jour</div>
                 </div>
-                <span class="badge badge-success">Delivered</span>
+                <span class="badge badge-success">Livré</span>
               </div>
             </div>
           </div>
@@ -326,9 +324,18 @@
 </div>
 
 <script>
-  const currentUser = JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
-  if (!currentUser) { window.location.href = 'auth.html'; }
-  function logout() { localStorage.removeItem('eduverse_current_user'); window.location.href = '../index.html'; }
+  let adminAccessGranted = false;
+  const adminPass = prompt("Veuillez entrer le mot de passe d'administration Sigma Learn :");
+  if (adminPass !== "sigm@5") {
+    alert("Accès refusé.");
+    window.location.href = '../index.html';
+  } else {
+    adminAccessGranted = true;
+  }
+  
+  function logout() { window.location.href = '../index.html'; }
+
+  const currentUser = { firstName: 'Admin', role: 'admin', email: 'admin@sigmalearn.com' };
 
   document.getElementById('adminName').textContent = `⚡ ${currentUser?.firstName || 'Admin'}`;
   document.getElementById('adminDate').textContent = new Date().toLocaleDateString('en', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
@@ -345,7 +352,7 @@
 
   // Get all users
   function getAllUsers() {
-    const users = JSON.parse(localStorage.getItem('eduverse_users') || '[]');
+    const users = JSON.parse(localStorage.getItem('sigma_users') || '[]');
     if (currentUser && !users.find(u => u.email === currentUser.email)) users.push(currentUser);
     return users;
   }
@@ -367,11 +374,11 @@
       return `<tr>
         <td><div class="user-cell"><div class="user-av">${initials}</div><strong style="color:var(--text-primary);">${u.firstName} ${u.lastName||''}</strong></div></td>
         <td>${u.email||'—'}</td>
-        <td><span class="badge ${u.role==='admin'?'badge-danger':'badge-primary'}">${u.role||'student'}</span></td>
+        <td><span class="badge ${u.role==='admin'?'badge-danger':'badge-primary'}">${u.role||'étudiant'}</span></td>
         <td>${(u.points||0).toLocaleString()} XP</td>
         <td>${joined}</td>
       </tr>`;
-    }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">No users registered yet. <a href="auth.html">Register a test account</a>.</td></tr>';
+    }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">Aucun utilisateur enregistré.</td></tr>';
   }
 
   function renderAllUsers() {
@@ -383,16 +390,16 @@
       return `<tr data-name="${(u.firstName+' '+u.lastName).toLowerCase()}" data-email="${u.email?.toLowerCase()}">
         <td><div class="user-cell"><div class="user-av">${initials}</div><strong style="color:var(--text-primary);">${u.firstName} ${u.lastName||''}</strong></div></td>
         <td>${u.email||'—'}</td>
-        <td><span class="badge ${u.role==='admin'?'badge-danger':'badge-primary'}">${u.role||'student'}</span></td>
+        <td><span class="badge ${u.role==='admin'?'badge-danger':'badge-primary'}">${u.role||'étudiant'}</span></td>
         <td>${(u.points||0).toLocaleString()}</td>
         <td>${(u.quizzesCompleted||[]).length}</td>
         <td>${joined}</td>
         <td><div style="display:flex;gap:0.4rem;">
-          <button class="btn btn-ghost btn-sm" onclick="toggleUserRole('${u.email}')">Toggle Role</button>
+          <button class="btn btn-ghost btn-sm" onclick="toggleUserRole('${u.email}')">Rôle</button>
           <button class="btn btn-danger btn-sm" onclick="removeUser('${u.email}')">🗑</button>
         </div></td>
       </tr>`;
-    }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);">No users found.</td></tr>';
+    }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);">Aucun utilisateur trouvé.</td></tr>';
   }
 
   function filterUsers() {
@@ -404,35 +411,31 @@
   }
 
   function toggleUserRole(email) {
-    const users = JSON.parse(localStorage.getItem('eduverse_users') || '[]');
+    const users = JSON.parse(localStorage.getItem('sigma_users') || '[]');
     const idx = users.findIndex(u => u.email === email);
     if (idx !== -1) {
       users[idx].role = users[idx].role === 'admin' ? 'student' : 'admin';
-      localStorage.setItem('eduverse_users', JSON.stringify(users));
+      localStorage.setItem('sigma_users', JSON.stringify(users));
       renderAllUsers();
     }
   }
 
   function removeUser(email) {
-    if (!confirm(`Remove user ${email}? This cannot be undone.`)) return;
-    const users = JSON.parse(localStorage.getItem('eduverse_users') || '[]');
-    localStorage.setItem('eduverse_users', JSON.stringify(users.filter(u => u.email !== email)));
+    if (!confirm(`Supprimer l'utilisateur ${email} ? Action irréversible.`)) return;
+    const users = JSON.parse(localStorage.getItem('sigma_users') || '[]');
+    localStorage.setItem('sigma_users', JSON.stringify(users.filter(u => u.email !== email)));
     renderAllUsers();
   }
 
-  const LESSONS = [
-    { id:1, emoji:'🌍', title:'African Cultural Heritage', category:'History', students:2341, rating:4.9 },
-    { id:2, emoji:'🔬', title:'Cellular Biology Fundamentals', category:'Science', students:1876, rating:4.8 },
-    { id:3, emoji:'🗣️', title:'Dioula Language Essentials', category:'Language', students:934, rating:4.7 },
-    { id:4, emoji:'🏺', title:'Ancient Egyptian Civilisation', category:'History', students:3200, rating:4.9 },
-    { id:5, emoji:'⚗️', title:'Chemistry: Atoms & Molecules', category:'Science', students:1100, rating:4.6 },
-    { id:6, emoji:'🌿', title:'Traditional Medicinal Plants', category:'Culture', students:780, rating:4.8 },
-    { id:7, emoji:'📐', title:'Euclidean Geometry Mastery', category:'Math', students:650, rating:4.5 },
-    { id:8, emoji:'🦁', title:'Wildlife of the Savannah', category:'Science', students:2100, rating:4.9 },
-    { id:9, emoji:'🎭', title:'Baoulé Language & Stories', category:'Language', students:420, rating:4.8 },
-    { id:10, emoji:'🌌', title:'Stars & the Universe', category:'Science', students:1560, rating:4.9 },
-    { id:11, emoji:'🎵', title:'West African Musical Traditions', category:'Culture', students:890, rating:4.7 },
-    { id:12, emoji:'📊', title:'Statistics & Data Literacy', category:'Math', students:720, rating:4.6 },
+  // Load from SigmaLearn.LESSONS_DATA directly if available
+  const LESSONS = (window.SigmaLearn && window.SigmaLearn.LESSONS_DATA) ? window.SigmaLearn.LESSONS_DATA : [
+    { id: 1, emoji: '🗣️', title: 'Les bases du Djoula', category: 'Débutant', students: 3120, rating: 4.9 },
+    { id: 2, emoji: '👋', title: 'Salutations et Présentations', category: 'Conversation', students: 2854, rating: 4.8 },
+    { id: 3, emoji: '🛒', title: 'Au Marché : Négocier les prix', category: 'Pratique', students: 1940, rating: 4.7 },
+    { id: 4, emoji: '🔢', title: 'Les Nombres et le Temps', category: 'Vocabulaire', students: 2310, rating: 4.9 },
+    { id: 5, emoji: '👨‍👩‍👧', title: 'La Famille et les Proches', category: 'Vocabulaire', students: 1650, rating: 4.8 },
+    { id: 6, emoji: '🍲', title: 'Nourriture et Restauration', category: 'Pratique', students: 1420, rating: 4.6 },
+    { id: 7, emoji: '🚌', title: 'Voyager et se déplacer', category: 'Conversation', students: 1280, rating: 4.7 },
   ];
 
   function renderContent() {
@@ -455,7 +458,7 @@
 
   function editLessonVideos(id) {
     const lesson = LESSONS.find(l => l.id === id);
-    const videoData = JSON.parse(localStorage.getItem('eduverse_lesson_videos') || '{}');
+    const videoData = JSON.parse(localStorage.getItem('sigma_lesson_videos') || '{}');
     const intro = videoData[id]?.intro || '';
     const recap = videoData[id]?.recap || '';
 
@@ -465,12 +468,12 @@
     if (urlRecap === null) return;
 
     videoData[id] = { intro: urlIntro, recap: urlRecap };
-    localStorage.setItem('eduverse_lesson_videos', JSON.stringify(videoData));
+    localStorage.setItem('sigma_lesson_videos', JSON.stringify(videoData));
     alert('✅ Vidéos mises à jour avec succès !');
   }
 
   // Bar Chart
-  const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
   const DATA = [42, 67, 55, 89, 73, 120, 98];
   const maxVal = Math.max(...DATA);
   const barChart = document.getElementById('barChart');
@@ -491,7 +494,7 @@
     const target = document.getElementById('notifTarget').value;
     const type = document.getElementById('notifType').value;
 
-    if (!title || !message) { alert('Please fill in both title and message.'); return; }
+    if (!title || !message) { alert('Titre et message obligatoires.'); return; }
 
     const icons = { info:'📢', lesson:'📚', quiz:'🧠', badge:'🏆', reminder:'🔔' };
     const sent = document.getElementById('sentNotifs');
@@ -503,20 +506,20 @@
       <span style="font-size:1.2rem;">${icons[type]}</span>
       <div class="content-info">
         <div class="content-name">${title}</div>
-        <div class="content-meta">Sent to: ${target} · Just now</div>
+        <div class="content-meta">Envoyé à : ${target} · À l'instant</div>
         <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">${message}</div>
       </div>
-      <span class="badge badge-success">Delivered</span>
+      <span class="badge badge-success">Livré</span>
     </div>`;
     sent.prepend(el);
 
     document.getElementById('notifTitle').value = '';
     document.getElementById('notifMessage').value = '';
-    alert('✅ Notification sent successfully!');
+    alert('✅ Notification envoyée !');
   }
 
   // Init
-  refreshStats();
+  if (adminAccessGranted) { refreshStats(); }
 </script>
 <script src="../js/app.js"></script>
 </body>

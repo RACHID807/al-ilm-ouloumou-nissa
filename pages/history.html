@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Learning History — EduVerse</title>
-  <meta name="description" content="Review your complete EduVerse learning history — lessons watched, quizzes completed, and scores earned." />
+  <title>Historique — Sigma Learn</title>
+  <meta name="description" content="Consultez votre historique d'apprentissage Sigma Learn — leçons suivies, quiz complétés et scores." />
   <link rel="stylesheet" href="../css/main.css" />
   <link rel="stylesheet" href="../css/animations.css" />
   <link rel="stylesheet" href="../css/components.css" />
@@ -23,7 +23,7 @@
       cursor: pointer;
       transition: all var(--transition-base);
     }
-    .history-tab.active { background: rgba(124,58,237,0.2); border-color: var(--primary); color: var(--primary-light); }
+    .history-tab.active { background: rgba(255, 143, 0,0.2); border-color: var(--primary); color: var(--primary-light); }
 
     .timeline { position: relative; padding-left: 2.5rem; }
     .timeline::before { content: ''; position: absolute; left: 0.9rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--primary), transparent); }
@@ -45,7 +45,7 @@
       border-radius: 50%;
       background: var(--primary);
       border: 2px solid var(--bg-base);
-      box-shadow: 0 0 8px rgba(124,58,237,0.6);
+      box-shadow: 0 0 8px rgba(255, 143, 0,0.6);
     }
 
     .timeline-card {
@@ -84,16 +84,16 @@
 <nav class="navbar scrolled">
   <div class="container">
     <div class="nav-inner">
-      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>EduVerse</a>
+      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>Sigma Learn</a>
       <ul class="nav-links">
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="lessons.html">Lessons</a></li>
-        <li><a href="history.html" class="active">History</a></li>
-        <li><a href="profile.html">Profile</a></li>
+        <li><a href="dashboard.html">Tableau de bord</a></li>
+        <li><a href="lessons.html">Leçons</a></li>
+        <li><a href="history.html" class="active">Historique</a></li>
+        <li><a href="profile.html">Profil</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="btn btn-ghost btn-icon" onclick="EduVerse.Theme.toggle()" title="Toggle Theme" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
-        <button class="btn btn-danger btn-sm" onclick="logout()">Sign Out</button>
+        <button class="btn btn-ghost btn-icon" onclick="SigmaLearn.Theme.toggle()" title="Basculer le thème" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Se déconnecter</button>
       </div>
     </div>
   </div>
@@ -102,24 +102,24 @@
 <div class="app-layout">
   <aside class="sidebar">
     <div class="sidebar-menu">
-      <div class="sidebar-section-label">Main</div>
-      <li class="list-none"><a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a></li>
-      <li class="list-none"><a href="lessons.html" class="sidebar-link"><span class="icon">📚</span> My Lessons</a></li>
-      <li class="list-none"><a href="history.html" class="sidebar-link active"><span class="icon">📜</span> History</a></li>
-      <div class="sidebar-section-label">Learn</div>
-      <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quizzes</a></li>
-      <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🥽</span> VR Simulation</a></li>
-      <li class="list-none"><a href="pronunciation.html" class="sidebar-link"><span class="icon">🗣️</span> Pronunciation Lab</a></li>
+      <div class="sidebar-section-label">Principal</div>
+      <li class="list-none"><a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Tableau de bord</a></li>
+      <li class="list-none"><a href="lessons.html" class="sidebar-link"><span class="icon">📚</span> Mes Leçons</a></li>
+      <li class="list-none"><a href="history.html" class="sidebar-link active"><span class="icon">📜</span> Historique</a></li>
+      <div class="sidebar-section-label">Apprendre</div>
+      <li class="list-none"><a href="quiz.html" class="sidebar-link"><span class="icon">🧠</span> Quiz</a></li>
+      <li class="list-none"><a href="vr-game.html" class="sidebar-link"><span class="icon">🎤</span> Mise en situation</a></li>
+      <li class="list-none"><a href="pronunciation.html" class="sidebar-link"><span class="icon">🗣️</span> Prononciation</a></li>
       <div class="sidebar-section-label">Social</div>
-      <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Community</a></li>
-      <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a></li>
+      <li class="list-none"><a href="community.html" class="sidebar-link"><span class="icon">💬</span> Communauté</a></li>
+      <li class="list-none"><a href="profile.html" class="sidebar-link"><span class="icon">👤</span> Mon Profil</a></li>
     </div>
   </aside>
 
   <main class="main-content">
     <div class="animate-fadeInDown" style="margin-bottom:var(--space-xl);">
-      <h2>📜 Learning History</h2>
-      <p class="text-secondary">Your complete learning journey — everything you've watched, played, and mastered.</p>
+      <h2>📜 Historique d'Apprentissage</h2>
+      <p class="text-secondary">Votre parcours d'apprentissage complet avec Sigma Learn.</p>
     </div>
 
     <!-- Summary Cards -->
@@ -127,52 +127,52 @@
       <div class="summary-card glass-card animate-fadeInUp">
         <div class="summary-icon">📚</div>
         <div class="summary-value" id="hLessons">0</div>
-        <div class="summary-label">Lessons Started</div>
+        <div class="summary-label">Leçons Commencées</div>
       </div>
       <div class="summary-card glass-card animate-fadeInUp delay-100">
         <div class="summary-icon">🧠</div>
         <div class="summary-value" id="hQuizzes">0</div>
-        <div class="summary-label">Quizzes Completed</div>
+        <div class="summary-label">Quiz Complétés</div>
       </div>
       <div class="summary-card glass-card animate-fadeInUp delay-200">
         <div class="summary-icon">⭐</div>
         <div class="summary-value" id="hPoints">0</div>
-        <div class="summary-label">Total XP Earned</div>
+        <div class="summary-label">XP Total Gagné</div>
       </div>
       <div class="summary-card glass-card animate-fadeInUp delay-300">
         <div class="summary-icon">🏆</div>
         <div class="summary-value" id="hBestScore">—</div>
-        <div class="summary-label">Best Quiz Score</div>
+        <div class="summary-label">Meilleur Score Quiz</div>
       </div>
     </div>
 
     <!-- History Tabs -->
     <div class="history-tabs animate-fadeInUp">
-      <button class="history-tab active" onclick="showHistoryTab('all', this)">All Activity</button>
-      <button class="history-tab" onclick="showHistoryTab('lessons', this)">📚 Lessons</button>
-      <button class="history-tab" onclick="showHistoryTab('quizzes', this)">🧠 Quizzes</button>
-      <button class="history-tab" onclick="showHistoryTab('games', this)">🥽 VR Games</button>
+      <button class="history-tab active" onclick="showHistoryTab('all', this)">Toute l'activité</button>
+      <button class="history-tab" onclick="showHistoryTab('lessons', this)">📚 Leçons</button>
+      <button class="history-tab" onclick="showHistoryTab('quizzes', this)">🧠 Quiz</button>
+      <button class="history-tab" onclick="showHistoryTab('games', this)">🎤 Scénarios Pratiques</button>
     </div>
 
     <!-- Timeline -->
     <div class="timeline" id="historyTimeline"></div>
     <div class="empty-history hidden" id="emptyHistory">
       <div style="font-size:3rem; margin-bottom:1rem;">📜</div>
-      <h3>No activity yet in this category</h3>
-      <p style="margin-bottom:1.5rem;">Start learning to build your history!</p>
-      <a href="lessons.html" class="btn btn-primary">Browse Lessons →</a>
+      <h3>Aucune activité pour le moment</h3>
+      <p style="margin-bottom:1.5rem;">Commencez à apprendre pour remplir votre historique !</p>
+      <a href="lessons.html" class="btn btn-primary">Voir les leçons →</a>
     </div>
   </main>
 </div>
 
 <script>
-  const currentUser = JSON.parse(localStorage.getItem('eduverse_current_user') || 'null');
+  const currentUser = JSON.parse(localStorage.getItem('sigma_current_user') || 'null');
   if (!currentUser) window.location.href = 'auth.html';
-  function logout() { localStorage.removeItem('eduverse_current_user'); window.location.href = '../index.html'; }
+  function logout() { localStorage.removeItem('sigma_current_user'); window.location.href = '../index.html'; }
 
   const quizzes = currentUser?.quizzesCompleted || [];
   const lessons = currentUser?.lessonsCompleted || [];
-  const vrStats = JSON.parse(localStorage.getItem('eduverse_vr_stats') || '{"played":0,"won":0,"bestScore":0,"totalPoints":0}');
+  const vrStats = JSON.parse(localStorage.getItem('sigma_vr_stats') || '{"played":0,"won":0,"bestScore":0,"totalPoints":0}');
 
   // Summary stats
   document.getElementById('hLessons').textContent = lessons.length || 3; // demo fallback
@@ -184,13 +184,12 @@
 
   // Build activity list
   const DEMO_LESSONS = [
-    { type:'lesson', icon:'🌍', title:'African Cultural Heritage', category:'History', progress:65, date: new Date(Date.now() - 2*3600000).toISOString() },
-    { type:'lesson', icon:'🔬', title:'Cellular Biology Fundamentals', category:'Science', progress:30, date: new Date(Date.now() - 24*3600000).toISOString() },
-    { type:'lesson', icon:'🗣️', title:'Dioula Language Essentials', category:'Language', progress:10, date: new Date(Date.now() - 2*24*3600000).toISOString() },
+    { type:'lesson', icon:'🗣️', title:'1. Les bases (Salutations)', category:'Débutant', progress:65, date: new Date(Date.now() - 2*3600000).toISOString() },
+    { type:'lesson', icon:'📖', title:'2. Les Nombres en Djoula', category:'Débutant', progress:30, date: new Date(Date.now() - 24*3600000).toISOString() },
   ];
 
   const DEMO_GAMES = vrStats.played > 0 ? [{
-    type:'game', icon:'🥽', title:'VR Simulation — African Savannah', category:'VR Game', score: vrStats.bestScore, date: new Date().toISOString()
+    type:'game', icon:'🎤', title:'Mise en situation — Marché Local', category:'Scénario', score: vrStats.bestScore, date: new Date().toISOString()
   }] : [];
 
   const allActivity = [
@@ -235,11 +234,11 @@
         const color = item.score >= 70 ? 'var(--success)' : item.score >= 50 ? 'var(--warning)' : 'var(--danger)';
         scoreHtml = `<div class="timeline-score" style="color:${color};">${item.score}%</div><div class="timeline-date">+${item.pts||0} XP</div>`;
       } else {
-        scoreHtml = `<div class="timeline-score" style="color:var(--accent);">${item.score} pts</div><div class="timeline-date">VR Score</div>`;
+        scoreHtml = `<div class="timeline-score" style="color:var(--accent);">${item.score} pts</div><div class="timeline-date">Score</div>`;
       }
 
       const typeBadge = item.type === 'lesson' ? 'badge-primary' : item.type === 'quiz' ? 'badge-accent' : 'badge-warning';
-      const typeLabel = item.type === 'lesson' ? '📚 Lesson' : item.type === 'quiz' ? '🧠 Quiz' : '🥽 VR Game';
+      const typeLabel = item.type === 'lesson' ? '📚 Leçon' : item.type === 'quiz' ? '🧠 Quiz' : '🎤 Scénario';
 
       return `
         <div class="timeline-item" style="animation-delay:${i * 80}ms;">
