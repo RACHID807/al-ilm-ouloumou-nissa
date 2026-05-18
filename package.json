@@ -1,0 +1,13 @@
+{
+  "name": "sigma-learn",
+  "version": "1.0.0",
+  "description": "Plateforme d'apprentissage du Djoula",
+  "main": "index.html",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "start": "npx http-server dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

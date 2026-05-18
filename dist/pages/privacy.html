@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Politique de Confidentialité — Sigma Learn</title>
+  <meta name="description" content="Politique de confidentialité de Sigma Learn — comment nous collectons, utilisons et protégeons vos données." />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <style>
+    .privacy-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: var(--space-2xl);
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem var(--space-xl) var(--space-3xl);
+    }
+
+    .privacy-nav {
+      position: sticky;
+      top: 90px;
+      height: fit-content;
+    }
+
+    .privacy-nav-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: var(--space-md); }
+
+    .privacy-nav-item {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      transition: all var(--transition-fast);
+      text-decoration: none;
+      margin-bottom: 0.2rem;
+    }
+    .privacy-nav-item:hover { background: var(--bg-card); color: var(--text-primary); }
+    .privacy-nav-item.active { background: rgba(255, 143, 0,0.15); color: var(--primary-light); border-left: 2px solid var(--primary); }
+
+    .privacy-content { max-width: 720px; }
+    .privacy-content h1 { margin-bottom: var(--space-sm); }
+    .privacy-content .last-updated { font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-2xl); display: block; }
+
+    .privacy-section { margin-bottom: var(--space-2xl); scroll-margin-top: 90px; }
+    .privacy-section h2 { font-size: 1.25rem; margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border); }
+    .privacy-section p { font-size: 0.9rem; line-height: 1.8; margin-bottom: var(--space-md); }
+    .privacy-section ul { padding-left: 1.5rem; margin-bottom: var(--space-md); }
+    .privacy-section ul li { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 0.3rem; }
+
+    .info-box {
+      background: rgba(255, 143, 0,0.08);
+      border: 1px solid rgba(255, 143, 0,0.2);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-md);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .info-box strong { color: var(--primary-light); }
+
+    @media (max-width: 768px) {
+      .privacy-layout { grid-template-columns: 1fr; padding: 5rem var(--space-lg) var(--space-2xl); }
+      .privacy-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><div class="nav-logo-icon">🎓</div>Sigma Learn</a>
+      <ul class="nav-links">
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="auth.html">Connexion</a></li>
+        <li><a href="auth.html#register">S'inscrire</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-ghost btn-icon" onclick="SigmaLearn.Theme.toggle()" title="Basculer le thème" style="padding:0.4rem;"><span class="theme-toggle-icon">☀️</span></button>
+        <a href="auth.html#register" class="btn btn-primary btn-sm">Commencer Gratuitement</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="privacy-layout">
+  <!-- Table of Contents -->
+  <nav class="privacy-nav animate-fadeInUp">
+    <div class="privacy-nav-title">Table des matières</div>
+    <a href="#overview" class="privacy-nav-item active">1. Aperçu</a>
+    <a href="#data-collected" class="privacy-nav-item">2. Données Collectées</a>
+    <a href="#how-used" class="privacy-nav-item">3. Utilisation</a>
+    <a href="#data-sharing" class="privacy-nav-item">4. Partage des Données</a>
+    <a href="#security" class="privacy-nav-item">5. Sécurité</a>
+    <a href="#cookies" class="privacy-nav-item">6. Cookies</a>
+    <a href="#rights" class="privacy-nav-item">7. Vos Droits</a>
+    <a href="#children" class="privacy-nav-item">8. Enfants</a>
+    <a href="#changes" class="privacy-nav-item">9. Modifications</a>
+    <a href="#contact" class="privacy-nav-item">10. Contactez-nous</a>
+  </nav>
+
+  <!-- Privacy Content -->
+  <div class="privacy-content animate-fadeInUp">
+    <h1>Politique de Confidentialité</h1>
+    <span class="last-updated">Dernière mise à jour : 9 Avril 2026 · Effectif immédiatement.</span>
+
+    <div class="info-box">
+      <strong>Résumé :</strong> Sigma Learn s'engage à protéger votre vie privée. Nous ne collectons que les données nécessaires pour fournir nos services éducatifs, nous ne vendons jamais vos données à des tiers, et vous avez le plein droit d'accéder, de modifier et de supprimer vos informations à tout moment.
+    </div>
+
+    <div class="privacy-section" id="overview">
+      <h2>1. Aperçu</h2>
+      <p>Sigma Learn ("nous", "notre", "nos") est une plateforme éducative interactive conçue pour offrir des expériences d'apprentissage accessibles, engageantes et multimodales. Cette Politique de Confidentialité explique comment nous collectons, traitons, stockons et protégeons les informations vous concernant ("vous", "utilisateur", "apprenant") lorsque vous utilisez notre plateforme.</p>
+      <p>En créant un compte et en utilisant Sigma Learn, vous acceptez les pratiques décrites dans cette politique. Si vous n'êtes pas d'accord, veuillez vous abstenir d'utiliser notre plateforme.</p>
+      <p>Cette politique s'applique à tous les services Sigma Learn, y compris notre application web, nos futures applications mobiles, et toute API ou service associé.</p>
+    </div>
+
+    <div class="privacy-section" id="data-collected">
+      <h2>2. Données que nous collectons</h2>
+      <p>Nous collectons des informations de deux manières principales : les informations que vous fournissez directement, et les informations collectées automatiquement lors de votre utilisation de la plateforme.</p>
+      <h4 style="margin-bottom:0.5rem; color:var(--text-primary);">Informations que vous fournissez</h4>
+      <ul>
+        <li><strong>Informations du compte :</strong> Prénom, nom, adresse e-mail, numéro de téléphone (facultatif), et mot de passe.</li>
+        <li><strong>Personnalisation du profil :</strong> Préférences d'avatar, nom d'affichage, et objectifs d'apprentissage.</li>
+        <li><strong>Contenu d'apprentissage :</strong> Notes personnelles prises pendant les leçons, réponses aux quiz, et scores de jeux.</li>
+        <li><strong>Interactions communautaires :</strong> Messages envoyés dans les salons de discussion et les forums communautaires.</li>
+        <li><strong>Communications avec le support :</strong> Messages envoyés à notre équipe de support.</li>
+      </ul>
+      <h4 style="margin-bottom:0.5rem; color:var(--text-primary); margin-top:var(--space-md);">Données collectées automatiquement</h4>
+      <ul>
+        <li><strong>Données d'utilisation :</strong> Pages visitées, leçons suivies, résultats de quiz, temps passé à apprendre, et interactions avec les fonctionnalités.</li>
+        <li><strong>Informations sur l'appareil :</strong> Type de navigateur, système d'exploitation, et résolution d'écran à des fins d'optimisation.</li>
+        <li><strong>Analytique d'apprentissage :</strong> Progression à travers les leçons, taux d'achèvement, scores de quiz, et demandes d'aide.</li>
+      </ul>
+    </div>
+
+    <div class="privacy-section" id="how-used">
+      <h2>3. Comment nous utilisons vos données</h2>
+      <p>Nous utilisons vos données exclusivement à des fins liées à la fourniture et à l'amélioration de nos services éducatifs :</p>
+      <ul>
+        <li>Pour créer et gérer votre compte d'apprenant.</li>
+        <li>Pour suivre vos progrès d'apprentissage et personnaliser votre expérience.</li>
+        <li>Pour adapter la difficulté des quiz et les recommandations de leçons en fonction de vos performances.</li>
+        <li>Pour attribuer des badges, des points d'XP, et des certificats au fur et à mesure que vous atteignez des objectifs.</li>
+        <li>Pour faciliter les interactions communautaires dans les salons de discussion et les groupes d'étude.</li>
+        <li>Pour envoyer des notifications importantes de la plateforme, des mises à jour, et des rappels d'apprentissage (facultatif).</li>
+        <li>Pour améliorer notre plateforme grâce à des analyses agrégées et anonymisées.</li>
+        <li>Pour enquêter et prévenir la fraude, les abus, ou les violations de politique.</li>
+      </ul>
+      <div class="info-box">
+        <strong>Nous ne vendrons JAMAIS :</strong> vos données personnelles à des tiers, n'utiliserons pas vos données pour de la publicité ciblée en dehors de la plateforme, ni ne partagerons de données identifiables avec des partenaires sans votre consentement explicite.
+      </div>
+    </div>
+
+    <div class="privacy-section" id="data-sharing">
+      <h2>4. Partage des données & Tiers</h2>
+      <p>Sigma Learn ne vend, ni ne loue, ni n'échange vos informations personnelles. Nous pouvons partager des données limitées uniquement dans les circonstances suivantes :</p>
+      <ul>
+        <li><strong>Fournisseurs de services :</strong> Des fournisseurs tiers de confiance qui nous aident à exploiter la plateforme (par exemple, hébergement cloud, livraison d'e-mails) sous des accords stricts de traitement des données.</li>
+        <li><strong>Exigences légales :</strong> Si la loi, une ordonnance d'un tribunal, ou une autorité gouvernementale l'exige, nous pouvons divulguer des données pour nous conformer à des obligations légales.</li>
+        <li><strong>Sécurité :</strong> Pour protéger la sécurité des utilisateurs ou du public en cas de menace ou de préjudice imminent.</li>
+        <li><strong>Transferts d'entreprise :</strong> En cas de fusion, acquisition, ou vente d'actifs, vos données pourraient être transférées avec préavis.</li>
+      </ul>
+      <p>Tous les partenaires tiers sont contractuellement tenus de protéger vos données et ne peuvent les utiliser qu'aux fins spécifiques que nous définissons.</p>
+    </div>
+
+    <div class="privacy-section" id="security">
+      <h2>5. Sécurité des données</h2>
+      <p>Nous prenons la sécurité des données très au sérieux et mettons en œuvre plusieurs couches de protection pour sauvegarder vos informations :</p>
+      <ul>
+        <li>Toutes les données transmises entre votre navigateur et nos serveurs sont cryptées en utilisant TLS (HTTPS).</li>
+        <li>Les mots de passe sont hachés en utilisant des algorithmes standards de l'industrie — nous ne stockons jamais les mots de passe en texte clair.</li>
+        <li>Des audits de sécurité réguliers et des tests de pénétration sont effectués.</li>
+        <li>L'accès aux données est restreint au personnel autorisé uniquement, en fonction de la nécessité d'en connaître.</li>
+        <li>Toute activité suspecte déclenche des alertes automatiques et des mesures de protection du compte.</li>
+      </ul>
+      <p>Bien que nous appliquions les meilleures pratiques de sécurité, aucun système n'est immunisé à 100 % contre les violations. En cas de violation de données, nous nous engageons à informer les utilisateurs concernés dans les 72 heures, conformément aux lois applicables sur la protection des données.</p>
+    </div>
+
+    <div class="privacy-section" id="cookies">
+      <h2>6. Cookies & Stockage Local</h2>
+      <p>Sigma Learn utilise des technologies de stockage du navigateur pour améliorer votre expérience :</p>
+      <ul>
+        <li><strong>Données de session :</strong> Nous utilisons le localStorage pour mémoriser votre statut de connexion et vos préférences entre les sessions.</li>
+        <li><strong>Progression de l'apprentissage :</strong> Vos notes de leçons, votre historique de quiz, et vos progrès sont stockés localement pour préserver votre expérience.</li>
+        <li><strong>Cookies analytiques :</strong> Analytiques anonymisées et facultatives pour comprendre comment les apprenants utilisent la plateforme.</li>
+      </ul>
+      <p>Vous pouvez gérer ou vider le stockage du navigateur via les paramètres de votre navigateur à tout moment. Vider le stockage vous déconnectera et réinitialisera vos préférences stockées localement.</p>
+    </div>
+
+    <div class="privacy-section" id="rights">
+      <h2>7. Vos Droits</h2>
+      <p>Selon votre juridiction, vous disposez des droits suivants concernant vos données personnelles :</p>
+      <ul>
+        <li><strong>Droit d'Accès :</strong> Demander une copie de toutes les données personnelles que nous détenons à votre sujet.</li>
+        <li><strong>Droit de Rectification :</strong> Corriger des informations inexactes ou incomplètes via vos paramètres de Profil.</li>
+        <li><strong>Droit à l'Effacement :</strong> Demander la suppression permanente de votre compte et de toutes les données associées.</li>
+        <li><strong>Droit à la Portabilité :</strong> Télécharger vos données personnelles dans un format lisible par machine (exportation JSON disponible dans Profil).</li>
+        <li><strong>Droit de Limitation :</strong> Demander à limiter certains traitements de vos données.</li>
+        <li><strong>Droit d'Opposition :</strong> S'opposer au traitement des données basé sur des intérêts légitimes.</li>
+        <li><strong>Droit de Retirer le Consentement :</strong> Retirer le consentement pour des traitements facultatifs à tout moment.</li>
+      </ul>
+      <p>Pour exercer l'un de ces droits, visitez vos <a href="profile.html">Paramètres de Profil</a> ou contactez-nous à <a href="mailto:privacy@sigmalearn.app">privacy@sigmalearn.app</a>.</p>
+    </div>
+
+    <div class="privacy-section" id="children">
+      <h2>8. Confidentialité des Enfants</h2>
+      <p>Sigma Learn est conçu pour les apprenants âgés de 13 ans et plus. Nous ne collectons pas sciemment de données personnelles auprès d'enfants de moins de 13 ans. Si nous découvrons qu'un enfant de moins de 13 ans s'est inscrit, nous supprimerons promptement son compte et toutes les données associées.</p>
+      <p>Les utilisateurs âgés de 13 à 17 ans sont encouragés à passer en revue cette politique avec un parent ou un tuteur. Les parents qui pensent que leur enfant s'est inscrit sans autorisation doivent nous contacter immédiatement.</p>
+    </div>
+
+    <div class="privacy-section" id="changes">
+      <h2>9. Modifications de la Politique</h2>
+      <p>Nous pouvons mettre à jour cette Politique de Confidentialité périodiquement pour refléter des changements dans nos pratiques, nos exigences légales ou nos offres de services. Lorsque nous apportons des modifications significatives :</p>
+      <ul>
+        <li>Nous mettrons à jour la date "Dernière mise à jour" en haut de cette page.</li>
+        <li>Nous informerons les utilisateurs inscrits via une notification sur la plateforme ou par e-mail.</li>
+        <li>L'utilisation continue de la plateforme après l'entrée en vigueur des modifications constitue l'acceptation de la politique mise à jour.</li>
+      </ul>
+      <p>Nous recommandons de consulter cette politique périodiquement. Les versions précédentes sont disponibles sur demande.</p>
+    </div>
+
+    <div class="privacy-section" id="contact">
+      <h2>10. Contactez-nous</h2>
+      <p>Si vous avez des questions, des préoccupations, ou des demandes liées à cette Politique de Confidentialité ou à vos données personnelles, veuillez contacter notre Équipe de Confidentialité :</p>
+      <div class="info-box">
+        <strong>📧 E-mail :</strong> privacy@sigmalearn.app<br />
+        <strong>📬 Adresse :</strong> Plateforme d'apprentissage Sigma Learn, Abidjan, Côte d'Ivoire<br />
+        <strong>⏱ Temps de réponse :</strong> Nous nous efforçons de répondre à toutes les demandes liées à la confidentialité dans un délai de 7 jours ouvrables.
+      </div>
+      <p>Pour des préoccupations de sécurité urgentes, veuillez envoyer un e-mail à <a href="mailto:security@sigmalearn.app">security@sigmalearn.app</a> avec "URGENT" en ligne de sujet.</p>
+
+      <div style="margin-top:var(--space-2xl); padding-top:var(--space-xl); border-top:1px solid var(--border); display:flex; gap:var(--space-md); flex-wrap:wrap;">
+        <a href="auth.html#register" class="btn btn-primary">🚀 Créer un compte</a>
+        <a href="../index.html" class="btn btn-ghost">← Retourner à l'accueil</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Active nav highlight on scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 50); });
+
+  const sections = document.querySelectorAll('.privacy-section');
+  const navItems = document.querySelectorAll('.privacy-nav-item');
+
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const active = document.querySelector(`.privacy-nav-item[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-80px 0px -60% 0px' });
+
+  sections.forEach(s => sectionObserver.observe(s));
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>
