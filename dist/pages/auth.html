@@ -315,7 +315,7 @@
 
         <div class="auth-divider"><span>OU CONTINUER AVEC</span></div>
         <div class="social-btns">
-          <button type="button" class="social-btn">🌐 Google</button>
+          <button type="button" class="social-btn" onclick="handleGoogleLogin()">🌐 Google</button>
           <button type="button" class="social-btn">📘 Facebook</button>
         </div>
         <p style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-top:1rem;">
@@ -372,7 +372,7 @@
 
         <div class="auth-divider"><span>OU CONTINUER AVEC</span></div>
         <div class="social-btns">
-          <button type="button" class="social-btn">🌐 Google</button>
+          <button type="button" class="social-btn" onclick="handleGoogleLogin()">🌐 Google</button>
           <button type="button" class="social-btn">📘 Facebook</button>
         </div>
         <p style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-top:1rem;">
@@ -511,6 +511,69 @@
       showError(err.message || 'L\\'inscription a échoué.');
       btn.textContent = 'Créer un Compte Gratuit 🚀';
       btn.disabled = false;
+    }
+  }
+
+  async function handleGoogleLogin() {
+    try {
+      if (window.auth) {
+        // Firebase Google Sign-In using Popup
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const result = await window.auth.signInWithPopup(provider);
+        const user = result.user;
+        
+        const email = user.email;
+        const userDoc = await window.db.collection('users').doc(email).get();
+        let finalUser;
+        if (userDoc.exists) {
+          finalUser = userDoc.data();
+        } else {
+          const names = (user.displayName || "Google User").split(' ');
+          const firstName = names[0] || "Google";
+          const lastName = names.slice(1).join(' ') || "User";
+          finalUser = {
+            id: Date.now(),
+            firstName,
+            lastName,
+            email,
+            role: 'student',
+            points: 0,
+            level: 1,
+            joinDate: new Date().toISOString()
+          };
+          await window.db.collection('users').doc(email).set(finalUser);
+        }
+        localStorage.setItem('sigma_current_user', JSON.stringify(finalUser));
+        window.location.href = 'dashboard.html';
+      } else {
+        // Local Mock Fallback
+        const mockUser = {
+          id: Date.now(),
+          firstName: 'Google',
+          lastName: 'User',
+          email: 'google.user@sigmalearn.com',
+          role: 'student',
+          points: 150,
+          level: 1,
+          joinDate: new Date().toISOString()
+        };
+        localStorage.setItem('sigma_current_user', JSON.stringify(mockUser));
+        
+        const users = JSON.parse(localStorage.getItem('sigma_users') || '[]');
+        if (!users.find(u => u.email === mockUser.email)) {
+          users.push(mockUser);
+          localStorage.setItem('sigma_users', JSON.stringify(users));
+        }
+        
+        if (window.SigmaLearn && window.SigmaLearn.Toast) {
+          SigmaLearn.Toast.show("Connexion Google simulée réussie !", "success");
+        }
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1000);
+      }
+    } catch (err) {
+      showError(err.message || 'La connexion avec Google a échoué.');
     }
   }
 
